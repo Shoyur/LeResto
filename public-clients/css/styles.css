@@ -1,0 +1,113 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #BBB;
+}
+
+.navbar {
+    background-color: #ECE3F6;
+    overflow: hidden;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.navbar img {
+    height: 50px;
+    vertical-align: middle;
+    margin: 10px 20px;
+}
+
+.navbar-but {
+    justify-content: flex-end;
+    font-size: 30px;
+    padding-right: 30px;
+    padding-left: 30px;
+}
+
+.navbar-but i {
+    padding-right: 12px;
+    padding-left: 12px;
+}
+
+.navbar-but i:hover {
+    color: #7867cf;
+    cursor: pointer;
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+}
+
+.catbar {
+    padding: 20px;
+    background-color: white;
+    overflow: hidden;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.nav-container {
+    width: 100%;
+    overflow-x: hidden;
+    position: relative;
+
+}
+
+.nav-wrapper {
+    overflow-x: auto;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch; /* smooth scrolling iOS */
+    scrollbar-width: none; /* Firefox */
+    scroll-behavior: smooth; 
+}
+
+.nav-wrapper::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+}
+  
+.nav-list {
+    display: inline-block;
+    margin: 0;
+    padding: 0 60px;
+    margin: 0 60px;
+}
+  
+.nav-list li {
+    display: inline-block;
+    margin-right: 10px;
+}
+  
+.nav-list li a {
+    text-decoration: none;
+}
+  
+.nav-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 30px;
+    height: 30px;
+    background-color: #CCC;
+    color: #FFF;
+    text-align: center;
+    line-height: 30px;
+    cursor: pointer;
+}
+
+.nav-arrow:hover {
+    background-color: #7867cf;
+}
+  
+.nav-left {
+    left: 10px;
+}
+  
+.nav-right {
+    right: 10px;
+}
