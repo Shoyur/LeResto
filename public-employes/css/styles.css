@@ -1,6 +1,7 @@
 body {
     margin: 0;
     font-family: Arial, sans-serif;
+    background-color: #BBB;
 }
 
 .navbar {
@@ -28,38 +29,48 @@ body {
 }
 
 .navbar-but {
-    text-align: right;
+    justify-content: flex-end;
+    font-size: 30px;
+    padding-right: 30px;
+    padding-left: 30px;
 }
 
-.but-stats {
-    background-color: #7867cf;
-    color: #ECE3F6;
-    border: none;
-    padding: 8px 16px;
-    text-decoration: none;
-    font-size: 14px;
-    margin: 10px 20px;
+.navbar-but i {
+    padding-right: 12px;
+    padding-left: 12px;
 }
 
-.but-stats:hover {
-    background-color: #ccc;
-    color: black;
-    border:blue;
+.navbar-but i:hover {
+    color: #7867cf;
+    cursor: pointer;
 }
 
-.card {
-    background-color: #ddd;
+.carte {
+    background-color: #ECE3F6;
     padding: 10px 30px;
     margin: 40px;
     cursor: pointer;
-    border: solid 1px #ddd;
-}
-.card:hover {
-    background-color: #ccc;
-    border: solid 1px #999;
+    border: solid 5px #ECE3F6;
+    padding-bottom: 40px;
+    border-radius: 20px;
 }
 
-.order-popup {
+.carte:hover {
+    background-color: #CCC;
+    border: solid 5px #999;
+    
+}
+
+.carte h3 {
+    display: inline-block;
+    margin-right: 60px;
+}
+
+.carte span, #commande_popup_descr span {
+    margin-left: 30px;
+}
+
+.commande_popup {
     display: none;
     position: fixed;
     top: 0;
@@ -70,19 +81,24 @@ body {
     z-index: 999;
 }
 
-.order-details {
+.commande_popup_details {
     position: relative;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background-color: #fff;
+    background-color: #FFF;
     padding: 20px;
     width: 80%;
     max-width: 500px;
     text-align: center;
+    border-radius: 20px;
 }
 
-.close-button {
+.commande_popup_aliments {
+    text-align: left;
+}
+
+.x_but {
     position: absolute;
     top: 10px;
     right: 10px;
@@ -90,9 +106,109 @@ body {
     cursor: pointer;
 }
 
-#mark-finished-button {
-    margin-top: 10px;
+.commande_popup_details button  {
+    margin: 30px 5px 5px 5px;
     padding: 10px;
     cursor: pointer;
     font-size: 14px;
 }
+
+.terminees_popup {
+    display: none;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Styling for the settings popup */
+.popup {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    padding: 20px;
+    border: 1px solid #ccc;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  }
+  
+  /* Styling for the switch */
+  .switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+  }
+  
+  .switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+  
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    border-radius: 34px;
+    transition: background-color 0.4s;
+  }
+  
+  .slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    border-radius: 50%;
+    transition: transform 0.4s;
+  }
+  
+  input:checked + .slider {
+    background-color: green;
+  }
+  
+  input:focus + .slider {
+    box-shadow: 0 0 1px green;
+  }
+  
+  input:checked + .slider:before {
+    transform: translateX(26px);
+  }
+  
+  /* Styling for the color boxes */
+  .color-box {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    margin: 0 5px;
+  }
+  
+  .blue-box {
+    background-color: #ECE3F6;
+  }
+  
+  .yellow-box {
+    background-color: yellow;
+  }
+  
+  .red-box {
+    background-color: red;
+  }

@@ -1,17 +1,31 @@
 <?php 
 
 
-require_once '../bdconfig/bdconfig.php';
+require_once '../models/categModel.php';
 
-class CategoryModel {
 
-    private $db;
+class CategController {
 
-    public function __construct() {
+    public function requete() {
 
-        $conn = 'mysql:host=' . DB_HOST . ';dbname=' . DB_NAME;
-        $this->db = new PDO($conn, DB_USER, DB_PASSWORD);
-        $this->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                    
+            switch($_POST['action']) {
+                case "createCateg":
+                    echo $this->createCateg();
+                    break;
+                case "readAllCateg":
+                    echo $this->readAllCateg();
+                    break;
+                case "updateCateg":
+                    echo $this->updateCateg(); 
+                    break;
+                case "deleteCateg":
+                    echo $this->deleteCateg();
+                    break;
+            }
+        
+        }
 
     }
 
@@ -19,63 +33,44 @@ class CategoryModel {
     // CRUD
 
     // CREATE
-    public function createCateg($nom_categ, $ordre_categ, $image_categ, $descr_categ) {
+    public function createCateg() {
 
-        $requete = "INSERT INTO categ (nom_categ, ordre_categ, image_categ, descr_categ) VALUES (?, ?, ?, ?)";
-        try {
-            $stmt = $this->db->prepare($requete);
-            $stmt->execute([$nom_categ, $ordre_categ, $image_categ, $descr_categ]);
-            return $this->db->lastInsertId();
-        } 
-        catch (PDOException $e) {
-            // À FAIRE
-        }
+        // À FAIRE...
 
     }
 
     // READ
     public function readAllCateg() {
-
-        $requete = "SELECT * FROM categ";
-        try {
-            $stmt = $this->db->query($requete);
-            return $stmt->fetchAll(PDO::FETCH_ASSOC);
-        } 
-        catch (PDOException $e) {
-            // À FAIRE
-        }
+        
+        $categModel = new CategModel();
+        $categs = $categModel->readAllCateg();
+        header('Content-Type: application/json');
+        return json_encode($categs);
 
     }
 
     // UPDATE
-    public function updateCateg($id_categ, $nom_categ, $ordre_categ, $image_categ, $descr_categ) {
+    public function updateCateg() {
 
-        $requete = "UPDATE categories SET nom_categ = ?, ordre_categ = ?, image_categ = ?, descr_categ = ? WHERE id_categ = ?";
-        try {
-            $stmt = $this->db->prepare($requete);
-            $stmt->execute([$nom_categ, $ordre_categ, $image_categ, $descr_categ, $id_categ]);
-        } catch (PDOException $e) {
-            // À FAIRE
-        }
+        // À FAIRE...
 
     }
 
     // DELETE
-    public function deleteCateg($id_categ) {
+    public function deleteCateg() {
 
-        $requete = "DELETE FROM categ WHERE id_categ = ?";
-        try {
-            $stmt = $this->db->prepare($requete);
-            $stmt->execute([$id_categ]);
-        } 
-        catch (PDOException $e) {
-            // À FAIRE
-        }
+        // À FAIRE...
+
+    }
+
+    public function deleteAllCateg() {
+
+        // À FAIRE...
 
     }
 
 
 }
 
-
-?>
+$categController = new CategController();
+$categController->requete();

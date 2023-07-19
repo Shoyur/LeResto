@@ -19,16 +19,17 @@ class CommandeModel {
     // CRUD
 
     // CREATE
-    public function createCommande($id_client, $livrpick_commande, $stotal_commande, $txtotal_commande, $details_commande) {
+    public function createCommande($quand_commande, $id_client, $livrpick_commande, $stotal_commande, $txtotal_commande, $details_commande) {
 
-        $requete = "INSERT INTO commande (id_client, livrpick_commande, stotal_commande, txtotal_commande, details_commande) VALUES (?, ?, ?, ?, ?)";
+        $requete = "INSERT INTO commande (quand_commande, id_client, livrpick_commande, stotal_commande, txtotal_commande, details_commande) VALUES (?, ?, ?, ?, ?, ?)";
         try {
+            
             $stmt = $this->db->prepare($requete);
-            $stmt->execute([$id_client, $livrpick_commande, $stotal_commande, $txtotal_commande, $details_commande]);
+            $stmt->execute([$quand_commande, $id_client, $livrpick_commande, $stotal_commande, $txtotal_commande, $details_commande]);
             return $this->db->lastInsertId();
         } 
         catch (PDOException $e) {
-            // À FAIRE
+            echo 'erreur : ' . $e;
         }
         finally {
             // À FAIRE
@@ -70,12 +71,12 @@ class CommandeModel {
     }
 
     // UPDATE
-    public function updateCommande($id_alim, $id_categ, $nom_alim, $dispo_alim, $prix_alim, $image_alim, $descr_alim, $options_alim, $nbvendu_alim) {
+    public function updateCommandeTerminee($id_commande, $terminee_commande) {
 
-        $requete = "UPDATE commande SET id_categ = ?, nom_alim = ?, dispo_alim = ?, prix_alim = ?, image_alim = ?, descr_alim = ?, options_alim = ?, nbvendu_alim = ? WHERE id_alim = ?";
+        $requete = "UPDATE commande SET terminee_commande = ? WHERE id_commande = ?";
         try {
             $stmt = $this->db->prepare($requete);
-            $stmt->execute([$id_categ, $nom_alim, $dispo_alim, $prix_alim, $image_alim, $descr_alim, $options_alim, $nbvendu_alim, $id_alim]);
+            $stmt->execute([$terminee_commande, $id_commande]);
         } 
         catch (PDOException $e) {
             // À FAIRE

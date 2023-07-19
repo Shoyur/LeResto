@@ -37,11 +37,12 @@ class AlimentModel {
     }
 
     // READ
-    public function readAllAliment() {
+    public function readAlimentsByCateg($id_categ) {
 
-        $requete = "SELECT * FROM aliment";
+        $requete = "SELECT * FROM aliment WHERE id_categ = ?";
         try {
-            $stmt = $this->db->query($requete);
+            $stmt = $this->db->prepare($requete);
+            $stmt->execute([$id_categ]);
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         } 
         catch (PDOException $e) {

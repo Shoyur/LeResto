@@ -3,42 +3,52 @@
 
 require_once '../models/commandeModel.php';
 
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-
-    switch($_POST['action']) {
-        case "createCommande":
-            return $this->createCommande();
-            break;
-        case "readAllCommandePresentes":
-            return $this->readAllCommandePresentes();
-            break;
-        case "readAllCommandeTerminees":
-            return $this->readAllCommandeTerminees(); 
-            break;
-        case "updateCommande":
-            return $this->updateCommande(); 
-            break;
-        case "deleteCommande":
-            return $this->deleteCommande();
-            break;
-        case "deleteAllCommande":
-            return $this->deleteAllCommande();
-            break;
-    }
-
-}
+date_default_timezone_set('US/Eastern');
 
 
 class CommandeController {
 
-    private $db;
+    public function requete() {
 
-    public function __construct() {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                    
+            switch($_POST['action']) {
 
-        $conn = 'mysql:host=' . DB_HOST . ';dbname=' . DB_NAME;
-        $this->db = new PDO($conn, DB_USER, DB_PASSWORD);
-        $this->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                case "createCommande":
+                    
+                    $id_client = $_POST['id_client'];
+                    $livr = $_POST['livr'];
+                    $stotal = $_POST['stotal'];
+                    $txtotal = $_POST['txtotal'];
+                    $details = $_POST['details'];
+                    echo $this->createCommande($id_client, $livr, $stotal, $txtotal, $details);
+                    break;
+
+                case "readAllCommandePresentes":
+                    echo $this->readAllCommandePresentes();
+                    break;
+
+                case "readAllCommandeTerminees":
+                    echo $this->readAllCommandeTerminees(); 
+                    break;
+
+                case "updateCommandeTerminee":
+                    $id_commande = $_POST['id'];
+                    $terminee_commande = $_POST['terminee'];
+                    echo $this->updateCommandeTerminee($id_commande, $terminee_commande); 
+                    break;
+
+                case "deleteCommande":
+                    echo $this->deleteCommande();
+                    break;
+
+                case "deleteAllCommande":
+                    echo $this->deleteAllCommande();
+                    break;
+
+            }
+        
+        }
 
     }
 
@@ -46,20 +56,13 @@ class CommandeController {
     // CRUD
 
     // CREATE
-    public function createCommande($id_client, $livrpick_commande, $stotal_commande, $txtotal_commande, $details_commande) {
+    public function createCommande($id_client, $livr, $stotal, $txtotal, $details) {
 
-        $requete = "INSERT INTO commande (id_client, livrpick_commande, stotal_commande, txtotal_commande, details_commande) VALUES (?, ?, ?, ?, ?)";
-        try {
-            $stmt = $this->db->prepare($requete);
-            $stmt->execute([$id_client, $livrpick_commande, $stotal_commande, $txtotal_commande, $details_commande]);
-            return $this->db->lastInsertId();
-        } 
-        catch (PDOException $e) {
-            // À FAIRE
-        }
-        finally {
-            // À FAIRE
-        }
+        $maintenant = new DateTime();
+        $maintenant = $maintenant->format('Y-m-d H:i:s');
+
+        $commandeModel = new CommandeModel();
+        return $commandeModel->createCommande($maintenant, $id_client, $livr, $stotal, $txtotal, $details);
 
     }
 
@@ -68,8 +71,16 @@ class CommandeController {
 
         $commandeModel = new CommandeModel();
         $commandes = $commandeModel->readAllCommandePresentes();
+
         header('Content-Type: application/json');
-        echo json_encode($commandes);
+
+        foreach ($commandes as &$commande) {
+            $quand_commande = strtotime($commande['quand_commande']);
+            $diff_sec = time() - $quand_commande;
+            $commande['attente'] = $diff_sec;
+        }
+
+        return json_encode($commandes);
 
     }
 
@@ -78,61 +89,33 @@ class CommandeController {
         $commandeModel = new CommandeModel();
         $commandes = $commandeModel->readAllCommandeTerminees();
         header('Content-Type: application/json');
-        echo json_encode($commandes);
+        return json_encode($commandes);
         
     }
 
     // UPDATE
-    public function updateCommande($id_alim, $id_categ, $nom_alim, $dispo_alim, $prix_alim, $image_alim, $descr_alim, $options_alim, $nbvendu_alim) {
+    public function updateCommandeTerminee($id_commande, $terminee_commande) {
 
-        $requete = "UPDATE commande SET id_categ = ?, nom_alim = ?, dispo_alim = ?, prix_alim = ?, image_alim = ?, descr_alim = ?, options_alim = ?, nbvendu_alim = ? WHERE id_alim = ?";
-        try {
-            $stmt = $this->db->prepare($requete);
-            $stmt->execute([$id_categ, $nom_alim, $dispo_alim, $prix_alim, $image_alim, $descr_alim, $options_alim, $nbvendu_alim, $id_alim]);
-        } 
-        catch (PDOException $e) {
-            // À FAIRE
-        }
-        finally {
-            // À FAIRE
-        }
+        $commandeModel = new CommandeModel();
+        $commandeModel->updateCommandeTerminee($id_commande, $terminee_commande);
 
     }
 
     // DELETE
-    public function deleteCommande($id_commande) {
+    public function deleteCommande() {
 
-        $requete = "DELETE FROM commande WHERE id_commande = ?";
-        try {
-            $stmt = $this->db->prepare($requete);
-            $stmt->execute([$id_commande]);
-        } 
-        catch (PDOException $e) {
-            // À FAIRE
-        }
-        finally {
-            // À FAIRE
-        }
+        // À FAIRE...
 
     }
 
     public function deleteAllCommande() {
 
-        $requete = "DELETE FROM commande WHERE terminee_commande = 1";
-        try {
-            $stmt = $this->db->prepare($requete);
-            $stmt->execute();
-            $combien = $stmt->rowCount();
-            return $combien;
-        } 
-        catch (PDOException $e) {
-            // À FAIRE
-        }
-        finally {
-            // À FAIRE
-        }
+        // À FAIRE...
 
     }
 
 
 }
+
+$commandeController = new CommandeController();
+$commandeController->requete();
