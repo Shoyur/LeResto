@@ -3,7 +3,7 @@
 
 require_once '../dbconfig/dbconfig.php';
 
-class SettingsModel {
+class StatsModel {
 
     private $db;
 
@@ -19,7 +19,7 @@ class SettingsModel {
     // CRUD
 
     // READ
-    public function getSettings($id_user) {
+    public function getStats($id_user) {
 
         $requete = "SELECT * FROM settings WHERE id_user = ? LIMIT 1";
         try {
@@ -38,12 +38,12 @@ class SettingsModel {
 
 
     // UPDATE
-    public function saveSettings($id_user, $refresh, $color_change, $interval_1, $interval_2, $the_location) {
+    public function saveSettings($id_user, $refresh, $color_change, $interval_1, $interval_2, $location) {
 
-        $requete = "UPDATE settings SET refresh = ?, color_change = ?, interval_1 = ?, interval_2 = ?, the_location = ? WHERE id_user = ?";
+        $requete = "UPDATE settings SET refresh = ?, color_change = ?, interval_1 = ?, interval_2 = ?, location = ? WHERE id_user = ?";
         try {
             $stmt = $this->db->prepare($requete);
-            $stmt->execute([$refresh, $color_change, $interval_1, $interval_2, $the_location, $id_user]);
+            $stmt->execute([$refresh, $color_change, $interval_1, $interval_2, $location, $id_user]);
         } 
         catch (PDOException $e) {
             // TO DO

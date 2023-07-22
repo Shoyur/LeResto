@@ -15,7 +15,6 @@ class CommandeController {
             switch($_POST['action']) {
 
                 case "createCommande":
-                    
                     $id_client = $_POST['id_client'];
                     $livr = $_POST['livr'];
                     $stotal = $_POST['stotal'];
@@ -24,18 +23,18 @@ class CommandeController {
                     echo $this->createCommande($id_client, $livr, $stotal, $txtotal, $details);
                     break;
 
-                case "readAllCommandePresentes":
-                    echo $this->readAllCommandePresentes();
+                case "getOpenOrders":
+                    echo $this->getOpenOrders();
                     break;
 
-                case "readAllCommandeTerminees":
-                    echo $this->readAllCommandeTerminees(); 
+                case "getFinishedOrders":
+                    echo $this->getFinishedOrders(); 
                     break;
 
-                case "updateCommandeTerminee":
+                case "updateOrderFinish":
                     $id_commande = $_POST['id'];
-                    $terminee_commande = $_POST['terminee'];
-                    echo $this->updateCommandeTerminee($id_commande, $terminee_commande); 
+                    $terminee_commande = $_POST['finished'];
+                    echo $this->updateOrderFinish($id_commande, $terminee_commande); 
                     break;
 
                 case "deleteCommande":
@@ -62,42 +61,43 @@ class CommandeController {
         $maintenant = $maintenant->format('Y-m-d H:i:s');
 
         $commandeModel = new CommandeModel();
-        return $commandeModel->createCommande($maintenant, $id_client, $livr, $stotal, $txtotal, $details);
+        $success = $commandeModel->createCommande($maintenant, $id_client, $livr, $stotal, $txtotal, $details);
+        header('Content-Type: application/json');
+        return json_encode($success);
 
     }
 
     // READ
-    public function readAllCommandePresentes() {
+    public function getOpenOrders() {
 
         $commandeModel = new CommandeModel();
-        $commandes = $commandeModel->readAllCommandePresentes();
-
-        header('Content-Type: application/json');
-
+        $commandes = $commandeModel->getOpenOrders();
         foreach ($commandes as &$commande) {
             $quand_commande = strtotime($commande['quand_commande']);
             $diff_sec = time() - $quand_commande;
             $commande['attente'] = $diff_sec;
         }
-
+        header('Content-Type: application/json');
         return json_encode($commandes);
 
     }
 
-    public function readAllCommandeTerminees() {
+    public function getFinishedOrders() {
 
         $commandeModel = new CommandeModel();
-        $commandes = $commandeModel->readAllCommandeTerminees();
+        $commandes = $commandeModel->getFinishedOrders();
         header('Content-Type: application/json');
         return json_encode($commandes);
         
     }
 
     // UPDATE
-    public function updateCommandeTerminee($id_commande, $terminee_commande) {
+    public function updateOrderFinish($id_commande, $terminee_commande) {
 
         $commandeModel = new CommandeModel();
-        $commandeModel->updateCommandeTerminee($id_commande, $terminee_commande);
+        $result = $commandeModel->updateOrderFinish($id_commande, $terminee_commande);
+        header('Content-Type: application/json');
+        return json_encode($result);
 
     }
 

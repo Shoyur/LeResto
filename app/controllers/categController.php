@@ -11,18 +11,19 @@ class CategController {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     
             switch($_POST['action']) {
+
                 case "createCateg":
                     echo $this->createCateg();
                     break;
-                case "readAllCateg":
-                    echo $this->readAllCateg();
-                    break;
+
                 case "updateCateg":
                     echo $this->updateCateg(); 
                     break;
+
                 case "deleteCateg":
                     echo $this->deleteCateg();
                     break;
+                    
             }
         
         }
@@ -35,37 +36,27 @@ class CategController {
     // CREATE
     public function createCateg() {
 
-        // À FAIRE...
-
-    }
-
-    // READ
-    public function readAllCateg() {
-        
-        $categModel = new CategModel();
-        $categs = $categModel->readAllCateg();
-        header('Content-Type: application/json');
-        return json_encode($categs);
+        // TO DO
 
     }
 
     // UPDATE
     public function updateCateg() {
 
-        // À FAIRE...
+        // TO DO
 
     }
 
     // DELETE
     public function deleteCateg() {
 
-        // À FAIRE...
+        // TO DO
 
     }
 
     public function deleteAllCateg() {
 
-        // À FAIRE...
+        // TO DO
 
     }
 

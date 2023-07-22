@@ -1,7 +1,7 @@
 <?php 
 
 
-require_once '../bdconfig/bdconfig.php';
+require_once '../dbconfig/dbconfig.php';
 
 class CategModel {
 
@@ -19,70 +19,53 @@ class CategModel {
     // CRUD
 
     // CREATE
-    public function createCateg($nom_categ, $ordre_categ, $image_categ, $descr_categ) {
+    public function createCateg($categ_name, $categ_sort, $categ_image, $categ_descr) {
 
-        $requete = "INSERT INTO categ (nom_categ, ordre_categ, image_categ, descr_categ) VALUES (?, ?, ?, ?)";
+        $query = "INSERT INTO categ (categ_name, categ_sort, categ_image, categ_descr) VALUES (?, ?, ?, ?)";
         try {
-            $stmt = $this->db->prepare($requete);
-            $stmt->execute([$nom_categ, $ordre_categ, $image_categ, $descr_categ]);
+            $stmt = $this->db->prepare($query);
+            $stmt->execute([$categ_name, $categ_sort, $categ_image, $categ_descr]);
             return $this->db->lastInsertId();
         } 
         catch (PDOException $e) {
-            // À FAIRE
+            // TO DO
         }
         finally {
-            // À FAIRE
-        }
-
-    }
-
-    // READ
-    public function readAllCateg() {
-
-        $requete = "SELECT * FROM categ";
-        try {
-            $stmt = $this->db->query($requete);
-            return $stmt->fetchAll(PDO::FETCH_ASSOC);
-        } 
-        catch (PDOException $e) {
-            // À FAIRE
-        }
-        finally {
-            // À FAIRE
+            // TO DO
         }
 
     }
 
     // UPDATE
-    public function updateCateg($id_categ, $nom_categ, $ordre_categ, $image_categ, $descr_categ) {
+    public function updateCateg($categ_id, $categ_name, $categ_sort, $categ_image, $categ_descr) {
 
-        $requete = "UPDATE categ SET nom_categ = ?, ordre_categ = ?, image_categ = ?, descr_categ = ? WHERE id_categ = ?";
+        $query = "UPDATE categ SET categ_name = ?, categ_sort = ?, categ_image = ?, categ_descr = ? WHERE categ_id = ?";
         try {
-            $stmt = $this->db->prepare($requete);
-            $stmt->execute([$nom_categ, $ordre_categ, $image_categ, $descr_categ, $id_categ]);
+            $stmt = $this->db->prepare($query);
+            $stmt->execute([$categ_name, $categ_sort, $categ_image, $categ_descr, $categ_id]);
         } 
         catch (PDOException $e) {
-            // À FAIRE
+            // TO DO
         }
         finally {
-            // À FAIRE
+            // TO DO
         }
 
     }
 
     // DELETE
-    public function deleteCateg($id_categ) {
+    public function deleteCateg($categ_id) {
 
-        $requete = "DELETE FROM categ WHERE id_categ = ?";
+        $query = "DELETE FROM categ WHERE categ_id = ?";
         try {
-            $stmt = $this->db->prepare($requete);
-            $stmt->execute([$id_categ]);
+            $stmt = $this->db->prepare($query);
+            $stmt->execute([$categ_id]);
         } 
         catch (PDOException $e) {
-            // À FAIRE
+            // TO DO
         }
         finally {
-            // À FAIRE
+            // TO DO
         }
 
     }

@@ -1,7 +1,7 @@
 <?php 
 
 
-require_once '../bdconfig/bdconfig.php';
+require_once '../dbconfig/dbconfig.php';
 
 class CommandeModel {
 
@@ -21,68 +21,70 @@ class CommandeModel {
     // CREATE
     public function createCommande($quand_commande, $id_client, $livrpick_commande, $stotal_commande, $txtotal_commande, $details_commande) {
 
-        $requete = "INSERT INTO commande (quand_commande, id_client, livrpick_commande, stotal_commande, txtotal_commande, details_commande) VALUES (?, ?, ?, ?, ?, ?)";
+        $query = "INSERT INTO commande (quand_commande, id_client, livrpick_commande, stotal_commande, txtotal_commande, details_commande) VALUES (?, ?, ?, ?, ?, ?)";
         try {
             
-            $stmt = $this->db->prepare($requete);
+            $stmt = $this->db->prepare($query);
             $stmt->execute([$quand_commande, $id_client, $livrpick_commande, $stotal_commande, $txtotal_commande, $details_commande]);
             return $this->db->lastInsertId();
         } 
         catch (PDOException $e) {
-            echo 'erreur : ' . $e;
+            // return ['Error : ' . $e];
+            // TO DO
         }
         finally {
-            // À FAIRE
+            // TO DO
         }
 
     }
 
     // READ
-    public function readAllCommandePresentes() {
+    public function getOpenOrders() {
 
-        $requete = "SELECT * FROM commande WHERE terminee_commande = 0";
+        $query = "SELECT * FROM commande WHERE terminee_commande = 0";
         try {
-            $stmt = $this->db->query($requete);
+            $stmt = $this->db->query($query);
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         } 
         catch (PDOException $e) {
-            // À FAIRE
+            // TO DO
         }
         finally {
-            // À FAIRE
+            // TO DO
         }
 
     }
 
-    public function readAllCommandeTerminees() {
+    public function getFinishedOrders() {
 
-        $requete = "SELECT * FROM commande WHERE terminee_commande = 1";
+        $query = "SELECT * FROM commande WHERE terminee_commande = 1";
         try {
-            $stmt = $this->db->query($requete);
+            $stmt = $this->db->query($query);
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         } 
         catch (PDOException $e) {
-            // À FAIRE
+            // TO DO
         }
         finally {
-            // À FAIRE
+            // TO DO
         }
 
     }
 
     // UPDATE
-    public function updateCommandeTerminee($id_commande, $terminee_commande) {
+    public function updateOrderFinish($id_commande, $terminee_commande) {
 
-        $requete = "UPDATE commande SET terminee_commande = ? WHERE id_commande = ?";
+        $query = "UPDATE commande SET terminee_commande = ? WHERE id_commande = ?";
         try {
-            $stmt = $this->db->prepare($requete);
+            $stmt = $this->db->prepare($query);
             $stmt->execute([$terminee_commande, $id_commande]);
+            $success = $stmt->rowCount() > 0;
         } 
         catch (PDOException $e) {
-            // À FAIRE
+            $success = false;
         }
         finally {
-            // À FAIRE
+            return array('success' => $success);
         }
 
     }
@@ -90,34 +92,34 @@ class CommandeModel {
     // DELETE
     public function deleteCommande($id_commande) {
 
-        $requete = "DELETE FROM commande WHERE id_commande = ?";
+        $query = "DELETE FROM commande WHERE id_commande = ?";
         try {
-            $stmt = $this->db->prepare($requete);
+            $stmt = $this->db->prepare($query);
             $stmt->execute([$id_commande]);
         } 
         catch (PDOException $e) {
-            // À FAIRE
+            // TO DO
         }
         finally {
-            // À FAIRE
+            // TO DO
         }
 
     }
 
     public function deleteAllCommande() {
 
-        $requete = "DELETE FROM commande WHERE terminee_commande = 1";
+        $query = "DELETE FROM commande WHERE terminee_commande = 1";
         try {
-            $stmt = $this->db->prepare($requete);
+            $stmt = $this->db->prepare($query);
             $stmt->execute();
             $combien = $stmt->rowCount();
             return $combien;
         } 
         catch (PDOException $e) {
-            // À FAIRE
+            // TO DO
         }
         finally {
-            // À FAIRE
+            // TO DO
         }
 
     }

@@ -25,8 +25,8 @@ class SettingsController {
                     $color_change = $_POST['color_change'];
                     $interval_1 = $_POST['interval_1'];
                     $interval_2 = $_POST['interval_2'];
-                    $location = $_POST['location'];
-                    echo $this->saveSettings($id_user, $refresh, $color_change, $interval_1, $interval_2, $location);
+                    $the_location = $_POST['the_location'];
+                    echo $this->saveSettings($id_user, $refresh, $color_change, $interval_1, $interval_2, $the_location);
                     break;
 
             }
@@ -50,10 +50,12 @@ class SettingsController {
 
 
     // UPDATE
-    public function saveSettings($id_user, $refresh, $color_change, $interval_1, $interval_2, $location) {
+    public function saveSettings($id_user, $refresh, $color_change, $interval_1, $interval_2, $the_location) {
 
         $settingsModel = new SettingsModel();
-        $settingsModel->saveSettings($id_user, $refresh, $color_change, $interval_1, $interval_2, $location);
+        $settingsModel->saveSettings($id_user, $refresh, $color_change, $interval_1, $interval_2, $the_location);
+        header('Content-Type: application/json');
+        return json_encode(true);
 
     }
 

@@ -1,199 +1,378 @@
+/* ----------------------------------------------------------- */
+/* ALL */
+
+:root {
+  --col_1: #ECE3F6;
+  --col_5: #ab9fe2;
+  --col_3: #28177F;
+  --col_BG: #CCCCCC;
+  --col_B2: #888888;
+  --col_G3: #301934;
+  /* order cards border coloring */
+  --col_C1: yellow;
+  --col_C2: red;
+
+  /* logo #2 */
+  --col_V2_1: #8010c0;
+  --col_V2_BG: #150520;
+  --col_V2_2: #F040F0;
+
+  --col_GB1: #222;
+  --col_GB2: #111;
+  --col_CB: #501070;
+
+  --padding_top: 110px;
+}
+  
 body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background-color: #BBB;
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: var(--col_V2_BG);
+  color: var(--col_V2_1);
+  padding-top: var(--padding_top);
 }
 
-.navbar {
-    background-color: #ECE3F6;
-    overflow: hidden;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    box-shadow: 0 4px 2px -2px rgba(0, 0, 0, 0.3);
+button {
+  cursor: pointer;
+  display: inline-block;
+  background-color: var(--col_V2_1);
+  color: var(--col_1);
+  text-decoration: none;
+  height: 30px;
+  padding: 0px 10px;
+  border-radius: 15px;
+  transition: background-color 0.5s ease, color 0.5s ease;
+  margin: 0px 10px 0px 10px;
+  outline: none;
+  border: none;
+  font-size: 1rem;
+
+
 }
 
-.navbar img {
-    height: 50px;
-    vertical-align: middle;
-    margin: 10px 20px;
+button:hover {
+  background-color: var(--col_V2_2);
+  /* color: var(--col_V2_BG); */
 }
 
-.navbar-but {
-    justify-content: flex-end;
-    font-size: 30px;
-    padding-right: 30px;
-    padding-left: 30px;
+/* ----------------------------------------------------------- */
+/* NAVBAR */
+  
+.nav {
+  background-color: var(--col_V2_BG);
+  overflow: hidden;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 4px 2px -2px rgba(0, 0, 0, 0.3);
+  position: fixed;
+  top: 0;
 }
 
-.navbar-but i {
-    padding-right: 12px;
-    padding-left: 12px;
-    color: #28177f;
-    transition: background-color 0.5s ease, color 0.5s ease;
+.nav_logo img {
+  height: 50px;
+  vertical-align: middle;
+  margin: 5px 20px;
 }
 
-.navbar-but i:hover {
-    color: #7867cf;
-    cursor: pointer;
+.nav_mid {
+  flex-grow: 1;
+  text-align: center;
+}
+  
+.nav_but {
+  justify-content: flex-end;
+  font-size: 30px;
+  padding-right: 30px;
+  padding-left: 30px;
 }
 
-.navbar {
-    display: flex;
-    justify-content: space-between;
+.nav_but i {
+  padding-right: 12px;
+  padding-left: 12px;
+  transition: background-color 0.5s ease, color 0.5s ease;
 }
+
+.nav_but i:hover {
+  color: var(--col_V2_2);
+  cursor: pointer;
+}
+
+/* ----------------------------------------------------------- */
+/* CATEGORIES BUTTONS BAR */
 
 .catbar {
-    padding: 10px 0px 10px 0px;
-    background-color: #ECE3F6;
-    overflow: hidden;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    box-shadow: 0 4px 2px -2px rgba(0, 0, 0, 0.3);
+  background-color: var(--col_V2_BG);
+  overflow: hidden;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 4px 2px -2px rgba(0, 0, 0, 0.3);
+  position: fixed;
+  top: 50px;
 }
 
-.nav-container {
-    width: 100%;
-    overflow-x: hidden;
-    position: relative;
-    padding: 0px 20px 0px 20px;
-
+.catbar_but {
+  width: 100%;
+  overflow-x: hidden;
+  position: relative;
+  padding: 0px 20px;
+  white-space: nowrap;
+  -webkit-overflow-scrolling: touch; /* smooth scroll iOS */
+  scrollbar-width: none; /* Firefox */
+  scroll-behavior: smooth;
+  display: inline-block;
+  margin: 20px 0px;
+  text-decoration: none;
+  background-color: var(--col_V2_BG);
+  color: var(--col_1);
 }
 
-.nav-wrapper {
-    overflow-x: auto;
-    white-space: nowrap;
-    -webkit-overflow-scrolling: touch; /* smooth scroll iOS */
-    scrollbar-width: none; /* Firefox */
-    scroll-behavior: smooth; 
+.catbar_but::-webkit-scrollbar {
+  width: 0;
+  height: 0;
 }
 
-.nav-wrapper::-webkit-scrollbar {
-    width: 0;
-    height: 0;
+/* ----------------------------------------------------------- */
+/* FOOD CARDS LIST */
+
+.food_grids_list div {
+  padding: 15px;
 }
+
+.categ_div {
+  border-top: solid 1px var(--col_CB);;
+}
+
+.categ_div h2 {
+  /* border: 1px solid #ccc; */
+  margin-bottom: -10px;
+}
+
+.foods_grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 20px;
+}
+
+.food_card {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  gap: 10px;
+  padding: 10px;
+  /* border: 1px solid #ccc; */
+  background-color: var(--col_CB);
+  border-radius: 10px;
+  margin: 10px;
+  color: var(--col_1);
+  font-size: 1rem;
+}
+
+.food_card img {
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.food_details {
+  display: flex;
+  flex-direction: column;
+}
+
+.food_name_price {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1rem;
+  margin: 0;
+}
+
+.food_name {
+  margin-right: 10px;
+}
+
+.qty_btn {
+  width: 30px;
+  height: 30px;
+  border: none;
+  border-radius: 50%;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.qty_settings {
+  display: flex;
+  padding-top: 0px !important;
+}
+
+.qty_input {
+  width: 20px;
+  height: 30px;
+  padding: 0 10px;
+  text-align: center;
+  border: none;
+  border-radius: 5px;
+  background-color: var(--col_V2_1);
+  color: var(--col_1);
+}
+
+.qty_input:hover {
+  background-color: var(--col_V2_2);
+}
+
+.qty_input::-webkit-inner-spin-button,
+.qty_input::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.qty_input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+.qty_minus {
+  margin-left: 0px;
+}
+
+.add_but {
+  flex-grow: 1;
+  margin-right: 0px;
+}
+
+/* ----------------------------------------------------------- */
+/* LOCATION POPUP */
+
+.loc_popup {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 999;  
+}
+
+.loc_popup_content {
+  position: relative;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: var(--col_1);
+  padding: 20px;
+  width: 80%;
+  max-width: 500px;
+  text-align: center;
+  border-radius: 20px;  
+}
+
+.loc_popup_list {
   
-.nav-list {
-    display: inline-block;
-    margin: 0;
-    padding: 0 20px;
-    background-color: #ECE3F6;
 }
+
+/* ----------------------------------------------------------- */
+/* USER POPUP */
+
+.user_popup {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 999;  
+}
+
+.user_popup_content {
+  position: relative;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: var(--col_1);
+  padding: 20px;
+  width: 80%;
+  max-width: 500px;
+  text-align: center;
+  border-radius: 20px;  
+}
+
+.user_popup_list {
   
-.nav-list li {
-    display: inline-block;
-    margin-right: 10px;
 }
+
+/* ----------------------------------------------------------- */
+/* CART POPUP */
+
+.cart_popup {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 999;  
+}
+
+.cart_popup_content {
+  position: relative;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: var(--col_1);
+  padding: 20px;
+  width: 80%;
+  max-width: 500px;
+  text-align: center;
+  border-radius: 20px;  
+}
+
+.cart_popup_list {
   
-.nav-list li a {
-    text-decoration: none;
 }
 
-#navList {
-    list-style-type: none;
-    display: flex;
-    padding: 0;
+/* ----------------------------------------------------------- */
+/* CART QTY ANIMATION */
+
+.cart_qty {
+  position: absolute;
+  right: 25px;
+  top: 5px;
+  width: 25px;
+  height: 25px;
+  line-height: 25px;
+  text-align: center;
+  border-radius: 50%;
+  font-size: 14px;
+  background-color: var(--col_V2_1);
+  color: var(--col_1);
+  transition: background-color 0.5s ease, color 0.5s ease;
 }
 
-.categ_but {
-    display: inline-block;
-    padding: 10px 20px;
-    background-color: #28177f;
-    color: #ECE3F6;
-    text-decoration: none;
-    /* border: 1px solid #ccc; */
-    border-radius: 10px;
-    transition: background-color 0.5s ease, color 0.5s ease;
-    margin: 0px 10px 0px 10px;
+.fa-cart-shopping:hover .cart_qty {
+  background-color: var(--col_V2_2);
 }
 
-.categ_but:hover {
-    background-color: #7867cf;
-    color: #28177f;
+.cart_qty_anim {
+  animation-name: cart_qty_pulse;
+  animation-duration: 2s;
+  animation-timing-function: linear;
+  animation-fill-mode: both;
 }
 
-.liste_de_grids div {
-    margin: 20px
-}
-
-
-.categories-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 20px;
+@keyframes cart_qty_pulse {
+  0% {
+    transform: scale(1);
+    background-color: var(--col_V2_1);
   }
-  
-  .category {
-    /* border: 1px solid #ccc; */
-    padding: 10px;
+  50% {
+    transform: scale(4);
+    background-color: var(--col_V2_2);
   }
-  
-  .meals-grid {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 10px;
+  100% {
+    transform: scale(1);
+    background-color: var(--col_V2_1);
   }
-  
-  .meal-card {
-    display: grid;
-    grid-template-rows: auto 1fr auto;
-    gap: 10px;
-    padding: 10px;
-    border: 1px solid #ccc;
-    background-color: #ECE3F6;
-    border-radius: 10px;
-  }
-  
-  .meal-card img {
-    width: 100%;
-    height: 250px;
-    object-fit: cover;
-    border-radius: 10px;
-  }
-  
-  .meal-details {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .meal-name, .meal-price {
-    margin: 0;
-  }
-  
-.ajouter_but {
-    background-color: #28177f;
-    color: #ECE3F6;
-    border: none;
-    padding: 8px 12px;
-    cursor: pointer;
-    border-radius: 10px;
-    transition: background-color 0.5s ease, color 0.5s ease;
-}
-
-.ajouter_but:hover {
-    background-color: #7867cf;
-    color: #28177f;
-}
-
-
-
-.panier_quantite {
-    position: absolute;
-    right: 25px;
-    top: 5px;
-    width: 25px;
-    height: 25px;
-    line-height: 25px;
-    text-align: center;
-    border-radius: 50%;
-    font-size: 14px;
-    color: #ECE3F6;
-    background-color: #28177f;
-    transition: background-color 0.5s ease, color 0.5s ease;
-}
-
-.fa-cart-shopping:hover .panier_quantite {
-    background-color: #7867cf;
-    color: #28177f;
 }
