@@ -48,8 +48,12 @@ function showCategAndFoods() {
     var unique_categ = null;
     var categ_grid;
 
-    food_data.forEach(function(food) {
+    food_data.forEach(function(jf) {
         
+        // jf = json food
+        // food = Food object
+        const food = new Food(jf.food_id, jf.categ_id, jf.food_name, jf.food_avail, jf.food_price, jf.food_image, jf.food_descr, jf.food_options, jf.food_sold, jf.food_stock);
+
         // if new categ, add button and create new categ foods grid
         if (unique_categ != food.categ_id) {
 
@@ -59,7 +63,7 @@ function showCategAndFoods() {
             // catbar button
             const button = document.createElement("button");
             button.type = "button";
-            button.textContent = food.categ_name;
+            button.textContent = jf.categ_name;
             button.classList.add("categ_but");
             // go to smooth scroll
             button.addEventListener('click', function(event) {
@@ -74,7 +78,7 @@ function showCategAndFoods() {
             categ_div.classList.add('categ_div');
             categ_div.style.backgroundColor = 'var(--col_GB1)';
             const categ_title = document.createElement('h2');
-            categ_title.textContent = food.categ_name;
+            categ_title.textContent = jf.categ_name;
             categ_title.style.color = 'var(--col_1)';
             categ_div.appendChild(categ_title);
             food_grids_list.appendChild(categ_div);
@@ -112,29 +116,29 @@ function showCategAndFoods() {
 
 
 class Food {
-    constructor(name, type, price, calories, ...otherAttributes) {
-      this.name = name;
-      this.type = type;
-      this.price = price;
-      this.calories = calories;
-      // Add other attributes to the object as needed
-      this.otherAttributes = otherAttributes;
+    constructor(food_id, categ_id, food_name, food_avail, food_price, food_image, food_descr, food_options, food_sold, food_stock) {
+        this.food_id = food_id;
+        this.categ_id = categ_id;
+        this.food_name = food_name;
+        this.food_avail = food_avail;
+        this.food_price = food_price;
+        this.food_image = food_image;
+        this.food_descr = food_descr;
+        this.food_options = food_options;
+        this.food_sold = food_sold;
+        this.food_stock = food_stock;
     }
 }
-// food_id	1
-// categ_id	1
-// food_name	"Smoothie Bleuets"
-// food_avail	1
-// food_price	4.5
-// food_image	"smoothie1.jpg"
-// food_descr	null
-// food_options	null
-// food_sold	null
-// food_stock	null
-// categ_name	"Breuvages"
-// categ_sort	1
-// categ_image	null
-// categ_descr
+
+class Categ {
+    constructor(categ_id, categ_name, categ_sort, categ_image, categ_descr) {
+        this.categ_id = categ_id;
+        this.categ_name = categ_name;
+        this.categ_sort = categ_sort;
+        this.categ_image = categ_image;
+        this.categ_descr = categ_descr;
+      }
+}
 
 
 function createFoodCard(food) {
@@ -142,6 +146,8 @@ function createFoodCard(food) {
     // main element
     const card = document.createElement('div');
     card.classList.add('food_card');
+    // associate food Object with this card div element
+    card.setAttribute('data-food', JSON.stringify(food));
 
     // food (object) association
     card.setAttribute('food_data', JSON.stringify(food));
@@ -213,9 +219,10 @@ function createFoodCard(food) {
     
     
     card.appendChild(qty_settings);
-    
+
+    // card.addEventListener('click', ...);
     // const foodDescription = document.createElement('p');
-    // foodDescription.classList.add('food_description');               // TO DO (description popup on click)
+    // foodDescription.classList.add('food_description');                          ///////////////// TO DO (description popup on click)
     // foodDescription.textContent = food.food_descr;
     // foodDetails.appendChild(foodDescription);
 
