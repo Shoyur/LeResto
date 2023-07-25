@@ -12,7 +12,12 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script defer src="scripts/loadFoods.js"></script>
-    <script defer src="scripts/cart.js"></script>
+    <script defer src="scripts/foodPopup.js"></script>
+    <script defer src="scripts/cartAndPopup.js"></script>
+    <script defer src="scripts/locPopup.js"></script>
+    <script defer src="scripts/langChange.js"></script>
+    <script defer src="scripts/darkLight.js"></script>
+    <script defer src="scripts/userAndPopup.js"></script>
 
 </head>
 
@@ -25,7 +30,7 @@
         </div>
         <div class="nav_mid"></div>
         <div class="nav_but">
-            <i class="fa-solid fa-location-dot" onclick="add2cartAnim()"></i>
+            <i class="fa-solid fa-location-dot"></i>
             <i class="fa-solid fa-hands-asl-interpreting"></i>
             <i class="fa-solid fa-circle-half-stroke"></i>
             <i class="fa-solid fa-circle-user" id="test_commande_random"></i>
@@ -41,6 +46,14 @@
 
     <!-- FOOD ITEMS PER CATEG LIST -->
     <div class="food_grids_list" id="food_grids_list"></div>
+
+    <!-- CARD FOOD DETAILS POPUP -->
+    <div id="food_popup" class="food_popup">
+        <div class="food_popup_content">
+            <div id="food_popup_details" class="food_popup_details"></div>
+            <button id="food_popup_close">Fermer</button>
+        </div>
+    </div>
 
     <!-- LOCATION POPUP -->
     <div id="loc_popup" class="loc_popup">
@@ -78,8 +91,6 @@
         </div>
     </div>
 
-
-    
 </body>
 
 </html>

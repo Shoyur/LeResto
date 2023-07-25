@@ -1,4 +1,4 @@
-var cart_data = {};
+var cart_data = [];
 
 
 function openCartPopup() {
@@ -67,38 +67,36 @@ function closeCartPopup() {
 }
 
 
-function cardAddToCart(food) {
-    localStorage
+function cardAddToCart(food, qty) {
+    for (let i = 0; i < qty; i++) {
+        cart_data.push(food);
+    }
+    updateCartIconQty();
 }
 
 
-function updateCartQty() {
+function updateCartIconQty() {
     var cart_qty = document.getElementById('cart_qty');
     cart_qty.classList.add('cart_qty_anim');
     cart_qty.addEventListener('animationend', function() {
         cart_qty.classList.remove('cart_qty_anim');
     }, { once: true });
-    cart_qty.innerText = getCartTotalQty();
-}
-
-
-function getCartTotalQty() {
-    var qty = 0;
-    cart_data.forEach(food => {
-        qty += food.qty;
-    });
-    return qty;
+    cart_qty.innerText = cart_data.length;
 }
 
 
 window.addEventListener('beforeunload', function (event) {
-    localStorage.setItem('cart_data', JSON.stringify(cart_data));
+    localStorage.setItem('Le_Resto_cart_data', JSON.stringify(cart_data));
 });
 
 
 document.addEventListener('DOMContentLoaded', function () {
-    const saved_cart_data = localStorage.getItem('cart_data');
+    const saved_cart_data = localStorage.getItem('Le_Resto_cart_data');
     if (saved_cart_data) {
         cart_data = JSON.parse(saved_cart_data);
+        updateCartIconQty();
+    }
+    else {
+        cart_data = [];
     }
 });

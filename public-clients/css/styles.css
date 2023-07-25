@@ -39,20 +39,17 @@ button {
   color: var(--col_1);
   text-decoration: none;
   height: 30px;
-  padding: 0px 10px;
+  padding: 0px 15px;
   border-radius: 15px;
   transition: background-color 0.5s ease, color 0.5s ease;
   margin: 0px 10px 0px 10px;
   outline: none;
   border: none;
   font-size: 1rem;
-
-
 }
 
 button:hover {
   background-color: var(--col_V2_2);
-  /* color: var(--col_V2_BG); */
 }
 
 /* ----------------------------------------------------------- */
@@ -133,18 +130,26 @@ button:hover {
   height: 0;
 }
 
+.cat_bar_but_hover {
+  background-color: var(--col_V2_2);
+}
+
 /* ----------------------------------------------------------- */
 /* FOOD CARDS LIST */
 
-.food_grids_list div {
+.food_grids_list {
+  background-color: var(--col_GB1);
+}
+
+.food_grids_list section {
   padding: 15px;
 }
 
-.categ_div {
-  border-top: solid 1px var(--col_CB);;
+.categ_section {
+  border-top: solid 1px var(--col_CB);
 }
 
-.categ_div h2 {
+.categ_section h2 {
   /* border: 1px solid #ccc; */
   margin-bottom: -10px;
 }
@@ -166,6 +171,7 @@ button:hover {
   margin: 10px;
   color: var(--col_1);
   font-size: 1rem;
+  cursor: pointer;
 }
 
 .food_card img {
@@ -238,6 +244,37 @@ button:hover {
 .add_but {
   flex-grow: 1;
   margin-right: 0px;
+}
+
+/* ----------------------------------------------------------- */
+/* FOOD POPUP */
+
+.food_popup {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 999;  
+}
+
+.food_popup_content {
+  position: relative;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: var(--col_CB);
+  padding: 20px;
+  width: 80%;
+  max-width: 500px;
+  text-align: center;
+  border-radius: 20px;  
+}
+
+.food_popup_details {
+  
 }
 
 /* ----------------------------------------------------------- */
@@ -362,13 +399,75 @@ button:hover {
   animation-fill-mode: both;
 }
 
-@keyframes cart_qty_pulse {
+/* @keyframes cart_qty_pulse {
   0% {
     transform: scale(1);
     background-color: var(--col_V2_1);
   }
   50% {
     transform: scale(4);
+    background-color: var(--col_V2_2);
+  }
+  100% {
+    transform: scale(1);
+    background-color: var(--col_V2_1);
+  }
+} */
+
+/* @keyframes cart_qty_pulse {
+  0% {
+    transform: scale(1);
+    background-color: var(--col_V2_1);
+  }
+  17% {
+    transform: scale(4);
+    background-color: var(--col_V2_2);
+  }
+  34% {
+    transform: scale(1);
+    background-color: var(--col_V2_1);
+  }
+  50% {
+    transform: scale(3);
+    background-color: var(--col_V2_2);
+  }
+  67% {
+    transform: scale(1);
+    background-color: var(--col_V2_1);
+  }
+  84% {
+    transform: scale(2);
+    background-color: var(--col_V2_2);
+  }
+  100% {
+    transform: scale(1);
+    background-color: var(--col_V2_1);
+  }
+} */
+
+@keyframes cart_qty_pulse {
+  0% {
+    transform: scale(1);
+    background-color: var(--col_V2_1);
+  }
+  17% {
+    transform: scale(2.5);
+    background-color: var(--col_V2_2);
+  }
+  34% {
+    transform: scale(1);
+    background-color: var(--col_V2_1);
+  }
+  50% {
+    transform: scale(2);
+    background-color: var(--col_V2_2);
+  }
+  67% {
+    transform: scale(1);
+    background-color: var(--col_V2_1);
+  }
+  84% {
+    transform: scale(1.5);
     background-color: var(--col_V2_2);
   }
   100% {

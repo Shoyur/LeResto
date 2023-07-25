@@ -1,5 +1,6 @@
 var food_data;
 
+
 $(document).ready(function() {
     
     // first time init
@@ -35,84 +36,176 @@ function getFoodWithCateg() {
 }
 
 
+// function showCategAndFoods() {
+
+//     // categs buttons bar
+//     const catbar_but = document.getElementById("catbar_but");
+//     // food cards grids list
+//     const food_grids_list = document.getElementById('food_grids_list');
+
+//     // return if no food datas
+//     if (!food_data.length) { return; }
+
+//     var unique_categ = null;
+//     var foods_grid;
+//     var first_but_init = 0;
+
+//     food_data.forEach(function(jf) {
+        
+//         // jf = json food
+//         // create Food object
+//         const food = new Food(jf.food_id, jf.categ_id, jf.food_name, jf.food_avail, jf.food_price, jf.food_image, jf.food_descr, jf.food_options, jf.food_sold, jf.food_stock);
+
+//         // if new categ, add button and create new categ foods grid
+//         if (unique_categ != food.categ_id) {
+
+//             // no longer new
+//             unique_categ = food.categ_id;
+
+//             // create Food object
+//             const categ = new Categ(jf.categ_id, jf.categ_name, jf.categ_sort, jf.categ_image, jf.categ_descr);
+
+//             // catbar button
+//             const button = document.createElement("button");
+//             button.type = "button";
+//             button.textContent = jf.categ_name;
+//             button.classList.add("categ_but");
+//             // associate categ Object with this button element
+//             button.setAttribute('data-categ', JSON.stringify(categ));
+//             button.setAttribute('data-categ_id', categ.categ_id);
+//             // go to smooth scroll
+//             button.addEventListener('click', function(event) {
+//                 event.preventDefault();
+//                 const category_top = categ_section.offsetTop - parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--padding_top'));
+//                 window.scrollTo({ top: category_top, behavior: 'smooth' });
+//             });
+//             catbar_but.appendChild(button);
+
+//             // categ container, title, etc.
+//             const categ_section = document.createElement('div');
+//             categ_section.classList.add('categ_section');
+//             categ_section.style.backgroundColor = 'var(--col_GB1)';
+//             const categ_title = document.createElement('h2');
+//             categ_title.textContent = jf.categ_name;
+//             categ_title.style.color = 'var(--col_1)';
+//             categ_section.appendChild(categ_title);
+//             food_grids_list.appendChild(categ_section);
+
+//             // single categ foods grid
+//             foods_grid = document.createElement('div');
+//             foods_grid.classList.add('foods_grid');
+
+//         }
+
+//         // food card and append
+//         const food_card = createFoodCard(food);
+//         foods_grid.appendChild(food_card);
+//         foods_grid.style.backgroundColor = 'var(--col_GB1)';
+//         food_grids_list.appendChild(foods_grid);
+
+//     });
+
+
+// }
+
+
+
+
+
+
+
 function showCategAndFoods() {
 
-    // categs buttons bar
     const catbar_but = document.getElementById("catbar_but");
-    // food cards grids list
     const food_grids_list = document.getElementById('food_grids_list');
 
-    // return if no food datas
+    // Return if no food data
     if (!food_data.length) { return; }
 
     var unique_categ = null;
-    var categ_grid;
-
+    var first_but_init = 0;
+    var foods_grid;
+    
     food_data.forEach(function(jf) {
-        
-        // jf = json food
-        // food = Food object
         const food = new Food(jf.food_id, jf.categ_id, jf.food_name, jf.food_avail, jf.food_price, jf.food_image, jf.food_descr, jf.food_options, jf.food_sold, jf.food_stock);
 
-        // if new categ, add button and create new categ foods grid
         if (unique_categ != food.categ_id) {
-
-            // no longer new
             unique_categ = food.categ_id;
+            const categ = new Categ(jf.categ_id, jf.categ_name, jf.categ_sort, jf.categ_image, jf.categ_descr);
 
-            // catbar button
             const button = document.createElement("button");
             button.type = "button";
             button.textContent = jf.categ_name;
             button.classList.add("categ_but");
-            // go to smooth scroll
+            first_but_init ? null: button.classList.add("cat_bar_but_hover") ;
+            first_but_init++;
+            button.setAttribute('data-categ', JSON.stringify(categ));
+            button.setAttribute('data-categ_id', categ.categ_id);
             button.addEventListener('click', function(event) {
                 event.preventDefault();
-                const category_top = categ_div.offsetTop - parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--padding_top'));
+                const category_top = categ_section.offsetTop - parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--padding_top'));
                 window.scrollTo({ top: category_top, behavior: 'smooth' });
             });
             catbar_but.appendChild(button);
 
-            // categ container, title, etc.
-            const categ_div = document.createElement('div');
-            categ_div.classList.add('categ_div');
-            categ_div.style.backgroundColor = 'var(--col_GB1)';
+            const categ_section = document.createElement('section');
+            categ_section.classList.add('categ_section');
+            categ_section.setAttribute('id', categ.categ_id);
             const categ_title = document.createElement('h2');
             categ_title.textContent = jf.categ_name;
             categ_title.style.color = 'var(--col_1)';
-            categ_div.appendChild(categ_title);
-            food_grids_list.appendChild(categ_div);
+            categ_section.appendChild(categ_title);
+            food_grids_list.appendChild(categ_section);
 
-            // single categ foods grid
-            categ_grid = document.createElement('div');
-            categ_grid.classList.add('foods_grid');
-
+            foods_grid = document.createElement('div');
+            foods_grid.classList.add('foods_grid');
+            categ_section.appendChild(foods_grid);
         }
 
-        // food card and append
         const food_card = createFoodCard(food);
-        categ_grid.appendChild(food_card);
-        categ_grid.style.backgroundColor = 'var(--col_GB1)';
-        food_grids_list.appendChild(categ_grid);
+        foods_grid.appendChild(food_card);
 
     });
 
 }
 
 
-// // using sql statement instead 
-// function parseFoodDataCategs() {
+document.addEventListener("DOMContentLoaded", function() {
+    updateButtonHoverState("1");
+});
 
-//     // map to have unique categories
-//     const categ_map = new Map();
-//     food_data.forEach(item => categ_map.set(item.categ_name, item.categ_sort));
-//     // sort in order of categ_sort and put it in an array
-//     const sorted_categs = Array.from(categ_map.entries()).sort((a, b) => a[1] - b[1]);
-//     // array with only categ name
-//     const categs_array = sorted_categs.map(category => category[0]);
-//     return categs_array;
+function updateButtonHoverState(categId) {
+    const buttons = document.querySelectorAll('.categ_but');
+    buttons.forEach(btn => {
+        // console.log("btn.dataset.categ_id = " + btn.dataset.categ_id);
+        if (btn.dataset.categ_id == categId) {
+            btn.classList.add('cat_bar_but_hover');
+            // console.log("Devient rose pour bouton # " + categId);
+        } else {
+            btn.classList.remove('cat_bar_but_hover');
+        }
+    });
+}
 
-// }
+
+window.addEventListener("scroll", function() {
+    var topValuesArray = [];
+    const sections = document.querySelectorAll('.categ_section');
+    sections.forEach(section => {
+        topValuesArray.push(section.offsetTop);
+    });
+    const y = window.scrollY + parseInt(getComputedStyle(document.documentElement).getPropertyValue('--padding_top')) + 40;
+    for (var i = 0; i < topValuesArray.length - 1; i++) {
+        if (topValuesArray[i] < y && y < topValuesArray[i + 1]) {
+            updateButtonHoverState(i + 1);
+        }
+    }
+    if (y >= topValuesArray[topValuesArray.length - 1]) {
+        updateButtonHoverState(topValuesArray.length);
+    }
+});
+
+
 
 
 class Food {
@@ -129,6 +222,7 @@ class Food {
         this.food_stock = food_stock;
     }
 }
+
 
 class Categ {
     constructor(categ_id, categ_name, categ_sort, categ_image, categ_descr) {
@@ -197,67 +291,38 @@ function createFoodCard(food) {
     qty_input.value = 1;
     qty_input.classList.add('qty_input');
 
-    const increaseButton = document.createElement('button');
-    increaseButton.textContent = '+';
-    increaseButton.addEventListener('click', () => {
+    const inc_but = document.createElement('button');
+    inc_but.textContent = '+';
+    inc_but.addEventListener('click', () => {
         if (!isNaN(qty_input.value)) {
             qty_input.value = parseInt(qty_input.value) + 1;
         }
     });
 
+    dec_but.addEventListener('click', (event) => { event.stopPropagation(); });
     qty_settings.appendChild(dec_but);
+    qty_input.addEventListener('click', (event) => { event.stopPropagation(); });
     qty_settings.appendChild(qty_input);
-    qty_settings.appendChild(increaseButton);
+    inc_but.addEventListener('click', (event) => { event.stopPropagation(); });
+    qty_settings.appendChild(inc_but);
 
     // add to cart
-    const addToCartBtn = document.createElement('button');
-    addToCartBtn.classList.add('add_but');
-    addToCartBtn.textContent = 'Ajouter';
-    // Add click event listener to handle adding to cart functionality (if needed)
-    qty_settings.appendChild(addToCartBtn);
+    const add_cart_but = document.createElement('button');
+    add_cart_but.classList.add('add_but');
+    add_cart_but.textContent = 'Ajouter';
+    add_cart_but.addEventListener('click', (event) => { 
+        event.stopPropagation();
+        const qty = parseInt(qty_input.value);
+        cardAddToCart(food, qty);
+    });
+    qty_settings.appendChild(add_cart_but);
 
-    
-    
     card.appendChild(qty_settings);
 
-    // card.addEventListener('click', ...);
-    // const foodDescription = document.createElement('p');
-    // foodDescription.classList.add('food_description');                          ///////////////// TO DO (description popup on click)
-    // foodDescription.textContent = food.food_descr;
-    // foodDetails.appendChild(foodDescription);
+    card.addEventListener('click', () => {
+        openFoodPopup(food);
+    });
 
     return card;
 
 }
-
-
-const but_user = document.getElementById('test_commande_random');
-const details = [
-    [5, 7, "Kombucha Maison", ""],
-    [4, 9, "Won Ton Frits", "Sauce séparée"],
-    [3, 10, "Won Ton Vapeur", ""],
-    [2, 45, "Sandwich UFO Porc Éffiloché", ""],
-    [1, 36, "Sandwich UFO Max Caliente", ""],
-];
-const detailsString = JSON.stringify(details);
-but_user.addEventListener('click', function() {
-    $.ajax({
-        url: '/monsystemeresto/app/controllers/commandeController.php',
-        type: 'POST',
-        data: {
-            action: 'createCommande',
-            id_client: null,
-            livr: 1,
-            stotal: 12.34,
-            txtotal: 13.45,
-            details: detailsString
-        },
-        dataType: 'json',
-        success: function(reponse) {
-            console.warn("commande random passée !! et reponse (id?) = " + reponse)
-        },
-        error: function(xhr, status, error) {
-            console.log('Erreur:', error);
-        }
-    });
-});
