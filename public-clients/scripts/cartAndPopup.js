@@ -2,46 +2,27 @@ var cart_data = [];
 
 
 function openCartPopup() {
+
+    if (!cart_data.length) { return; }
+
     $('#cart_list').empty();
 
+    const cart_list = document.getElementById('cart_list');
+    var stotal = 0;
+    cart_data.forEach(item => {
+        cart_list.append(createCartItem(item));
+        stotal += item.food_price;
+    });
 
-    // getFinishedOrders()
-    // .then(function(orders) {
-    //     var divContent = ''; // Use a div instead of a textarea
-    //     if (orders.length > 0) {
-    //         divContent = '<h2>Commandes archivées</h2>'; // Use <p> tags for new paragraphs
-    //         $.each(orders, function(index, order) {
-    //             divContent += 'Commande no. ' + order.id_commande;
-    //             divContent += order.livrpick_commande ? ' (À livrer)' : ' (Pour emporter)';
-    //             var details = JSON.parse(order.details_commande);
-    //             $.each(details, function(index, item) {
-    //                 var qty = item[0];
-    //                 var name = item[2];
-    //                 var options = item[3];
-    //                 divContent += '<br><span>' + qty + '</span><span>' + name + '</span>' + (options ? ' (' + options + ')' : '');
-    //             });
-    //             divContent += '</p>';
-    //         });
-    //         $('#finished_orders').html(divContent); // Use .html() to set the content with HTML formatting
-    //     }
-    //     else {
-    //         $('#finished_orders').text('Aucune commande archivée');
-    //     }
-    // })
-    // .catch(function(error) {
-    //     console.error('Error:', error);
-    // });
-
-
-    // $('#history_put_back_but').off('click').on('click', function() {
-    //     var id = $('#id_order').val();
-    //     if (0 < id < 999) { 
-    //         putBackOrder(id);
-    //         openHistoryPopup();
-    //         getOpenOrders();
-    //     }
-    // });
-
+    const cart_numbers = document.getElementById('cart_numbers');
+    var numbers = ""; ////////////////////////////////////////////////////////////////////////// BUG s'ajoute chaque fois
+    numbers += "Sous-total " + stotal;
+    const tps = stotal * 0.05;
+    numbers += "\nTPS " + tps;
+    const tvq = stotal * 0.9975;
+    numbers += "\nTVQ " + tvq;
+    numbers += "Total " + (stotal + tps + tvq);
+    cart_numbers.append(numbers);
 
     $('#cart_popup_close').off('click').on('click', function() {
         closeCartPopup(); 
@@ -85,12 +66,29 @@ function updateCartIconQty() {
 }
 
 
+function createCartItem(item) {
+    const cart_list_item = document.createElement("div");
+    cart_list_item.classList.add('cart_list_item');
+    const image = document.createElement('img');
+    image.src = '/monsystemeresto/public-clients/aliments/images/' + item.food_image;
+    image.alt = 'img alt : ' + item.food_name;
+    cart_list_item.appendChild(image);
+
+
+    return cart_list_item;
+}
+
+
 window.addEventListener('beforeunload', function (event) {
     localStorage.setItem('Le_Resto_cart_data', JSON.stringify(cart_data));
 });
 
 
 document.addEventListener('DOMContentLoaded', function () {
+    const cart_popup_but = document.getElementById('cart_popup_but');
+    cart_popup_but.addEventListener('click', function() {
+        openCartPopup();
+    });
     const saved_cart_data = localStorage.getItem('Le_Resto_cart_data');
     if (saved_cart_data) {
         cart_data = JSON.parse(saved_cart_data);

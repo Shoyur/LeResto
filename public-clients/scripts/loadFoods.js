@@ -36,84 +36,6 @@ function getFoodWithCateg() {
 }
 
 
-// function showCategAndFoods() {
-
-//     // categs buttons bar
-//     const catbar_but = document.getElementById("catbar_but");
-//     // food cards grids list
-//     const food_grids_list = document.getElementById('food_grids_list');
-
-//     // return if no food datas
-//     if (!food_data.length) { return; }
-
-//     var unique_categ = null;
-//     var foods_grid;
-//     var first_but_init = 0;
-
-//     food_data.forEach(function(jf) {
-        
-//         // jf = json food
-//         // create Food object
-//         const food = new Food(jf.food_id, jf.categ_id, jf.food_name, jf.food_avail, jf.food_price, jf.food_image, jf.food_descr, jf.food_options, jf.food_sold, jf.food_stock);
-
-//         // if new categ, add button and create new categ foods grid
-//         if (unique_categ != food.categ_id) {
-
-//             // no longer new
-//             unique_categ = food.categ_id;
-
-//             // create Food object
-//             const categ = new Categ(jf.categ_id, jf.categ_name, jf.categ_sort, jf.categ_image, jf.categ_descr);
-
-//             // catbar button
-//             const button = document.createElement("button");
-//             button.type = "button";
-//             button.textContent = jf.categ_name;
-//             button.classList.add("categ_but");
-//             // associate categ Object with this button element
-//             button.setAttribute('data-categ', JSON.stringify(categ));
-//             button.setAttribute('data-categ_id', categ.categ_id);
-//             // go to smooth scroll
-//             button.addEventListener('click', function(event) {
-//                 event.preventDefault();
-//                 const category_top = categ_section.offsetTop - parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--padding_top'));
-//                 window.scrollTo({ top: category_top, behavior: 'smooth' });
-//             });
-//             catbar_but.appendChild(button);
-
-//             // categ container, title, etc.
-//             const categ_section = document.createElement('div');
-//             categ_section.classList.add('categ_section');
-//             categ_section.style.backgroundColor = 'var(--col_GB1)';
-//             const categ_title = document.createElement('h2');
-//             categ_title.textContent = jf.categ_name;
-//             categ_title.style.color = 'var(--col_1)';
-//             categ_section.appendChild(categ_title);
-//             food_grids_list.appendChild(categ_section);
-
-//             // single categ foods grid
-//             foods_grid = document.createElement('div');
-//             foods_grid.classList.add('foods_grid');
-
-//         }
-
-//         // food card and append
-//         const food_card = createFoodCard(food);
-//         foods_grid.appendChild(food_card);
-//         foods_grid.style.backgroundColor = 'var(--col_GB1)';
-//         food_grids_list.appendChild(foods_grid);
-
-//     });
-
-
-// }
-
-
-
-
-
-
-
 function showCategAndFoods() {
 
     const catbar_but = document.getElementById("catbar_but");
@@ -152,8 +74,7 @@ function showCategAndFoods() {
             categ_section.classList.add('categ_section');
             categ_section.setAttribute('id', categ.categ_id);
             const categ_title = document.createElement('h2');
-            categ_title.textContent = jf.categ_name;
-            categ_title.style.color = 'var(--col_1)';
+            categ_title.textContent = categ.categ_name;
             categ_section.appendChild(categ_title);
             food_grids_list.appendChild(categ_section);
 

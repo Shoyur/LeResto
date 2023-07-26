@@ -34,7 +34,7 @@
             <i class="fa-solid fa-hands-asl-interpreting"></i>
             <i class="fa-solid fa-circle-half-stroke"></i>
             <i class="fa-solid fa-circle-user" id="test_commande_random"></i>
-            <i class="fa-solid fa-cart-shopping"><div class="cart_qty" id="cart_qty">0</div></i>
+            <i class="fa-solid fa-cart-shopping" id="cart_popup_but"><div class="cart_qty" id="cart_qty">0</div></i>
             
         </div>
     </nav>
@@ -82,12 +82,10 @@
     <!-- CART POPUP -->
     <div id="cart_popup" class="cart_popup">
         <div class="cart_popup_content">
-            <div class="cart_list">
-                <!--  -->
-                TO DO
-                <!--  -->
-            </div>
-            <button id="cart_popup_cancel">Fermer</button>
+            <div class="cart_list" id="cart_list"></div>
+            <div class="cart_numbers" id="cart_numbers"></div>
+            <button id="cart_popup_close">Fermer</button>
+            <button id="cart_popup_checkout">Passer à la caisse</button>
         </div>
     </div>
 
