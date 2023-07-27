@@ -2,20 +2,17 @@ let interval_refresh;
 
 $(document).ready(function() {
     // first time init
-    getOpenOrders();
+    getOrders();
     // automatic refresh
-    interval_refresh = setInterval(getOpenOrders, refresh ? refresh * 1000 : 5000);
+    interval_refresh = setInterval(getOrders, refresh ? refresh * 1000 : 5000);
 
 });
 
-function getOpenOrders() {
+function getOrders() {
     $.ajax({
-        url: '/monsystemeresto/app/controllers/commandeController.php',
+        url: '/monsystemeresto/app/controllers/orderController.php',
         async: false,
-        type: 'POST',
-        data: {
-            action: 'getOpenOrders'
-        },
+        type: 'GET',
         dataType: 'json',
         success: function(orders) {
             showOpenOrders(orders);
@@ -32,23 +29,23 @@ function showOpenOrders(orders) {
 
     if (orders.length > 0) {
         $.each(orders, function(index, order) {
-
+            
             var order_card = $('<div>').addClass('order_card');
 
-            var title1 = $('<h3>').text('Commande no. ' + order.id_commande);
+            var title1 = $('<h3>').text('Commande no. ' + order.order_id);
             order_card.append(title1);
-            var title2 = $('<h3>').text(order.livrpick_commande ? '(À livrer)' : '(Pour emporter)');
+            var title2 = $('<h3>').text(order.order_deliv ? '(À livrer)' : '(Pour emporter)');
             order_card.append(title2);
-            const m = Math.floor(order.attente / 60);
-            const s = order.attente % 60;
+            const m = Math.floor(order.delay / 60);
+            const s = order.delay % 60;
             var title3 = $('<h3>').text('[Attente : ' + `${m} min. ${s} sec.` + ']');
             order_card.append(title3);
 
             if (color_change) {
-                if (order.attente > interval_2) {
+                if (order.delay > interval_2) {
                     order_card.addClass('card_border_c2');
                 } 
-                else if (order.attente > interval_1) {
+                else if (order.delay > interval_1) {
                     order_card.addClass('card_border_c1');
                 }
             }

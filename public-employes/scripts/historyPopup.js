@@ -1,7 +1,7 @@
 function getFinishedOrders() {
     return new Promise(function(resolve, reject) {
         $.ajax({
-            url: '/monsystemeresto/app/controllers/commandeController.php',
+            url: '/monsystemeresto/app/controllers/orderController.php',
             async: false,
             type: 'POST',
             data: {
@@ -80,7 +80,7 @@ function closeHistoryPopup() {
 
 function putBackOrder(id_order) {
     $.ajax({
-        url: '/monsystemeresto/app/controllers/commandeController.php',
+        url: '/monsystemeresto/app/controllers/orderController.php',
         type: 'POST',
         data: {
             action: 'updateOrderFinish',

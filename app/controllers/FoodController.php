@@ -18,10 +18,10 @@ class FoodController {
     // READ
     public function getFoodWithCateg() {
         
-        $FoodModel = new FoodModel();
-        $data = $FoodModel->getFoodWithCateg();
+        $foodModel = new FoodModel();
+        $result = $foodModel->getFoodWithCateg();
         header('Content-Type: application/json');
-        return json_encode($data);
+        return json_encode($result);
 
     }
 

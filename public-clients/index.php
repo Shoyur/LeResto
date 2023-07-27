@@ -84,8 +84,8 @@
         <div class="cart_popup_content">
             <div class="cart_list" id="cart_list"></div>
             <div class="cart_numbers" id="cart_numbers"></div>
-            <button id="cart_popup_close">Fermer</button>
-            <button id="cart_popup_checkout">Passer à la caisse</button>
+            <button id="cart_popup_close">Fermer</button><!--
+            --><button id="cart_popup_checkout">Passer à la caisse</button>
         </div>
     </div>
 
