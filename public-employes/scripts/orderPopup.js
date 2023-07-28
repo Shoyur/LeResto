@@ -1,6 +1,6 @@
 function openOrderPopup(order) {
 
-    var texte_title = 'Commande no. ' + order.id_commande;
+    var texte_title = 'Commande no. ' + order.order_id;
     texte_title += order.livrpick_commande ? ' (À livrer)' : ' (Pour emporter)';
     $('#order_popup_title').text(texte_title);
     $('#order_popup_descr').empty();
@@ -16,7 +16,7 @@ function openOrderPopup(order) {
     });
 
     $('#order_popup_finish').off('click').on('click', function() {
-        finishOrder(order.id_commande);
+        finishOrder(order.order_id);
     });
     $('#order_popup_cancel').off('click').on('click', function() {
         closeOrderPopup(); 
@@ -43,25 +43,23 @@ function closeOrderPopup() {
     $('#order_popup').off('click');
 }
 
-function finishOrder(id_commande) {
+function finishOrder(order_id) {
 
     $.ajax({
         url: '/monsystemeresto/app/controllers/orderController.php',
-        type: 'POST',
+        type: 'UPDATE',
         data: {
-            action: 'finishOrder',
-            id: id_commande,
-            finished: 1
+            order_id: order_id,
+            order_finished: 1
         },
         dataType: 'json',
         success: function(result) {
-            if (result.success) {
+            if (result[0]) {
                 console.log("La commande a été marquée comme terminée.")
             } 
             else {
-                console.error("Problème à mettre à jour la commande.");
+                console.error("Problème à mettre à jour la commande : " + result[1]);
             }
-            
         },
         error: function(xhr, status, error) {
             console.log('Error:', error);

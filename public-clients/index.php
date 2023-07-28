@@ -21,7 +21,7 @@
 
 </head>
 
-<body>
+<body class="dark_theme">
 
     <!-- NAVBAR -->
     <nav class="nav">
@@ -30,10 +30,10 @@
         </div>
         <div class="nav_mid"></div>
         <div class="nav_but">
-            <i class="fa-solid fa-location-dot"></i>
-            <i class="fa-solid fa-hands-asl-interpreting"></i>
-            <i class="fa-solid fa-circle-half-stroke"></i>
-            <i class="fa-solid fa-circle-user" id="test_commande_random"></i>
+            <i class="fa-solid fa-location-dot" id="location_popup_but"></i>
+            <i class="fa-solid fa-hands-asl-interpreting" id="language_but"></i>
+            <i class="fa-solid fa-circle-half-stroke" id="darklight_but"></i>
+            <i class="fa-solid fa-circle-user" id="user_popup_but"></i>
             <i class="fa-solid fa-cart-shopping" id="cart_popup_but"><div class="cart_qty" id="cart_qty">0</div></i>
             
         </div>
@@ -58,24 +58,32 @@
     <!-- LOCATION POPUP -->
     <div id="loc_popup" class="loc_popup">
         <div class="loc_popup_content">
-            <div class="loc_list">
-                <!--  -->
-                TO DO
-                <!--  -->
+            <div class="loc_popup_text" id="loc_popup_text">
+                <h2>Nos coordonnées</h2>
+                ADRESSE<br>
+                123, rue Chemin Resto<br>
+                Sainte-Ville, Québec<br><br>
+                TÉLÉPHONE<br>
+                <a href="tel:514-123-4567"><b>514-123-4567</b></a><br><br>
+                COURRIEL<br>
+                <a href="mailto:no@e.mail"><b>no@e.mail</b></a><br><br>
+                HEURES D'OUVERTURE<br>
+                Tous les jours de 10h00 à 23h00<br><br><br>
+
             </div>
-            <button id="loc_popup_cancel">Fermer</button>
+            <button id="loc_popup_close">Fermer</button>
         </div>
     </div>
 
     <!-- USER LOGIN POPUP -->
     <div id="user_popup" class="user_popup">
         <div class="user_popup_content">
-            <div class="user_list">
+            <div class="user_text">
                 <!--  -->
-                TO DO
+                TO DO : Login or register, email/phone registering API.<br><br>
                 <!--  -->
             </div>
-            <button id="user_popup_cancel">Fermer</button>
+            <button id="user_popup_close">Fermer</button>
         </div>
     </div>
 

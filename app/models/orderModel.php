@@ -19,20 +19,41 @@ class OrderModel {
     // CRUD
 
     // CREATE
-    public function createOrder($customer_id, $order_date, $order_deliv, $order_notes) {
+    public function createOrder($customer_id, $order_date, $order_deliv, $order_notes, $food_array) {
 
-        $query = "INSERT INTO order ($customer_id, $order_date, $order_deliv, $order_notes) VALUES (?, ?, ?, ?)";
         try {
-            
-            $stmt = $this->db->prepare($query);
-            $stmt->execute([$customer_id, $order_date, $order_deliv, $order_notes]);
-            $result = $this->db->lastInsertId();
+
+            // final answer
+            $return = array();
+
+            // transaction to commit or rollback, in case there is an error, because we are making multiple queries
+            $this->db->beginTransaction();
+
+            $query1 = "INSERT INTO order (customer_id, order_date, order_deliv, order_notes) VALUES (?, ?, ?, ?)";
+            $stmt1 = $this->db->prepare($query1);
+            $stmt1->execute([$customer_id, $order_date, $order_deliv, $order_notes]);
+            $db_result = $this->db->lastInsertId();
+
+            $query2 = "INSERT INTO foodbyorder (order_id, food_id, fbo_options) VALUES (?, ?, ?)";
+            $stmt2 = $this->db->prepare($query2);
+            foreach ($food_array as $food) {
+                $order_id = $food[0];
+                $food_id = $food[1];
+                $fbo_options = $food[2];
+                $stmt2->execute([$order_id, $food_id, $fbo_options]);
+            }
+
+            $this->db->commit();
+            array_push($return, true);
+            array_push($return, $db_result);
         } 
         catch (PDOException $e) {
-            $result = $e;
+            $this->db->rollBack();
+            array_push($return, false);
+            array_push($return, $e);
         }
         finally {
-            return array('result' => $result);
+            return $return;
         }
 
     }
@@ -40,16 +61,24 @@ class OrderModel {
     // READ
     public function getOrders() {
 
-        $query = "SELECT * FROM order";
         try {
+
+            // final answer
+            $return = array();
+
+            $query = "SELECT * FROM order";
             $stmt = $this->db->query($query);
-            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $db_result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            array_push($return, true);
+            array_push($return, $db_result);
         } 
         catch (PDOException $e) {
-            $result = $e;
+            array_push($return, false);
+            array_push($return, $e);
         }
         finally {
-            return array('result' => $result);
+            return $return;
         }
 
     }
@@ -57,17 +86,26 @@ class OrderModel {
     // UPDATE
     public function updateOrder($order_id, $order_finished) {
 
-        $query = "UPDATE order SET order_finished = ? WHERE order_id = ?";
+        
         try {
+
+            // final answer
+            $return = array();
+
+            $query = "UPDATE order SET order_finished = ? WHERE order_id = ?";
             $stmt = $this->db->prepare($query);
             $stmt->execute([$order_finished, $order_id]);
-            $result = $stmt->rowCount();
+            $db_result = $stmt->rowCount();
+
+            array_push($return, true);
+            array_push($return, $db_result);
         } 
         catch (PDOException $e) {
-            $result = $e;
+            array_push($return, false);
+            array_push($return, $e);
         }
         finally {
-            return array('result' => $result);
+            return $return;
         }
 
     }
@@ -75,34 +113,50 @@ class OrderModel {
     // DELETE
     public function deleteOrder($order_id) {
 
-        $query = "DELETE FROM order WHERE order_id = ?";
         try {
+
+            // final answer
+            $return = array();
+            
+            $query = "DELETE FROM order WHERE order_id = ?";
             $stmt = $this->db->prepare($query);
             $stmt->execute([$order_id]);
-            $result = $stmt->rowCount();
+            $db_result = $stmt->rowCount();
+
+            array_push($return, true);
+            array_push($return, $db_result);
         } 
         catch (PDOException $e) {
-            $result = $e;
+            array_push($return, false);
+            array_push($return, $e);
         }
         finally {
-            return array('result' => $result);
+            return $return;
         }
 
     }
 
     public function deleteFinishedOrders() {
 
-        $query = "DELETE FROM order WHERE order_finished = 1";
         try {
+
+            // final answer
+            $return = array();
+
+            $query = "DELETE FROM order WHERE order_finished = 1";
             $stmt = $this->db->prepare($query);
             $stmt->execute();
-            $result = $stmt->rowCount();
+            $db_result = $stmt->rowCount();
+
+            array_push($return, true);
+            array_push($return, $db_result);
         } 
         catch (PDOException $e) {
-            $result = $e;
+            array_push($return, false);
+            array_push($return, $e);
         }
         finally {
-            return array('result' => $result);
+            return $return;
         }
     }
 

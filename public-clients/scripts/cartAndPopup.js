@@ -178,14 +178,6 @@ function CartPopupCheckout() {
 }
 
 
-// CREATE TABLE foodbyorder (
-//     order_id INT NOT NULL,
-//     food_id INT NOT NULL,
-//     fbo_options VARCHAR(255) NULL,
-//     FOREIGN KEY (order_id) REFERENCES orders (order_id),
-//     FOREIGN KEY (food_id) REFERENCES food (food_id)
-// );
-
 window.addEventListener('beforeunload', function (event) {
     localStorage.setItem('Le_Resto_cart_data', JSON.stringify(cart_data));
 });

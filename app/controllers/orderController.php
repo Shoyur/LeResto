@@ -11,13 +11,13 @@ class OrderController {
     // CRUD
 
     // CREATE
-    public function createOrder($customer_id, $order_deliv, $order_notes) {
+    public function createOrder($customer_id, $order_deliv, $order_notes, $food_array) {
 
         $order_date = new DateTime();
         $order_date = $order_date->format('Y-m-d H:i:s');
 
         $orderModel = new OrderModel();
-        $result = $orderModel->createOrder($customer_id, $order_date, $order_deliv, $order_notes);
+        $result = $orderModel->createOrder($customer_id, $order_date, $order_deliv, $order_notes, $food_array);
         header('Content-Type: application/json');
         return json_encode($result);
 
@@ -81,8 +81,9 @@ switch ($_SERVER['REQUEST_METHOD']) {
         $customer_id = $_POST['customer_id'];
         $order_deliv = $_POST['order_deliv'];
         $order_notes = $_POST['order_notes'];
+        $food_array = $_POST['food_array'];
 
-        echo $orderController->createOrder($customer_id, $order_deliv, $order_notes);
+        echo $orderController->createOrder($customer_id, $order_deliv, $order_notes, $food_array);
         break;
 
     }

@@ -78,22 +78,21 @@ function closeHistoryPopup() {
     $('#history_popup').off('click');
 }
 
-function putBackOrder(id_order) {
+function putBackOrder(order_id) {
     $.ajax({
         url: '/monsystemeresto/app/controllers/orderController.php',
         type: 'POST',
         data: {
-            action: 'updateOrderFinish',
-            id: id_order,
-            finished: 0
+            order_id: order_id,
+            order_finished: 0
         },
         dataType: 'json',
         success: function(result) {
-            if (result.success) {
+            if (result[0]) {
                 console.log("La commande a été remise en cuisine.")
             } 
             else {
-                console.error("Problème à mettre à jour la commande ou ce no. de commande n'existe pas.");
+                console.error("Problème à mettre à jour la commande : " + result[1]);
             }
         },
         error: function(xhr, status, error) {
