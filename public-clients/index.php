@@ -9,8 +9,11 @@
 
     <link rel="stylesheet" type="text/css" href="css/styles.css">
     <link rel="stylesheet" type="text/css" href="util/fontawesome-free-6.4.0-web/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script defer type="text/javascript" src="https://js.stripe.com/v2/"></script>
+
+    <script defer src="util/jquery/jquery-3.7.0.min.js"></script>
     <script defer src="scripts/loadFoods.js"></script>
     <script defer src="scripts/foodPopup.js"></script>
     <script defer src="scripts/cartAndPopup.js"></script>
@@ -18,6 +21,7 @@
     <script defer src="scripts/langChange.js"></script>
     <script defer src="scripts/darkLight.js"></script>
     <script defer src="scripts/userAndPopup.js"></script>
+    <script defer src="scripts/payment.js"></script>
 
 </head>
 
@@ -89,11 +93,23 @@
 
     <!-- CART POPUP -->
     <div id="cart_popup" class="cart_popup">
-        <div class="cart_popup_content">
+        <div class="cart_popup_content" id="cart_content">
             <div class="cart_list" id="cart_list"></div>
             <div class="cart_numbers" id="cart_numbers"></div>
             <button id="cart_popup_close">Fermer</button><!--
             --><button id="cart_popup_checkout">Passer à la caisse</button>
+        </div>
+        <div class="cart_popup_payment_content" id="payment_content">
+            <div class="payment_logo">
+                <img src="images/logo.png" alt="logo">
+            </div>
+            <input class="cc_number" type="tel" pattern="\d*" maxlength="19" placeholder="Numéro">
+            <select class="cc_exp_m cc_small" id="cc_exp_m"></select>
+            <select class="cc_exp_y cc_small" id="cc_exp_y"></select>
+            <input class="cc_cvc cc_small" type="tel" pattern="\d*" maxlength="4" placeholder="CVC">
+            <br><span class="payment_errors" id="payment_errors"></span><br>
+            <button id="cart_pay_cancel">Annuler</button>
+            <button id="cart_pay_but">Payer</button>
         </div>
     </div>
 

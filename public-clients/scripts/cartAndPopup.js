@@ -1,9 +1,17 @@
 var cart_data = [];
 
+// value to update the pay button text
+var pay_button_total = "";
+
 
 function openCartPopup() {
 
     if (!cart_data.length) { return; }
+
+    const cart_content = document.getElementById("cart_content");
+    const payment_content = document.getElementById("payment_content");
+    cart_content.style.display = "block";
+    payment_content.style.display = "none";
 
     $('#cart_list').empty();
     $('#cart_numbers').empty();
@@ -18,6 +26,7 @@ function openCartPopup() {
     const tps = stotal * 0.05;
     const tvq = stotal * 0.09875;
     const total = stotal + tps + tvq;
+    pay_button_total = "$" + stotal.toFixed(2);
 
     const cart_numbers = document.getElementById('cart_numbers');
     cart_numbers.classList.add('cart_numbers');
@@ -33,7 +42,7 @@ function openCartPopup() {
     // line 1 - right
     const cart_numbers_right_1 = document.createElement("div");
     cart_numbers_right_1.classList.add('cart_numbers_right');
-    cart_numbers_right_1.textContent = "$" + stotal.toFixed(2);
+    cart_numbers_right_1.textContent = pay_button_total;
     cart_numbers_row_1.appendChild(cart_numbers_right_1);
 
     // line 2 (tps)
@@ -146,10 +155,10 @@ function createCartItem(item, index) {
     cart_list_item_price.textContent = "$" + item.food_price.toFixed(2);
     cart_list_item_text.appendChild(cart_list_item_price);
 
-    const cart_list_item_options = document.createElement("div");
-    cart_list_item_options.classList.add('cart_list_item_options');
-    cart_list_item_options.textContent = item.food_options;
-    cart_list_item_text.appendChild(cart_list_item_options);
+    // const cart_list_item_options = document.createElement("div");
+    // cart_list_item_options.classList.add('cart_list_item_options');
+    // cart_list_item_options.textContent = item.food_options;
+    // cart_list_item_text.appendChild(cart_list_item_options);
 
     cart_list_item.appendChild(cart_list_item_text);
 
@@ -172,9 +181,38 @@ function createCartItem(item, index) {
     return cart_list_item;
 }
 
-function CartPopupCheckout() {
-    console.log("Passer une commande...");
-    closeCartPopup();
+function showCartPopupPayment() {
+    // console.log("Passer une commande...");
+    // closeCartPopup();
+    const cart_content = document.getElementById("cart_content");
+    const payment_content = document.getElementById("payment_content");
+    cart_content.style.display = "none";
+    payment_content.style.display = "block";
+
+    // update Pay button with $ total
+    const cart_pay_but = document.getElementById("cart_pay_but");
+    cart_pay_but.textContent = "Payer " + pay_button_total;
+
+    // fill credit card months select
+    const cc_exp_m = document.getElementById("cc_exp_m");
+    cc_exp_m.innerHTML = "";
+    for (let i = 1; i <= 12; i++) {
+        const option = document.createElement('option');
+        option.value = i;
+        option.text = i.toString().padStart(2, '0');
+        cc_exp_m.appendChild(option);
+    }
+
+    // fill credit card years select
+    const cc_exp_y = document.getElementById("cc_exp_y");
+    cc_exp_y.innerHTML = "";
+    const current_year = (new Date()).getFullYear();
+    for (let i = 0; i < 16; i++) {
+        const option = document.createElement('option');
+        option.value = current_year + i;
+        option.text = (current_year + i).toString();
+        cc_exp_y.appendChild(option);
+    }
 }
 
 
@@ -185,20 +223,24 @@ window.addEventListener('beforeunload', function (event) {
 
 document.addEventListener('DOMContentLoaded', function () {
 
+    // nav cart popup icon (button)
     const cart_popup_but = document.getElementById('cart_popup_but');
     cart_popup_but.addEventListener('click', function() {
         openCartPopup();
     });
 
+    // cart popup content checkout button
     const cart_popup_checkout = document.getElementById('cart_popup_checkout');
     cart_popup_checkout.addEventListener('click', function() {
-        CartPopupCheckout();
+        showCartPopupPayment();
     });
 
+    // cart popup content close button
     $('#cart_popup_close').off('click').on('click', function() {
         closeCartPopup(); 
     });
 
+    // check for local saved cart
     const saved_cart_data = localStorage.getItem('Le_Resto_cart_data');
     if (saved_cart_data) {
         cart_data = JSON.parse(saved_cart_data);

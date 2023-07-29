@@ -30,13 +30,15 @@
 
 body {
   margin: 0;
-  font-family: Arial, sans-serif;
+  font-family: 'Roboto';
   padding-top: var(--padding_top);
   transition: var(--transition);
   text-decoration: none;
 }
 
-button {
+button, 
+input,
+select {
   cursor: pointer;
   display: inline-block;
   background-color: var(--col_but);
@@ -51,7 +53,9 @@ button {
   font-size: 1rem;
 }
 
-button:hover {
+button:hover, 
+input:hover,
+select:hover {
   background-color: var(--col_hover);
 }
 
@@ -166,7 +170,7 @@ a {
 
 .foods_grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(300px, 400px));
   gap: 20px;
 }
 
@@ -176,7 +180,6 @@ a {
   grid-template-rows: auto 1fr auto;
   gap: 10px;
   padding: 15px;
-  /* border: 1px solid #ccc; */
   background-color: var(--col_card);
   border-radius: 10px;
   margin: 10px;
@@ -291,9 +294,9 @@ a {
   border-radius: 20px;  
 }
 
-.food_popup_details {
+/* .food_popup_details {
   
-}
+} */
 
 /* ----------------------------------------------------------- */
 /* LOCATION POPUP */
@@ -382,7 +385,7 @@ a {
   background-color: var(--col_card);
   padding: 20px;
   width: 80%;
-  max-width: 500px;
+  max-width: 300px;
   text-align: right;
   border-radius: 20px;
 }
@@ -419,43 +422,35 @@ a {
   height: 100%;
   color: var(--col_text);
   flex: 1;
-  /* border: solid 1px #ddd; */
 }
 
 .cart_list_item_name {
   font-weight: bold;
 }
 
-.cart_list_item_price {
-  position: absolute;
-  top: 0;
-  right: 70px;
-}
+/* .cart_list_item_price {
 
-.cart_list_item_options {
-  /* font-size: 14px; */
-}
+} */
+
+/* .cart_list_item_options {
+
+} */
 
 .cart_list_item_delete {
-  width: 60px;
-  height: 40px;
+  width: 40px;
+  height: 60px;
   position: relative;
-  /* border: 1px solid #d00; */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
+  padding-top: 30px;
 }
 
 .cart_list_item_delete i {
   cursor: pointer;
+  color: var(--col_but);
   transition: var(--transition);
   display: block;
   width: 100%;
   height: 100%;
-  cursor: pointer;
-  font-size: 2rem;
-  padding-left: 10px;
+  font-size: 1.5rem;
 }
 
 .cart_list_item_delete i:hover {
@@ -465,9 +460,9 @@ a {
 .cart_numbers {
   display: flex;
   flex-direction: column;
-  width: 40%;
+  width: 60%;
   color: var(--col_text);
-  margin: 30px 10px 20px 60%;
+  margin: 30px 10px 20px 40%;
 }
 
 .cart_numbers_row {
@@ -482,6 +477,62 @@ a {
 
 .cart_numbers_right {
   text-align: right;
+}
+
+/* ----------------------------------------------------------- */
+/* PAYMENT DIV CONTENT (INSIDE CART POPUP) */
+
+.cart_popup_payment_content {
+  transition: var(--transition);
+  position: relative;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: var(--col_card);
+  padding: 20px;
+  width: 80%;
+  max-width: 300px;
+  text-align: left;
+  border-radius: 20px;
+}
+
+.cart_popup_payment_content > div > img {
+  margin-left: 25%;
+}
+
+.payment_logo {
+  width: 200px;
+}
+
+.payment_logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.cc_number {
+  width: 270px;
+  margin: 0px;
+  padding: 0px;
+}
+
+.cc_small {
+  width: 80px;
+  padding: 0px;
+}
+
+.cc_exp_y {
+  width: 80px;
+  /* margin: 0px 15px 0px 15px; */
+  padding: 0px;
+}
+
+.payment_errors {
+  color: red;
+}
+
+#cart_pay_cancel {
+  margin-left: 50px;
 }
 
 /* ----------------------------------------------------------- */
