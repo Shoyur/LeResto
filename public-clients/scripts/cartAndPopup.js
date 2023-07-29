@@ -8,10 +8,10 @@ function openCartPopup() {
 
     if (!cart_data.length) { return; }
 
-    const cart_content = document.getElementById("cart_content");
-    const payment_content = document.getElementById("payment_content");
-    cart_content.style.display = "block";
-    payment_content.style.display = "none";
+    const cart_popup_food_content = document.getElementById("cart_popup_food_content");
+    const cart_popup_payment_content = document.getElementById("cart_popup_payment_content");
+    cart_popup_food_content.style.display = "block";
+    cart_popup_payment_content.style.display = "none";
 
     $('#cart_list').empty();
     $('#cart_numbers').empty();
@@ -181,13 +181,15 @@ function createCartItem(item, index) {
     return cart_list_item;
 }
 
+
 function showCartPopupPayment() {
+
     // console.log("Passer une commande...");
     // closeCartPopup();
-    const cart_content = document.getElementById("cart_content");
-    const payment_content = document.getElementById("payment_content");
-    cart_content.style.display = "none";
-    payment_content.style.display = "block";
+    const cart_popup_food_content = document.getElementById("cart_popup_food_content");
+    const cart_popup_payment_content = document.getElementById("cart_popup_payment_content");
+    cart_popup_food_content.style.display = "none";
+    cart_popup_payment_content.style.display = "block";
 
     // update Pay button with $ total
     const cart_pay_but = document.getElementById("cart_pay_but");
@@ -216,6 +218,7 @@ function showCartPopupPayment() {
 }
 
 
+// on browser window close, save the cart
 window.addEventListener('beforeunload', function (event) {
     localStorage.setItem('Le_Resto_cart_data', JSON.stringify(cart_data));
 });
@@ -227,6 +230,13 @@ document.addEventListener('DOMContentLoaded', function () {
     const cart_popup_but = document.getElementById('cart_popup_but');
     cart_popup_but.addEventListener('click', function() {
         openCartPopup();
+    });
+
+    // close if any click outside of popup
+    $('#cart_popup').on('click', function(e) {
+        if (!$(e.target).closest('.cart_popup_content').length) {
+            closeCartPopup();
+        }
     });
 
     // cart popup content checkout button

@@ -35,15 +35,10 @@ function submitPayment() {
     // submit from callback
     return false;
 
-    // console.log("cc_number = " + $('#cc_number').val());
-    // console.log("cc_exp_m = " + $('#cc_exp_m').val());
-    // console.log("cc_exp_y = " + $('#cc_exp_y').val());
-    // console.log("cc_cvc = " + $('#cc_cvc').val());
-
 }
 
 
-$(document).ready(function() {
+document.addEventListener('DOMContentLoaded', function () {
 
     // cart popup payment pay-now button
     const cart_pay_but = document.getElementById('cart_pay_but');
@@ -54,10 +49,10 @@ $(document).ready(function() {
     // cart popup payment cancel button
     const cart_pay_cancel = document.getElementById('cart_pay_cancel');
     cart_pay_cancel.addEventListener('click', function() {
-        const cart_content = document.getElementById("cart_content");
-        const payment_content = document.getElementById("payment_content");
-        cart_content.style.display = "block";
-        payment_content.style.display = "none";
+        const cart_popup_food_content = document.getElementById("cart_popup_food_content");
+        const cart_popup_payment_content = document.getElementById("cart_popup_payment_content");
+        cart_popup_food_content.style.display = "block";
+        cart_popup_payment_content.style.display = "none";
     });
 
     // $('.cc_number').formatCardNumber();
