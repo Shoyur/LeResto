@@ -108,11 +108,11 @@
                 <div class="payment_logo">
                     <img src="images/logo.png" alt="logo">
                 </div>
-                <input class="cc_number" type="tel" pattern="\d*" maxlength="19" placeholder="Numéro">
+                <input class="cc_number" type="tel" pattern="\d*" maxlength="19" placeholder="Numéro" oninput="ccNumberFormat(this)">
                 <div class="cc_small">
                     <select class="cc_exp_m" id="cc_exp_m"></select>
                     <select class="cc_exp_y" id="cc_exp_y"></select>
-                    <input class="cc_cvc" type="tel" pattern="\d*" maxlength="4" placeholder="CVC">
+                    <input class="cc_cvc" type="tel" pattern="\d*" maxlength="4" placeholder="CVC" oninput="ccCVCFormat(this)">
                 </div>
                 <span class="payment_errors" id="payment_errors"></span>
                 <div class="payment_end_buttons">

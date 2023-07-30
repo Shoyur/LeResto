@@ -1,6 +1,9 @@
 
 <?php  
 
+require_once 'init.php';
+require_once 'lib/Stripe.php';
+
 //check whether stripe token is not empty
     if(!empty($_POST['stripeToken'])){
         //get token, card and user info from the form
@@ -17,8 +20,8 @@
         
         //set api key
         $stripe = array(
-          "secret_key"      => "Your_API_Secret_Key",
-          "publishable_key" => "Your_API_Publishable_Key"
+          "secret_key"      => "sk_test_51NYwc3ITtGQD7Q56B2zzT4qeYAYFOlCDkoY9YivWBhaTZWcRoLO6CUiZSdfqLcXTsvhFFw9zrGgST1zsPYi5QaYx00wjafHKG6",
+          "publishable_key" => "pk_test_51NYwc3ITtGQD7Q56MWtMXAzc8cCfdWfZPuf4hLWAmfwNy1QhwExdae3Cj2COucvxJJhWizXwlxwVUNKQ4mzIMwSn00OwKbAdaA"
         );
         
         \Stripe\Stripe::setApiKey($stripe['secret_key']);

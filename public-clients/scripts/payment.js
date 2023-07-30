@@ -1,6 +1,5 @@
 Stripe.setPublishableKey('pk_test_51NYwc3ITtGQD7Q56MWtMXAzc8cCfdWfZPuf4hLWAmfwNy1QhwExdae3Cj2COucvxJJhWizXwlxwVUNKQ4mzIMwSn00OwKbAdaA');
 
-
 function stripeResponseHandler(status, response) {
     if (response.error) {
         //enable the payment submit button

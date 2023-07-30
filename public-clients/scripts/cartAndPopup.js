@@ -252,6 +252,31 @@ function showCartPopupPayment() {
 }
 
 
+function ccNumberFormat(input) {
+
+    let num = input.value.replace(/\D/g, '');
+    const pattern = /(\d{1,4})(\d{1,4})(\d{1,4})(\d{1,4})/;
+    
+    // Apply the pattern and insert spaces between groups
+    num = num.replace(pattern, '$1 $2 $3 $4');
+    
+    // Update the input value
+    input.value = num;
+
+}
+
+function ccCVCFormat(input) {
+
+    let num = input.value.replace(/\D/g, '');
+
+    if (num.length > 3) { num = num.substring(0, 3); }
+    
+    // Update the input value
+    input.value = num;
+
+}
+
+
 // on browser window close, save the cart
 window.addEventListener('beforeunload', function (event) {
     localStorage.setItem('Le_Resto_cart_data', JSON.stringify(cart_data));
