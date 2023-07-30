@@ -52,7 +52,7 @@
     <div class="food_grids_list" id="food_grids_list"></div>
 
     <!-- CARD FOOD DETAILS POPUP -->
-    <div id="food_popup" class="food_popup">
+    <div id="food_popup" class="popup">
         <div class="food_popup_content">
             <div id="food_popup_details" class="food_popup_details"></div>
             <button id="food_popup_close">Fermer</button>
@@ -60,7 +60,7 @@
     </div>
 
     <!-- LOCATION POPUP -->
-    <div id="loc_popup" class="loc_popup">
+    <div id="loc_popup" class="popup">
         <div class="loc_popup_content">
             <div class="loc_popup_text" id="loc_popup_text">
                 <h2>Nos coordonnées</h2>
@@ -80,26 +80,28 @@
     </div>
 
     <!-- USER LOGIN POPUP -->
-    <div id="user_popup" class="user_popup">
+    <div id="user_popup" class="popup">
         <div class="user_popup_content">
             <div class="user_text">
                 <!--  -->
-                TO DO : Login or register, email/phone registering API.<br><br>
+                <br>TO DO : Login or register, email/phone registering API.<br><br>
                 <!--  -->
             </div>
-            <button id="user_popup_close">Fermer</button>
+            <button id="user_popup_close">Fermer</button><br><br>
         </div>
     </div>
 
     <!-- CART POPUP -->
-    <div id="cart_popup" class="cart_popup">
+    <div id="cart_popup" class="popup">
         <div class="cart_popup_content" id="cart_popup_content">
             <!-- page 1 -->
             <div class="cart_popup_food_content" id="cart_popup_food_content">
                 <div class="cart_list" id="cart_list"></div>
                 <div class="cart_numbers" id="cart_numbers"></div>
-                <button id="cart_popup_close">Fermer</button><!--
-                --><button id="cart_popup_checkout">Passer à la caisse</button>
+                <div class="cart_end_buttons">
+                    <button id="cart_popup_close">Fermer</button>
+                    <button id="cart_popup_checkout">Passer à la caisse</button>
+                </div>
             </div>
             <!-- page 2 -->
             <div class="cart_popup_payment_content" id="cart_popup_payment_content">
@@ -107,12 +109,16 @@
                     <img src="images/logo.png" alt="logo">
                 </div>
                 <input class="cc_number" type="tel" pattern="\d*" maxlength="19" placeholder="Numéro">
-                <select class="cc_exp_m cc_small" id="cc_exp_m"></select>
-                <select class="cc_exp_y cc_small" id="cc_exp_y"></select>
-                <input class="cc_cvc cc_small" type="tel" pattern="\d*" maxlength="4" placeholder="CVC">
-                <br><span class="payment_errors" id="payment_errors"></span><br>
-                <button id="cart_pay_cancel">Annuler</button>
-                <button id="cart_pay_but">Payer</button>
+                <div class="cc_small">
+                    <select class="cc_exp_m" id="cc_exp_m"></select>
+                    <select class="cc_exp_y" id="cc_exp_y"></select>
+                    <input class="cc_cvc" type="tel" pattern="\d*" maxlength="4" placeholder="CVC">
+                </div>
+                <span class="payment_errors" id="payment_errors"></span>
+                <div class="payment_end_buttons">
+                    <button id="cart_pay_cancel">Annuler</button>
+                    <button id="cart_pay_but">Payer</button>
+                </div>
             </div>
         </div>
     </div>

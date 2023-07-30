@@ -240,9 +240,11 @@ function createFoodCard(food) {
 
     card.appendChild(qty_settings);
 
-    card.addEventListener('click', () => {
-        openFoodPopup(food);
-    });
+    if (food.food_descr) {
+        card.addEventListener('click', () => {
+            openFoodDescrPopup(food.food_descr);
+        });    
+    }
 
     return card;
 

@@ -1,8 +1,7 @@
-function openFoodPopup(food) {
+function openFoodDescrPopup(descr) {
 
     $('#food_popup_details').empty();
-    const food_card = createFoodCard(food);
-    $('#food_popup_details').append(food_card);
+    $('#food_popup_details').append(descr);
 
     $('#food_popup_close').off('click').on('click', function() {
         closeFoodPopup(); 
