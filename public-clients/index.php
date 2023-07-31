@@ -1,3 +1,5 @@
+<?php require_once '../app/stripe/config.php' ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -11,9 +13,11 @@
     <link rel="stylesheet" type="text/css" href="util/fontawesome-free-6.4.0-web/css/all.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
 
-    <script defer type="text/javascript" src="https://js.stripe.com/v2/"></script>
-
     <script defer src="util/jquery/jquery-3.7.0.min.js"></script>
+
+    <script defer type="text/javascript" src="https://js.stripe.com/v2/"></script>
+    <!-- <script defer type="text/javascript" src="https://js.stripe.com/v3/"></script> -->
+
     <script defer src="scripts/loadFoods.js"></script>
     <script defer src="scripts/foodPopup.js"></script>
     <script defer src="scripts/cartAndPopup.js"></script>
@@ -22,6 +26,10 @@
     <script defer src="scripts/darkLight.js"></script>
     <script defer src="scripts/userAndPopup.js"></script>
     <script defer src="scripts/payment.js"></script>
+
+    
+    <!-- <script>Stripe.setPublishableKey("pk_test_51NYwc3ITtGQD7Q56MWtMXAzc8cCfdWfZPuf4hLWAmfwNy1QhwExdae3Cj2COucvxJJhWizXwlxwVUNKQ4mzIMwSn00OwKbAdaA")</script> -->
+    
 
 </head>
 
@@ -108,11 +116,11 @@
                 <div class="payment_logo">
                     <img src="images/logo.png" alt="logo">
                 </div>
-                <input class="cc_number" type="tel" pattern="\d*" maxlength="19" placeholder="Numéro" oninput="ccNumberFormat(this)">
+                <input class="cc_number" type="tel" pattern="\d*" maxlength="19" placeholder="Numéro" oninput="ccNumberFormat(this)" value="4242 4242 4242 4242">
                 <div class="cc_small">
                     <select class="cc_exp_m" id="cc_exp_m"></select>
                     <select class="cc_exp_y" id="cc_exp_y"></select>
-                    <input class="cc_cvc" type="tel" pattern="\d*" maxlength="4" placeholder="CVC" oninput="ccCVCFormat(this)">
+                    <input class="cc_cvc" type="tel" pattern="\d*" maxlength="4" placeholder="CVC" oninput="ccCVCFormat(this)" value="111">
                 </div>
                 <span class="payment_errors" id="payment_errors"></span>
                 <div class="payment_end_buttons">

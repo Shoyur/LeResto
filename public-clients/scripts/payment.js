@@ -1,19 +1,41 @@
-Stripe.setPublishableKey('pk_test_51NYwc3ITtGQD7Q56MWtMXAzc8cCfdWfZPuf4hLWAmfwNy1QhwExdae3Cj2COucvxJJhWizXwlxwVUNKQ4mzIMwSn00OwKbAdaA');
+Stripe.setPublishableKey("pk_test_51NYwc3ITtGQD7Q56MWtMXAzc8cCfdWfZPuf4hLWAmfwNy1QhwExdae3Cj2COucvxJJhWizXwlxwVUNKQ4mzIMwSn00OwKbAdaA")
 
 function stripeResponseHandler(status, response) {
     if (response.error) {
-        //enable the payment submit button
-        $('#cart_pay_but').removeAttr("disabled");
+        // re-enable the payment submit button
+        document.getElementById("cart_pay_but").disabled = false;
+        // show red error message
         $(".payment_errors").html(response.error.message);
     } 
     else {
-        var form$ = $("#payment_form");
-        // get token id
-        var token = response['id'];
-        // insert the token into the form
-        form$.append("<input type='hidden' name='stripeToken' value='" + token + "' />");
-        //submit form to the server
-        form$.get(0).submit();
+        // en attendant car on doit envoyer le cart_data plutot..
+        var order_details = {
+            stripeToken: response['id'],
+            name: "Une commande quelconque",
+            total: Math.ceil(parseFloat(total * 100)),
+        };
+        $.ajax({
+            url: '/monsystemeresto/app/stripe/stripe.php',
+            type: 'POST',
+            data: order_details,
+            success: function(result) {
+                if (result.ok == true) {
+                    console.log("OUAIS, BRAVO!!! : " + result.text);
+                    // switch to 3rd page
+                    // TO DO
+                }
+                else {
+                    document.getElementById("cart_pay_but").disabled = false;
+                    $(".payment_errors").html(result.text);
+                    // switch to 3rd page
+                    // TO DO
+                }
+                
+            },
+            error: function(xhr, status, error) {
+                console.log('Error :', error);
+            }
+        });
     }
 }
 
@@ -21,7 +43,7 @@ function stripeResponseHandler(status, response) {
 function submitPayment() {
 
     // disable the submit button to prevent repeated clicks
-    $('#cart_pay_but').attr("disabled", "disabled");
+    document.getElementById("cart_pay_but").disabled = true;
 
     // create single-use token to charge the user
     Stripe.createToken({
@@ -53,7 +75,5 @@ document.addEventListener('DOMContentLoaded', function () {
         cart_popup_food_content.style.display = "block";
         cart_popup_payment_content.style.display = "none";
     });
-
-    // $('.cc_number').formatCardNumber();
 
 });

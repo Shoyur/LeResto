@@ -1,4 +1,11 @@
+const TPS = 0.05;
+const TVQ = 0.09875;
+
+// global for any functions
 var cart_data = [];
+
+// value to update the pay button text
+var total = 0.00;
 
 // value to update the pay button text
 var pay_button_total = "";
@@ -6,15 +13,19 @@ var pay_button_total = "";
 
 function openCartPopup() {
 
+    // don't open cart popup if cart empty
     if (!cart_data.length) { return; }
 
+    // be sure to open page 1 (cart content)
     const cart_popup_food_content = document.getElementById("cart_popup_food_content");
     const cart_popup_payment_content = document.getElementById("cart_popup_payment_content");
     cart_popup_food_content.style.display = "block";
     cart_popup_payment_content.style.display = "none";
 
+    // empty the list first
     $('#cart_list').empty();
 
+    // fill it with all food cards
     const cart_list = document.getElementById('cart_list');
     cart_data.forEach((item, index) => {
         cart_list.append(createCartItem(item, index));
@@ -44,10 +55,13 @@ function updateCartNumbers() {
         stotal += item.food_price;
     });
 
-    const tps = stotal * 0.05;
-    const tvq = stotal * 0.09875;
-    const total = stotal + tps + tvq;
-    pay_button_total = "$" + stotal.toFixed(2);
+    const calc_tps = stotal * TPS;
+    const calc_tvq = stotal * TVQ;
+    const calc_total = stotal + calc_tps + calc_tvq;
+    // global total for stripe etc.
+    total = calc_total;
+    // global for pay button text
+    pay_button_total = "$" + total.toFixed(2);
 
     const cart_numbers = document.getElementById('cart_numbers');
     cart_numbers.classList.add('cart_numbers');
@@ -77,7 +91,7 @@ function updateCartNumbers() {
     // line 2 - right
     const cart_numbers_right_2 = document.createElement("div");
     cart_numbers_right_2.classList.add('cart_numbers_right');
-    cart_numbers_right_2.textContent = "$" + tps.toFixed(2);
+    cart_numbers_right_2.textContent = "$" + calc_tps.toFixed(2);
     cart_numbers_row_2.appendChild(cart_numbers_right_2);
 
     // line 3 (tvq)
@@ -91,7 +105,7 @@ function updateCartNumbers() {
     // line 3 - right
     const cart_numbers_right_3 = document.createElement("div");
     cart_numbers_right_3.classList.add('cart_numbers_right');
-    cart_numbers_right_3.textContent = "$" + tvq.toFixed(2);
+    cart_numbers_right_3.textContent = "$" + calc_tvq.toFixed(2);
     cart_numbers_row_3.appendChild(cart_numbers_right_3);
 
     // line 4 (total)
@@ -105,7 +119,7 @@ function updateCartNumbers() {
     // line 4 - right
     const cart_numbers_right_4 = document.createElement("div");
     cart_numbers_right_4.classList.add('cart_numbers_right');
-    cart_numbers_right_4.textContent = "$" + total.toFixed(2);
+    cart_numbers_right_4.textContent = "$" + calc_total.toFixed(2);
     cart_numbers_row_4.appendChild(cart_numbers_right_4);
 
     cart_numbers.appendChild(cart_numbers_row_1);

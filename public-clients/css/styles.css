@@ -59,6 +59,13 @@ select:hover {
   background-color: var(--col_hover);
 }
 
+button[disabled] {
+  cursor: not-allowed; /* Change cursor to indicate it's disabled */
+  opacity: 0.5; /* Reduce opacity to visually indicate it's disabled */
+  pointer-events: none; /* Disable pointer events on the element */
+  /* Add any other styles specific to the disabled state */
+}
+
 a {
   color: inherit;
   text-decoration: none;

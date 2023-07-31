@@ -1,7 +1,7 @@
 <?php 
 
 
-require_once '../dbconfig/dbconfig.php';
+require_once '../config/db.php';
 
 class CategModel {
 
