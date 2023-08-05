@@ -19,9 +19,12 @@ class OrderModel {
     // CRUD
 
     // CREATE
-    public function createOrder($customer_id, $order_date, $order_deliv, $order_notes, $food_array) {
+    public function createOrder($customer_id, $order_name, $order_address, $order_phone, $order_cc_last4, $order_total, $order_deliv, $order_notes, $cart_data) {
 
         try {
+
+            $order_date = new DateTime();
+            $order_date = $order_date->format('Y-m-d H:i:s');
 
             // final answer
             $return = array();
@@ -29,23 +32,30 @@ class OrderModel {
             // transaction to commit or rollback, in case there is an error, because we are making multiple queries
             $this->db->beginTransaction();
 
-            $query1 = "INSERT INTO order (customer_id, order_date, order_deliv, order_notes) VALUES (?, ?, ?, ?)";
+            $query1 = "INSERT INTO `order` (customer_id, order_name, order_address, order_phone, order_cc_last4, order_total, order_date, order_deliv, order_notes) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
             $stmt1 = $this->db->prepare($query1);
-            $stmt1->execute([$customer_id, $order_date, $order_deliv, $order_notes]);
-            $db_result = $this->db->lastInsertId();
+            $stmt1->execute([$customer_id, $order_name, $order_address, $order_phone, $order_cc_last4, $order_total, $order_date, $order_deliv, $order_notes]);
+            $order_id = $this->db->lastInsertId();
 
-            $query2 = "INSERT INTO foodbyorder (order_id, food_id, fbo_options) VALUES (?, ?, ?)";
-            $stmt2 = $this->db->prepare($query2);
-            foreach ($food_array as $food) {
-                $order_id = $food[0];
-                $food_id = $food[1];
-                $fbo_options = $food[2];
-                $stmt2->execute([$order_id, $food_id, $fbo_options]);
+            $query2 = "INSERT INTO foodbyorder (order_id, food_id, foodbyorder_options) VALUES ";
+
+            $multi_values = [];
+
+            foreach ($cart_data as $food) {
+                $food_id = $food[0];
+                $foodbyorder_options = $food[1];
+                $multi_values[] = "($order_id, $food_id, '$foodbyorder_options')";
             }
 
+            $query2 .= implode(", ", $multi_values);
+
+            $stmt2 = $this->db->prepare($query2);
+            $stmt2->execute();
+
             $this->db->commit();
+
             array_push($return, true);
-            array_push($return, $db_result);
+            array_push($return, $order_id);
         } 
         catch (PDOException $e) {
             $this->db->rollBack();

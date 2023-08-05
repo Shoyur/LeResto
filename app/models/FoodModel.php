@@ -55,6 +55,28 @@ class FoodModel {
 
     }
 
+    public function getFoodTotal($foodIds) {
+        $response = array();
+    
+        // Prepare placeholders for the IN clause
+        $placeholders = implode(',', array_fill(0, count($foodIds), '?'));
+    
+        $query = "SELECT food_id, food_price FROM food WHERE food_id IN ($placeholders)";
+        
+        try {
+            $stmt = $this->db->prepare($query);
+            $stmt->execute($foodIds); // Pass the array directly as parameters
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $response['ok'] = true;
+            $response['result'] = $result;
+        } catch (PDOException $e) {
+            $response['ok'] = false;
+            $response['result'] = $e;
+        } finally {
+            return $response;
+        }
+    }
+
     // UPDATE
     public function updateFood($food_id, $categ_id, $food_name, $food_avail, $food_price, $food_image, $food_descr, $food_options, $food_sold, $food_stock) {
 

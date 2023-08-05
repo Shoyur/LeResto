@@ -26,6 +26,7 @@
     <script defer src="scripts/darkLight.js"></script>
     <script defer src="scripts/userAndPopup.js"></script>
     <script defer src="scripts/payment.js"></script>
+    <script defer src="scripts/cookies.js"></script>
 
     
     <!-- <script>Stripe.setPublishableKey("pk_test_51NYwc3ITtGQD7Q56MWtMXAzc8cCfdWfZPuf4hLWAmfwNy1QhwExdae3Cj2COucvxJJhWizXwlxwVUNKQ4mzIMwSn00OwKbAdaA")</script> -->
@@ -116,6 +117,7 @@
                 <div class="payment_logo">
                     <img src="images/logo.png" alt="logo">
                 </div>
+                
                 <input class="cc_number" type="tel" pattern="\d*" maxlength="19" placeholder="Numéro" oninput="ccNumberFormat(this)" value="4242 4242 4242 4242">
                 <div class="cc_small">
                     <select class="cc_exp_m" id="cc_exp_m"></select>
@@ -123,11 +125,28 @@
                     <input class="cc_cvc" type="tel" pattern="\d*" maxlength="4" placeholder="CVC" oninput="ccCVCFormat(this)" value="111">
                 </div>
                 <span class="payment_errors" id="payment_errors"></span>
+                <div class="lds_roller" id="lds_roller_1"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
                 <div class="payment_end_buttons">
                     <button id="cart_pay_cancel">Annuler</button>
                     <button id="cart_pay_but">Payer</button>
                 </div>
             </div>
+            <!-- page 3 -->
+            <div class="cart_popup_confirmation_content" id="cart_popup_confirmation_content">
+                <div class="payment_logo">
+                    <img src="images/logo.png" alt="logo">
+                </div>
+                <div class="cart_confirmation_text" id="cart_confirmation_text"></div>
+                <div class="cart_end_buttons">
+                    <button id="cart_popup_confirmation_close">Fermer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="disabled_overlay" id="disabled_overlay">
+        <div class="processing_message">
+            <p>Attente de confirmation du paiement...</p>
+            <div class="lds_roller" id="lds_roller_2"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
         </div>
     </div>
 

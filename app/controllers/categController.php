@@ -6,35 +6,17 @@ require_once '../models/categModel.php';
 
 class CategController {
 
-    public function requete() {
-
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-                    
-            switch($_POST['action']) {
-
-                case "createCateg":
-                    echo $this->createCateg();
-                    break;
-
-                case "updateCateg":
-                    echo $this->updateCateg(); 
-                    break;
-
-                case "deleteCateg":
-                    echo $this->deleteCateg();
-                    break;
-                    
-            }
-        
-        }
-
-    }
-
-
     // CRUD
 
     // CREATE
     public function createCateg() {
+
+        // TO DO
+
+    }
+
+    // READ
+    public function getCategs() {
 
         // TO DO
 
@@ -54,14 +36,27 @@ class CategController {
 
     }
 
-    public function deleteAllCateg() {
-
-        // TO DO
-
-    }
-
 
 }
 
 $categController = new CategController();
-$categController->requete();
+
+switch ($_SERVER['REQUEST_METHOD']) {
+
+    case 'POST':
+        echo $categController->createCateg();
+        break;
+
+    case 'GET':
+        echo $categController->getCategs();
+        break;
+
+    case 'PATCH':
+        echo $categController->updateCateg(); 
+        break;
+        
+    case 'DELETE':
+        echo $categController->deleteCateg();
+        break;
+
+}

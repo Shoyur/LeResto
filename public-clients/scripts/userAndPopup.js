@@ -3,6 +3,7 @@ user_popup_but.addEventListener('click', () => {
     openUserPopup();
 });
 
+
 function openUserPopup() {
 
     $('#user_popup_close').off('click').on('click', function() {
@@ -20,6 +21,7 @@ function openUserPopup() {
         }
     });
 }
+
 
 function closeUserPopup() {
     $('#user_popup').fadeOut();

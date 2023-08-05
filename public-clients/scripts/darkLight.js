@@ -3,15 +3,17 @@ var darklight = 0;
 
 
 document.addEventListener('DOMContentLoaded', function () {
-
     const saved_theme = localStorage.getItem('Le_Resto_theme');
+    // const saved_theme = getCookie('Le_Resto_theme');
     darklight = saved_theme == '1' ? 1 : 0;
     applyTheme(darklight);
+    
 });
 
 
 window.addEventListener('beforeunload', function (event) {
     localStorage.setItem('Le_Resto_theme', JSON.stringify(darklight));
+    // setCookie('Le_Resto_theme', JSON.stringify(darklight), 12);
 });
 
 

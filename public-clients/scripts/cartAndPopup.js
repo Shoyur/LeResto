@@ -5,9 +5,6 @@ const TVQ = 0.09875;
 var cart_data = [];
 
 // value to update the pay button text
-var total = 0.00;
-
-// value to update the pay button text
 var pay_button_total = "";
 
 
@@ -17,10 +14,9 @@ function openCartPopup() {
     if (!cart_data.length) { return; }
 
     // be sure to open page 1 (cart content)
-    const cart_popup_food_content = document.getElementById("cart_popup_food_content");
-    const cart_popup_payment_content = document.getElementById("cart_popup_payment_content");
-    cart_popup_food_content.style.display = "block";
-    cart_popup_payment_content.style.display = "none";
+    document.getElementById("cart_popup_food_content").style.display = "block";
+    document.getElementById("cart_popup_payment_content").style.display = "none";
+    document.getElementById("cart_popup_confirmation_content").style.display = "none";
 
     // empty the list first
     $('#cart_list').empty();
@@ -34,11 +30,13 @@ function openCartPopup() {
     updateCartNumbers();
 
     $('#cart_popup').fadeIn();
+
     $(document).on('keydown', function(e) {
         if (e.keyCode === 27) {
             closeCartPopup();
         }
     });
+    
     $('#cart_popup').on('click', function(e) {
         if (!$(e.target).closest('.cart_popup_content').length) {
             closeCartPopup();
@@ -58,10 +56,9 @@ function updateCartNumbers() {
     const calc_tps = stotal * TPS;
     const calc_tvq = stotal * TVQ;
     const calc_total = stotal + calc_tps + calc_tvq;
-    // global total for stripe etc.
-    total = calc_total;
+
     // global for pay button text
-    pay_button_total = "$" + total.toFixed(2);
+    pay_button_total = "$" + (Math.ceil(calc_total * 100) / 100).toFixed(2);
 
     const cart_numbers = document.getElementById('cart_numbers');
     cart_numbers.classList.add('cart_numbers');
@@ -77,7 +74,7 @@ function updateCartNumbers() {
     // line 1 - right
     const cart_numbers_right_1 = document.createElement("div");
     cart_numbers_right_1.classList.add('cart_numbers_right');
-    cart_numbers_right_1.textContent = pay_button_total;
+    cart_numbers_right_1.textContent = "$" + (Math.ceil(stotal * 100) / 100).toFixed(2);
     cart_numbers_row_1.appendChild(cart_numbers_right_1);
 
     // line 2 (tps)
@@ -91,7 +88,7 @@ function updateCartNumbers() {
     // line 2 - right
     const cart_numbers_right_2 = document.createElement("div");
     cart_numbers_right_2.classList.add('cart_numbers_right');
-    cart_numbers_right_2.textContent = "$" + calc_tps.toFixed(2);
+    cart_numbers_right_2.textContent = "$" + (Math.ceil(calc_tps * 100) / 100).toFixed(2);
     cart_numbers_row_2.appendChild(cart_numbers_right_2);
 
     // line 3 (tvq)
@@ -105,7 +102,7 @@ function updateCartNumbers() {
     // line 3 - right
     const cart_numbers_right_3 = document.createElement("div");
     cart_numbers_right_3.classList.add('cart_numbers_right');
-    cart_numbers_right_3.textContent = "$" + calc_tvq.toFixed(2);
+    cart_numbers_right_3.textContent = "$" + (Math.ceil(calc_tvq * 100) / 100).toFixed(2);
     cart_numbers_row_3.appendChild(cart_numbers_right_3);
 
     // line 4 (total)
@@ -119,7 +116,7 @@ function updateCartNumbers() {
     // line 4 - right
     const cart_numbers_right_4 = document.createElement("div");
     cart_numbers_right_4.classList.add('cart_numbers_right');
-    cart_numbers_right_4.textContent = "$" + calc_total.toFixed(2);
+    cart_numbers_right_4.textContent = pay_button_total;
     cart_numbers_row_4.appendChild(cart_numbers_right_4);
 
     cart_numbers.appendChild(cart_numbers_row_1);
@@ -293,7 +290,8 @@ function ccCVCFormat(input) {
 
 // on browser window close, save the cart
 window.addEventListener('beforeunload', function (event) {
-    localStorage.setItem('Le_Resto_cart_data', JSON.stringify(cart_data));
+    // localStorage.setItem('Le_Resto_cart_data', JSON.stringify(cart_data));
+    setCookie('Le_Resto_cart_data', JSON.stringify(cart_data), 12);
 });
 
 
@@ -323,8 +321,14 @@ document.addEventListener('DOMContentLoaded', function () {
         closeCartPopup(); 
     });
 
+    // cart popup order confirmation close button
+    $('#cart_popup_confirmation_close').off('click').on('click', function() {
+        closeCartPopup(); 
+    });
+
     // check for local saved cart
-    const saved_cart_data = localStorage.getItem('Le_Resto_cart_data');
+    // const saved_cart_data = localStorage.getItem('Le_Resto_cart_data');
+    const saved_cart_data = getCookie('Le_Resto_cart_data');
     if (saved_cart_data) {
         cart_data = JSON.parse(saved_cart_data);
         updateCartIconQty();
