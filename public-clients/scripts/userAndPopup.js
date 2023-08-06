@@ -1,3 +1,6 @@
+// var user_id;
+// var user_email;
+
 const user_popup_but = document.getElementById('user_popup_but');
 user_popup_but.addEventListener('click', () => {
     openUserPopup();

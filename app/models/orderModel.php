@@ -3,6 +3,8 @@
 
 require_once '../config/db.php';
 
+date_default_timezone_set('US/Eastern');
+
 class OrderModel {
 
     private $db;
@@ -58,37 +60,51 @@ class OrderModel {
             array_push($return, $order_id);
         } 
         catch (PDOException $e) {
+
             $this->db->rollBack();
+
             array_push($return, false);
             array_push($return, $e);
+
         }
         finally {
+
             return $return;
+
         }
 
     }
 
     // READ
-    public function getOrders() {
+    public function getOpenOrders() {
 
         try {
 
             // final answer
             $return = array();
 
-            $query = "SELECT * FROM order";
+            $query = "SELECT a.*, b.*, c.* FROM `order` AS a 
+                JOIN foodbyorder AS b ON a.order_id = b.order_id 
+                JOIN food AS c ON b.food_id = c.food_id 
+                WHERE a.order_finished = 0 
+                ORDER BY a.order_id";
             $stmt = $this->db->query($query);
-            $db_result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
             array_push($return, true);
-            array_push($return, $db_result);
+            array_push($return, $result);
+
         } 
         catch (PDOException $e) {
+
             array_push($return, false);
             array_push($return, $e);
+
         }
         finally {
+
             return $return;
+
         }
 
     }
@@ -105,17 +121,22 @@ class OrderModel {
             $query = "UPDATE order SET order_finished = ? WHERE order_id = ?";
             $stmt = $this->db->prepare($query);
             $stmt->execute([$order_finished, $order_id]);
-            $db_result = $stmt->rowCount();
+            $result = $stmt->rowCount();
 
             array_push($return, true);
-            array_push($return, $db_result);
+            array_push($return, $result);
+
         } 
         catch (PDOException $e) {
+
             array_push($return, false);
             array_push($return, $e);
+
         }
         finally {
+
             return $return;
+
         }
 
     }
@@ -135,13 +156,18 @@ class OrderModel {
 
             array_push($return, true);
             array_push($return, $db_result);
+
         } 
         catch (PDOException $e) {
+
             array_push($return, false);
             array_push($return, $e);
+
         }
         finally {
+
             return $return;
+
         }
 
     }
@@ -160,13 +186,18 @@ class OrderModel {
 
             array_push($return, true);
             array_push($return, $db_result);
+
         } 
         catch (PDOException $e) {
+
             array_push($return, false);
             array_push($return, $e);
+            
         }
         finally {
+
             return $return;
+
         }
     }
 

@@ -16,7 +16,6 @@
     <script defer src="util/jquery/jquery-3.7.0.min.js"></script>
 
     <script defer type="text/javascript" src="https://js.stripe.com/v2/"></script>
-    <!-- <script defer type="text/javascript" src="https://js.stripe.com/v3/"></script> -->
 
     <script defer src="scripts/loadFoods.js"></script>
     <script defer src="scripts/foodPopup.js"></script>
@@ -27,6 +26,9 @@
     <script defer src="scripts/userAndPopup.js"></script>
     <script defer src="scripts/payment.js"></script>
     <script defer src="scripts/cookies.js"></script>
+
+    <!-- <script defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDWzNZvErnEWtE8sH7rZBng1V78S_IxSf8&callback=initAutocomplete&libraries=places&v=weekly"></script> -->
+    <script defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB41DRUbKWJHPxaFjMAwdrzWzbVKartNGg&callback=initAutocomplete&libraries=places"></script>
 
     
     <!-- <script>Stripe.setPublishableKey("pk_test_51NYwc3ITtGQD7Q56MWtMXAzc8cCfdWfZPuf4hLWAmfwNy1QhwExdae3Cj2COucvxJJhWizXwlxwVUNKQ4mzIMwSn00OwKbAdaA")</script> -->
@@ -41,7 +43,7 @@
         <div class="nav_logo">
             <img src="images/logo.png" alt="logo">
         </div>
-        <div class="nav_mid"></div>
+        <!-- <div class="nav_mid"></div> -->
         <div class="nav_but">
             <i class="fa-solid fa-location-dot" id="location_popup_but"></i>
             <i class="fa-solid fa-hands-asl-interpreting" id="language_but"></i>
@@ -117,15 +119,22 @@
                 <div class="payment_logo">
                     <img src="images/logo.png" alt="logo">
                 </div>
-                
-                <input class="cc_number" type="tel" pattern="\d*" maxlength="19" placeholder="Numéro" oninput="ccNumberFormat(this)" value="4242 4242 4242 4242">
+                <!--  -->
+                <input class="order_name" id="order_name" maxlength="200" placeholder="Entrez votre nom">
+                <input class="order_address" id="order_address" autocomplete="off" placeholder="Entrez une adresse">
+                <input class="order_phone" id="order_phone" type="tel" maxlength="200" placeholder="Entrez votre téléphone">
+                <input class="order_notes" id="order_notes" placeholder="Notes pour la commande ou la livraison">
+                <div class="order_deliv_div" id="order_deliv_div">
+                    <input type="radio" id="order_deliv_1" name="order_deliv" value="Livraison" checked /><label for="order_deliv_1">Livraison</label>
+                    <input type="radio" id="order_deliv_0" name="order_deliv" value="Pour emporter"/><label for="order_deliv_0">Pour emporter</label>
+                </div>
+                <input class="cc_number" id="cc_number" type="tel" pattern="\d*" maxlength="19" placeholder="Numéro" oninput="ccNumberFormat(this)" value="4242 4242 4242 4242">
                 <div class="cc_small">
                     <select class="cc_exp_m" id="cc_exp_m"></select>
                     <select class="cc_exp_y" id="cc_exp_y"></select>
-                    <input class="cc_cvc" type="tel" pattern="\d*" maxlength="4" placeholder="CVC" oninput="ccCVCFormat(this)" value="111">
+                    <input class="cc_cvc" type="tel" pattern="\d*" maxlength="4" placeholder="CVC" oninput="ccCVCFormat(this)" value="123">
                 </div>
-                <span class="payment_errors" id="payment_errors"></span>
-                <div class="lds_roller" id="lds_roller_1"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+                <br><span class="payment_errors" id="payment_errors"></span>
                 <div class="payment_end_buttons">
                     <button id="cart_pay_cancel">Annuler</button>
                     <button id="cart_pay_but">Payer</button>

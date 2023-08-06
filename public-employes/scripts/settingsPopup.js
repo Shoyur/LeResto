@@ -47,6 +47,7 @@ function saveSettings() {
             the_location: the_location,
         },
         dataType: 'json',
+        async: false,
         success: function(result) {
             changeTimerValue(refresh);
             closeSettingsPopup();

@@ -15,22 +15,26 @@ class OrderController {
 
         $orderModel = new OrderModel();
         $result = $orderModel->createOrder($customer_id, $order_name, $order_address, $order_phone, $order_cc_last4, $order_total, $order_deliv, $order_notes, $cart_data);
+
         header('Content-Type: application/json');
         return json_encode($result);
 
     }
 
     // READ
-    public function getOrders() {
+    public function getOpenOrders() {
 
         $orderModel = new OrderModel();
-        $result = $orderModel->getOrders();
+        $result = $orderModel->getOpenOrders();
 
-        foreach ($result as &$order) {
-            $order_date = strtotime($order['order_date']);
-            $delay_sec = time() - $order_date;
-            $order['delay'] = $delay_sec;
+        if ($result[0]) {
+            foreach ($result[1] as &$order) {
+                $order_date = strtotime($order['order_date']);
+                $delay_sec = time() - $order_date;
+                $order['delay'] = $delay_sec;
+            }
         }
+        
         header('Content-Type: application/json');
         return json_encode($result);
 
@@ -41,6 +45,7 @@ class OrderController {
 
         $orderModel = new OrderModel();
         $result = $orderModel->updateOrder($order_id, $order_finished);
+
         header('Content-Type: application/json');
         return json_encode($result);
 
@@ -51,6 +56,7 @@ class OrderController {
 
         $orderModel = new OrderModel();
         $result = $orderModel->deleteOrder($order_id);
+
         header('Content-Type: application/json');
         return json_encode($result);
 
@@ -60,6 +66,7 @@ class OrderController {
         
         $orderModel = new OrderModel();
         $result = $orderModel->deleteFinishedOrders();
+
         header('Content-Type: application/json');
         return json_encode($result);
 
@@ -75,7 +82,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
 
     case 'GET': {
 
-        echo $orderController->getOrders();
+        echo $orderController->getOpenOrders();
         break;
 
     }

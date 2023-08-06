@@ -14,16 +14,16 @@ function stripeResponseHandler(status, response) {
 
     else {
 
+        $(".payment_errors").text("");
         var order_details = {
             stripeToken: response['id'],
-            customer_id: null,
-            order_name: "John",
-            order_address: "123, de la rue",
-            order_phone: "514-123-4567",
-            order_cc_last4: "0000",
-            order_deliv: 1,
-            order_notes: "",
-            cart_data: sanitizeForOrder(cart_data),
+            order_name: document.querySelector("#order_name").value,
+            order_address: document.querySelector("#order_address").value,
+            order_phone: document.querySelector("#order_phone").value,
+            order_cc_last4: document.querySelector("#cc_number").value.substring(0, 4),
+            order_deliv: document.querySelector('#order_deliv_1:checked') ? 1 : 0,
+            order_notes: document.querySelector("#order_notes").value,
+            cart_data: sanitizeCartDataForOrder(cart_data),
         };
 
         $.ajax({
@@ -62,7 +62,7 @@ function stripeResponseHandler(status, response) {
 }
 
 
-function sanitizeForOrder(cart_data) {
+function sanitizeCartDataForOrder(cart_data) {
     return cart_data.map(item => {
         return [item.food_id, item.food_options];
     });
@@ -70,6 +70,13 @@ function sanitizeForOrder(cart_data) {
 
 
 function submitPayment() {
+
+    if (!document.querySelector("#order_name").value ||
+        !document.querySelector("#order_address").value ||
+        !document.querySelector("#order_phone").value) {
+        $(".payment_errors").text("Les 3 premiers champs doivent être remplis.");
+        return;
+    }
 
     // disable the submit button to prevent repeated clicks
     document.getElementById("cart_pay_but").disabled = true;
@@ -120,4 +127,46 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById("cart_popup_payment_content").style.display = "none";
     });
 
+    document.getElementById('cart_popup_payment_content').addEventListener('keydown', function() {
+        $(".payment_errors").text("");
+    });
+
 });
+
+
+// Google address autocomplete
+let autocomplete;
+let addressField;
+
+function initAutocomplete() {
+  addressField = document.querySelector("#order_address");
+//   const bounds = new google.maps.LatLngBounds(
+//     new google.maps.LatLng(45.0, -73.0),
+//     new google.maps.LatLng(46.0, -71.0)
+//   );
+  autocomplete = new google.maps.places.Autocomplete(addressField, {
+    // bounds: bounds,
+    // strictBounds: true,
+    componentRestrictions: { country: ["CA"] },
+    fields: ["address_components", "geometry"],
+    types: ["address"],
+  });
+  addressField.focus();
+  autocomplete.addListener("place_changed", fillInAddress);
+  addressField.addEventListener("click", function() {
+    this.value = "";
+  });
+}
+
+function fillInAddress() {
+  const place = autocomplete.getPlace();
+  if (place && place.formatted_address) {
+    addressField.value = 
+    place.address_components[0].long_name + ", " + 
+    place.address_components[1].long_name + ", " + 
+    place.address_components[2].long_name + ", " + 
+    place.address_components[place.address_components[7].types[0] == "postal_code" ? 8 : 7].long_name;
+  }
+}
+
+window.initAutocomplete = initAutocomplete;

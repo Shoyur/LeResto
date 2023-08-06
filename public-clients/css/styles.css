@@ -92,6 +92,7 @@ a {
   width: 100%;
   display: flex;
   align-items: center;
+  justify-content: space-between;
   box-shadow: 0 4px 2px -2px rgba(0, 0, 0, 0.3);
   position: fixed;
   top: 0;
@@ -101,6 +102,12 @@ a {
   height: 50px;
   vertical-align: middle;
   margin: 5px 25px;
+}
+
+@media (max-width: 480px) {
+  .nav_logo img {
+    height: 35px;
+  }
 }
 
 .nav_mid {
@@ -153,6 +160,15 @@ a {
   scroll-behavior: smooth;
   display: inline-block;
   margin: 20px 0px;
+}
+
+@media (max-width: 480px) {
+  .catbar {
+    top: 45px;
+  }
+  .catbar_but {
+    margin: 10px 0px;
+  }
 }
 
 .catbar_but::-webkit-scrollbar {
@@ -498,9 +514,30 @@ a {
   object-fit: contain;
 }
 
-.cc_number {
+.order_address,
+.order_notes {
+  width: calc(100% - 30px);
+  margin: 0px;
+
+}
+
+.order_name,
+.order_phone,
+.cc_number,
+.order_deliv_div {
   width: calc(100% - 30px);
   margin: 20px 0px;
+}
+
+input[type="radio"] {
+  vertical-align: middle;
+}
+
+label {
+  display: inline-block;
+  cursor: pointer;
+  vertical-align: middle;
+  color: var(--col_text); /* Set the default text color */
 }
 
 .cc_small {
@@ -520,8 +557,9 @@ a {
 }
 
 .payment_errors {
+  display: block;
   color: red;
-  margin-bottom: 20px;
+  font-weight: bold;
   margin-top: 20px;
 }
 
