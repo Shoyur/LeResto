@@ -59,7 +59,7 @@ function showCategAndFoods() {
             button.type = "button";
             button.textContent = jf.categ_name;
             button.classList.add("categ_but");
-            first_but_init ? null: button.classList.add("cat_bar_but_hover") ;
+            first_but_init ? null: button.classList.add("nav_cat_but_hover") ;
             first_but_init++;
             button.setAttribute('data-categ', JSON.stringify(categ));
             button.setAttribute('data-categ_id', categ.categ_id);
@@ -95,15 +95,13 @@ document.addEventListener("DOMContentLoaded", function() {
     updateButtonHoverState("1");
 });
 
-function updateButtonHoverState(categId) {
+function updateButtonHoverState(categ_id) {
     const buttons = document.querySelectorAll('.categ_but');
-    buttons.forEach(btn => {
-        // console.log("btn.dataset.categ_id = " + btn.dataset.categ_id);
-        if (btn.dataset.categ_id == categId) {
-            btn.classList.add('cat_bar_but_hover');
-            // console.log("Devient rose pour bouton # " + categId);
+    buttons.forEach(button => {
+        if (button.dataset.categ_id == categ_id) {
+            button.classList.add('nav_cat_but_hover');
         } else {
-            btn.classList.remove('cat_bar_but_hover');
+            button.classList.remove('nav_cat_but_hover');
         }
     });
 }
@@ -158,6 +156,7 @@ class Categ {
 
 function createFoodCard(food) {
 
+    
     // main element
     const card = document.createElement('div');
     card.classList.add('food_card');

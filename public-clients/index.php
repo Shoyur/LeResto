@@ -40,23 +40,21 @@
 
     <!-- NAVBAR -->
     <nav class="nav">
-        <div class="nav_logo">
-            <img src="images/logo.png" alt="logo">
+        <div class="nav_container_div">
+            <div class="nav_logo_div">
+                <img src="images/logo.png" alt="logo">
+            </div>
+            <div class="nav_icon_but_div">
+                <i class="fa-solid fa-location-dot" id="location_popup_but"></i>
+                <i class="fa-solid fa-hands-asl-interpreting" id="language_but"></i>
+                <i class="fa-solid fa-circle-half-stroke" id="darklight_but"></i>
+                <i class="fa-solid fa-circle-user" id="user_popup_but"></i>
+                <i class="fa-solid fa-cart-shopping" id="cart_popup_but"><div class="cart_qty" id="cart_qty">0</div></i>  
+            </div>
+            <div class="nav_categ_scroll_wrapper">
+                <div class="nav_categ_but_div" id="catbar_but"></div>
+            </div>
         </div>
-        <!-- <div class="nav_mid"></div> -->
-        <div class="nav_but">
-            <i class="fa-solid fa-location-dot" id="location_popup_but"></i>
-            <i class="fa-solid fa-hands-asl-interpreting" id="language_but"></i>
-            <i class="fa-solid fa-circle-half-stroke" id="darklight_but"></i>
-            <i class="fa-solid fa-circle-user" id="user_popup_but"></i>
-            <i class="fa-solid fa-cart-shopping" id="cart_popup_but"><div class="cart_qty" id="cart_qty">0</div></i>
-            
-        </div>
-    </nav>
-
-    <!-- CATEG BAR -->
-    <nav class="catbar">
-        <div class="catbar_but" id= "catbar_but"></div>
     </nav>
 
     <!-- FOOD ITEMS PER CATEG LIST -->

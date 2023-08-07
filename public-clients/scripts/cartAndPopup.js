@@ -142,7 +142,13 @@ function cardAddToCart(food, qty) {
 
 
 function updateCartIconQty() {
+    
     const cart_qty = document.getElementById('cart_qty');
+
+    // force restart of animation in case an item is added during the animation
+    cart_qty.classList.remove('cart_qty_anim');
+    void cart_qty.offsetWidth;
+
     cart_qty.innerText = cart_data.length;
     cart_qty.classList.add('cart_qty_anim');
     cart_qty.addEventListener('animationend', function() {

@@ -4,7 +4,8 @@ function openOrderPopup(order) {
     $('#order_popup_title').text(texte_title);
     $('#order_popup_descr').empty();
 
-    $('#order_popup_descr').append("<p><b>ID client:</b> $" + order.order_total / 100);
+    order.user_id ? $('#order_popup_descr').append("<p><b>ID client:</b> " + order.user_id) : null;
+    $('#order_popup_descr').append("<p><b>Total facturé:</b> $" + order.order_total / 100);
     $('#order_popup_descr').append("<p><b>Nom:</b> " + order.order_name);
     $('#order_popup_descr').append("<p><b>Adresse:</b> " + order.order_address);
     $('#order_popup_descr').append("<p><b>Téléphone:</b> " + order.order_phone);

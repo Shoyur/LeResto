@@ -21,8 +21,7 @@ class OrderModel {
     // CRUD
 
     // CREATE
-    public function createOrder($customer_id, $order_name, $order_address, $order_phone, $order_cc_last4, $order_total, $order_deliv, $order_notes, $cart_data) {
-
+    public function createOrder($user_id, $order_name, $order_address, $order_phone, $order_cc_last4, $order_total, $order_deliv, $order_notes, $cart_data) {
         try {
 
             $order_date = (new DateTime())->format('Y-m-d H:i:s');
@@ -33,9 +32,9 @@ class OrderModel {
             // transaction to commit or rollback, in case there is an error, because we are making multiple queries
             $this->db->beginTransaction();
 
-            $query1 = "INSERT INTO `order` (customer_id, order_name, order_address, order_phone, order_cc_last4, order_total, order_date, order_deliv, order_notes) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            $query1 = "INSERT INTO `order` (user_id, order_name, order_address, order_phone, order_cc_last4, order_total, order_date, order_deliv, order_notes) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
             $stmt1 = $this->db->prepare($query1);
-            $stmt1->execute([$customer_id, $order_name, $order_address, $order_phone, $order_cc_last4, $order_total, $order_date, $order_deliv, $order_notes]);
+            $stmt1->execute([$user_id, $order_name, $order_address, $order_phone, $order_cc_last4, $order_total, $order_date, $order_deliv, $order_notes]);
             $order_id = $this->db->lastInsertId();
 
             $query2 = "INSERT INTO foodbyorder (order_id, food_id, foodbyorder_options) VALUES ";

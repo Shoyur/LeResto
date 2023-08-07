@@ -30,16 +30,16 @@ function openHistoryPopup() {
         if (orders.length > 0) {
             divContent = '<h2>Commandes terminées</h2>';
             $.each(orders, function(index, order) {
-                divContent += 'Commande no. ' + order.id_commande;
-                divContent += order.livrpick_commande ? ' (À livrer)' : ' (Pour emporter)';
-                var details = JSON.parse(order.details_commande);
-                $.each(details, function(index, item) {
-                    var qty = item[0];
-                    var name = item[2];
-                    var options = item[3];
-                    divContent += '<br><span>' + qty + '</span><span>' + name + '</span>' + (options ? ' (' + options + ')' : '');
-                });
-                divContent += '</p>';
+                divContent += 'Commande no. ' + order.order_id;
+                divContent += order.order_deliv ? ' (À livrer)' : ' (Pour emporter)';
+                // var details = JSON.parse(order.details_commande);
+                // $.each(details, function(index, item) {
+                //     var qty = item[0];
+                //     var name = item[2];
+                //     var options = item[3];
+                //     divContent += '<br><span>' + qty + '</span><span>' + name + '</span>' + (options ? ' (' + options + ')' : '');
+                // });
+                // divContent += '</p>';
             });
             $('#finished_orders').html(divContent);
         }

@@ -34,6 +34,7 @@ body {
   padding-top: var(--padding_top);
   transition: var(--transition);
   text-decoration: none;
+  background-color: var(--col_list);
 }
 
 button, 
@@ -86,98 +87,199 @@ a {
 /* NAVBAR */
   
 .nav {
-  transition: var(--transition);
-  background-color: var(--col_nav);
-  overflow: hidden;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  box-shadow: 0 4px 2px -2px rgba(0, 0, 0, 0.3);
   position: fixed;
   top: 0;
+  left: 0;
+  width: 100%;
+  transition: var(--transition);
+  background-color: var(--col_nav);
+  box-shadow: 0 4px 2px -2px rgba(0, 0, 0, 0.3);
+  height: 120px;
 }
 
-.nav_logo img {
-  height: 50px;
+.nav_container_div {
+  position: relative;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 110px;
+}
+
+.nav_logo_div {
+  position: absolute;
+  height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 20px;
+}
+
+.nav_logo_div img {
+  height: 40px;
   vertical-align: middle;
-  margin: 5px 25px;
+  margin: 10px 0px;
 }
 
-@media (max-width: 480px) {
-  .nav_logo img {
-    height: 35px;
-  }
-}
-
-.nav_mid {
-  flex-grow: 1;
-  text-align: center;
-}
-  
-.nav_but {
-  justify-content: flex-end;
+.nav_icon_but_div {
+  position: absolute;
+  height: 40px;
+  top: 0;
+  right: 0;
   font-size: 30px;
-  padding-right: 30px;
-  padding-left: 30px;
+  height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 18px;
 }
 
-.nav_but i {
+.nav_icon_but_div i {
   padding-right: 12px;
   padding-left: 12px;
   transition: var(--transition);
   color: var(--col_but);
 }
 
-.nav_but i:hover {
+.nav_icon_but_div i:hover {
   color: var(--col_hover);
   cursor: pointer;
 }
 
-/* ----------------------------------------------------------- */
-/* CATEGORIES BUTTONS BAR */
-
-.catbar {
+.cart_qty {
+  position: absolute;
+  right: 0px;
+  top: 5px;
+  width: 25px;
+  height: 25px;
+  line-height: 25px;
+  text-align: center;
+  border-radius: 50%;
+  font-size: 14px;
+  background-color: var(--col_but);
+  color: var(--col_text);
   transition: var(--transition);
-  background-color: var(--col_nav);
-  overflow: hidden;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  box-shadow: 0 4px 2px -2px rgba(0, 0, 0, 0.3);
-  position: fixed;
-  top: 50px;
 }
 
-.catbar_but {
+#cart_popup_but:hover .cart_qty {
+  background-color: var(--col_hover);
+}
+
+.cart_qty_anim {
+  animation-name: cart_qty_pulse;
+  animation-duration: 2s;
+  animation-timing-function: linear;
+  animation-fill-mode: both;
+}
+
+@keyframes cart_qty_pulse {
+  0% {
+    transform: scale(1);
+    background-color: var(--col_but);
+  }
+  17% {
+    transform: scale(2.5);
+    background-color: var(--col_hover);
+  }
+  34% {
+    transform: scale(1);
+    background-color: var(--col_but);
+  }
+  50% {
+    transform: scale(2);
+    background-color: var(--col_hover);
+  }
+  67% {
+    transform: scale(1);
+    background-color: var(--col_but);
+  }
+  84% {
+    transform: scale(1.5);
+    background-color: var(--col_hover);
+  }
+  100% {
+    transform: scale(1);
+    background-color: var(--col_but);
+  }
+}
+
+.nav_categ_scroll_wrapper {
   width: 100%;
-  overflow-x: hidden;
-  position: relative;
-  padding: 0px 20px;
+  overflow-x: auto;
   white-space: nowrap;
-  -webkit-overflow-scrolling: touch; /* smooth scroll iOS */
-  scrollbar-width: none; /* Firefox */
-  scroll-behavior: smooth;
+}
+
+.nav_categ_but_div {
+  position: absolute;
   display: inline-block;
-  margin: 20px 0px;
+  bottom: 0;
+  left: 0;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 15px;
+
+  /* width: 100%; */
+  /* overflow-x: auto; */
+  /* white-space: nowrap; */
+  
+}
+
+.nav_categ_but_div::-webkit-scrollbar {
+  height: 8px;
+}
+
+.nav_categ_but_div::-webkit-scrollbar-thumb {
+  background-color: #888;
+  border-radius: 4px;
+}
+
+.nav_categ_but_div::-webkit-scrollbar-track {
+  background-color: #f1f1f1;
+}
+
+.nav_cat_but_hover {
+  background-color: var(--col_hover);
 }
 
 @media (max-width: 480px) {
-  .catbar {
-    top: 45px;
-  }
-  .catbar_but {
-    margin: 10px 0px;
-  }
-}
 
-.catbar_but::-webkit-scrollbar {
-  width: 0;
-  height: 0;
-}
+  :root {
+    --padding_top: 100px;
+  }
 
-.cat_bar_but_hover {
-  background-color: var(--col_hover);
+  .nav {
+    height: 110px;
+  }
+  
+  .nav_container_div {
+    height: 100px;
+  }
+
+  .nav_logo_div {
+    margin-left: 10px;
+  }
+
+  .nav_logo_div img {
+    height: 30px;
+  }
+
+  .nav_icon_but_div {
+    margin-right: 8px;
+  }
+
+  .nav_icon_but_div i {
+    padding-right: 8px;
+    padding-left: 8px;
+  }
+
+  .nav_categ_but_div {
+    /* height: 40px; */
+    /* margin-left: 0px; */
+    /* width: 100%; */
+    /* padding: 0px 10px; */
+  }
+
 }
 
 /* ----------------------------------------------------------- */
@@ -690,64 +792,4 @@ label {
 
 .no-scroll {
   overflow: hidden;
-}
-
-/* ----------------------------------------------------------- */
-/* CART QTY ANIMATION */
-
-.cart_qty {
-  position: absolute;
-  right: 25px;
-  top: 5px;
-  width: 25px;
-  height: 25px;
-  line-height: 25px;
-  text-align: center;
-  border-radius: 50%;
-  font-size: 14px;
-  background-color: var(--col_but);
-  color: var(--col_text);
-  transition: var(--transition);
-}
-
-.fa-cart-shopping:hover .cart_qty {
-  background-color: var(--col_hover);
-}
-
-.cart_qty_anim {
-  animation-name: cart_qty_pulse;
-  animation-duration: 2s;
-  animation-timing-function: linear;
-  animation-fill-mode: both;
-}
-
-@keyframes cart_qty_pulse {
-  0% {
-    transform: scale(1);
-    background-color: var(--col_but);
-  }
-  17% {
-    transform: scale(2.5);
-    background-color: var(--col_hover);
-  }
-  34% {
-    transform: scale(1);
-    background-color: var(--col_but);
-  }
-  50% {
-    transform: scale(2);
-    background-color: var(--col_hover);
-  }
-  67% {
-    transform: scale(1);
-    background-color: var(--col_but);
-  }
-  84% {
-    transform: scale(1.5);
-    background-color: var(--col_hover);
-  }
-  100% {
-    transform: scale(1);
-    background-color: var(--col_but);
-  }
 }

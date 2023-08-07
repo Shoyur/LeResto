@@ -6,7 +6,7 @@ if (!empty($_POST['stripeToken'])) {
     require_once('init.php');
 
     $token = $_POST['stripeToken'];
-    $customer_id = null; // add SESSION for user info/data
+    $user_id = 55; // add SESSION for user info/data
     $order_name = $_POST['order_name'];
     $order_address = $_POST['order_address'];
     $order_phone = $_POST['order_phone'];
@@ -64,7 +64,7 @@ if (!empty($_POST['stripeToken'])) {
             // update order db
             require_once('../models/orderModel.php');
             $orderModel = new OrderModel();
-            $result = $orderModel->createOrder($customer_id, $order_name, $order_address, $order_phone, $order_cc_last4, $total, $order_deliv, $order_notes, $cart_data);
+            $result = $orderModel->createOrder($user_id, $order_name, $order_address, $order_phone, $order_cc_last4, $total, $order_deliv, $order_notes, $cart_data);
 
             $total_string = number_format($amount / 100, 2);
             if ($result[0]) {

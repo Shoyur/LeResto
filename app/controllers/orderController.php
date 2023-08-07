@@ -11,10 +11,10 @@ class OrderController {
     // CRUD
 
     // CREATE
-    public function createOrder($customer_id, $order_name, $order_address, $order_phone, $order_cc_last4, $order_total, $order_deliv, $order_notes, $cart_data) {
+    public function createOrder($user_id, $order_name, $order_address, $order_phone, $order_cc_last4, $order_total, $order_deliv, $order_notes, $cart_data) {
 
         $orderModel = new OrderModel();
-        $result = $orderModel->createOrder($customer_id, $order_name, $order_address, $order_phone, $order_cc_last4, $order_total, $order_deliv, $order_notes, $cart_data);
+        $result = $orderModel->createOrder($user_id, $order_name, $order_address, $order_phone, $order_cc_last4, $order_total, $order_deliv, $order_notes, $cart_data);
 
         header('Content-Type: application/json');
         return json_encode($result);
