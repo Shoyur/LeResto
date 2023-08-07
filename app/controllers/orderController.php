@@ -34,7 +34,17 @@ class OrderController {
                 $order['delay'] = $delay_sec;
             }
         }
-        
+
+        header('Content-Type: application/json');
+        return json_encode($result);
+
+    }
+
+    public function getFinishedOrders() {
+
+        $orderModel = new OrderModel();
+        $result = $orderModel->getFinishedOrders();
+
         header('Content-Type: application/json');
         return json_encode($result);
 
@@ -87,10 +97,21 @@ switch ($_SERVER['REQUEST_METHOD']) {
 
     }
 
-    case 'PATCH': {
+    case 'POST': {
 
-        $order_id = $_POST['order_id'];
-        $order_finished = $_POST['order_finished'];
+        echo $orderController->getFinishedOrders();
+        break;
+
+    }
+
+    case 'PATCH': {
+        $requestBody = file_get_contents('php://input');
+        $data = json_decode($requestBody, true);
+        // echo "ICI ->" . $_POST['order_id'];
+        // $order_id = $_POST['order_id'];
+        // $order_finished = $_POST['order_finished'];
+        $order_id = $data['order_id'];
+        $order_finished = $data['order_finished'];
 
         echo $orderController->updateOrder($order_id, $order_finished); 
         break;

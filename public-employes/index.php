@@ -9,13 +9,16 @@
 
     <link rel="stylesheet" type="text/css" href="css/styles.css">
     <link rel="stylesheet" type="text/css" href="util/fontawesome-free-6.4.0-web/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+    
+    <script defer src="scripts/settingsPopup.js"></script>
     <script defer src="scripts/getOrders.js"></script>
     <script defer src="scripts/orderPopup.js"></script>
     <script defer src="scripts/historyPopup.js"></script>
     <script defer src="scripts/statsPopup.js"></script>
-    <script defer src="scripts/settingsPopup.js"></script>
+    
 
 </head>
 
@@ -60,7 +63,7 @@
                 <input type="text" id="id_order" placeholder="ID de commande" />
                 <button id="history_put_back_but">Confirmer</button>
             </div>
-            <button id="history_popup_clear">Effacer les commandes terminées</button>
+            <button id="history_popup_clear">Archiver les commandes terminées</button>
             <button id="history_popup_cancel">Cancel</button>
         </div>
     </div>

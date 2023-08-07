@@ -59,8 +59,8 @@ function saveSettings() {
 }
 
 function changeTimerValue(refresh) {
-    clearInterval(intervalId);
-    intervalId = setInterval(getOpenOrders, refresh * 1000);
+    clearInterval(interval_refresh);
+    interval_refresh = setInterval(getOpenOrders, refresh * 1000);
 }
 
 

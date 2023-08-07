@@ -4,12 +4,15 @@ function getFinishedOrders() {
             url: '/monsystemeresto/app/controllers/orderController.php',
             async: false,
             type: 'POST',
-            data: {
-                action: 'getFinishedOrders'
-            },
             dataType: 'json',
-            success: function(orders) {
-                resolve(orders);
+            success: function(result) {
+                if (result[0]) {
+                    resolve(result[1]);
+                }
+                else {
+                    console.log('Error:', result[1]);
+                }
+                
             },
             error: function(xhr, status, error) {
                 console.log('Error:', error);
@@ -23,9 +26,9 @@ function openHistoryPopup() {
     $('#finished_orders').empty();
     getFinishedOrders()
     .then(function(orders) {
-        var divContent = ''; // Use a div instead of a textarea
+        var divContent = '';
         if (orders.length > 0) {
-            divContent = '<h2>Commandes archivées</h2>'; // Use <p> tags for new paragraphs
+            divContent = '<h2>Commandes terminées</h2>';
             $.each(orders, function(index, order) {
                 divContent += 'Commande no. ' + order.id_commande;
                 divContent += order.livrpick_commande ? ' (À livrer)' : ' (Pour emporter)';
@@ -38,10 +41,10 @@ function openHistoryPopup() {
                 });
                 divContent += '</p>';
             });
-            $('#finished_orders').html(divContent); // Use .html() to set the content with HTML formatting
+            $('#finished_orders').html(divContent);
         }
         else {
-            $('#finished_orders').text('Aucune commande archivée');
+            $('#finished_orders').text('Aucune commande terminée, ou tous archivées.');
         }
     })
     .catch(function(error) {

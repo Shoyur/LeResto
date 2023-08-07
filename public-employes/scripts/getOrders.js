@@ -2,13 +2,13 @@ let interval_refresh;
 
 $(document).ready(function() {
     // first time init
-    getOrders();
+    getOpenOrders();
     // automatic refresh
-    // interval_refresh = setInterval(getOrders, refresh ? refresh * 1000 : 5000);
+    interval_refresh = setInterval(getOpenOrders, refresh ? refresh * 1000 : 5000);
 
 });
 
-function getOrders() {
+function getOpenOrders() {
     $.ajax({
         url: '/monsystemeresto/app/controllers/orderController.php',
         async: false,
@@ -52,11 +52,6 @@ function showOpenOrders(orders) {
             if (new_order != order.order_id) {
                 if (new_order != 0) {
                     $('#orders_list').append(order_card);
-                    order_card.click(function() {
-                        // openOrderPopup(order);
-                        console.log(order);
-                    });
-                    console.log("Fin de card order # " + order.order_id);
                 } 
                 new_order = order.order_id;
 
@@ -78,6 +73,9 @@ function showOpenOrders(orders) {
                         order_card.addClass('card_border_c1');
                     }
                 }
+                order_card.click(function() {
+                    openOrderPopup(order);
+                });
             }
 
             var cr = $('<p>').text('');

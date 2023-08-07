@@ -20,9 +20,9 @@ function stripeResponseHandler(status, response) {
             order_name: document.querySelector("#order_name").value,
             order_address: document.querySelector("#order_address").value,
             order_phone: document.querySelector("#order_phone").value,
+            order_notes: document.querySelector("#order_notes").value,      
+            order_deliv: document.querySelector('#order_deliv_1:checked') ? 1 : 0,      
             order_cc_last4: document.querySelector("#cc_number").value.substring(0, 4),
-            order_deliv: document.querySelector('#order_deliv_1:checked') ? 1 : 0,
-            order_notes: document.querySelector("#order_notes").value,
             cart_data: sanitizeCartDataForOrder(cart_data),
         };
 
@@ -42,6 +42,14 @@ function stripeResponseHandler(status, response) {
 
                     cart_data = [];
                     updateCartIconQty();
+
+                    document.getElementById("cart_pay_but").disabled = false;
+
+                    document.querySelector("#order_name").value = "";
+                    document.querySelector("#order_address").value = "";
+                    document.querySelector("#order_phone").value = "";
+                    document.querySelector("#order_notes").value = "";
+
                     
                 }
 

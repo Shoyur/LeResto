@@ -1,7 +1,33 @@
 /* ----------------------------------------------------------- */
-/* ALL */
+/* APPLIED TO ALL */
 
 :root {
+
+  /* possible colors */
+  --col_white: #FFF9FF;
+  --col_pale_pink_1: #FFD9FF;
+  --col_pale_pink_2: #F5A0F5;
+  --col_bright_pink: #F040F0;
+  --col_purple_1: #A030FF;
+  --col_purple_2: #8010C0;
+  --col_purple_3: #501070;
+  --col_dark_purple: #302030;
+  --col_dark: #150520;
+
+  /* color vars to switch theme */
+  --col_nav: var(--col_dark);
+  --col_text: var(--col_pale_pink_1);
+  --col_but: var(--col_purple_2);
+  --col_hover: var(--col_bright_pink);
+  --col_list: var(--col_dark_purple);
+  --col_card: var(--col_purple_3);
+
+  /* other global vars */
+  --padding_top: 110px;
+  --transition: background-color 0.7s ease, color 0.7s ease;
+
+  /* ---------------------- */
+  /* old values */
   --col_1: #ECE3F6;
   --col_2: #7867CF;
   --col_3: #28177F;
@@ -10,32 +36,61 @@
   /* order cards border coloring */
   --col_C1: yellow;
   --col_C2: red;
+
 }
 
 body {
   margin: 0;
-  font-family: Arial, sans-serif;
-  background-color: var(--col_BG);
-  color: var(--col_3);
-  padding-top: 75px;
+  font-family: 'Roboto';
+  padding-top: var(--padding_top);
+  transition: var(--transition);
+  text-decoration: none;
 }
 
-button {
+button, 
+input,
+select {
   cursor: pointer;
   display: inline-block;
-  padding: 10px 20px;
-  background-color: #28177f;
-  color: #ECE3F6;
-  text-decoration: none;
-  border-radius: 10px;
-  transition: background-color 0.5s ease, color 0.5s ease;
+  background-color: var(--col_but);
+  color: var(--col_text);
+  height: 30px;
+  padding: 0px 15px;
+  border-radius: 15px;
+  transition: var(--transition);
   margin: 0px 10px 0px 10px;
-  /* outline: none; */
+  outline: none;
+  border: none;
+  font-size: 1rem;
 }
 
-button:hover {
-  background-color: #7867cf;
-  color: #28177f;
+button:hover, 
+input:hover,
+select:hover {
+  background-color: var(--col_hover);
+}
+
+button[disabled] {
+  cursor: not-allowed; /* Change cursor to indicate it's disabled */
+  opacity: 0.5; /* Reduce opacity to visually indicate it's disabled */
+  pointer-events: none; /* Disable pointer events on the element */
+  /* Add any other styles specific to the disabled state */
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.popup {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 999;
 }
 
 /* ----------------------------------------------------------- */

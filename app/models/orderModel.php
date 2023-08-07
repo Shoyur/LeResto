@@ -25,8 +25,7 @@ class OrderModel {
 
         try {
 
-            $order_date = new DateTime();
-            $order_date = $order_date->format('Y-m-d H:i:s');
+            $order_date = (new DateTime())->format('Y-m-d H:i:s');
 
             // final answer
             $return = array();
@@ -109,6 +108,39 @@ class OrderModel {
 
     }
 
+    public function getFinishedOrders() {
+
+        try {
+
+            // final answer
+            $return = array();
+
+            $query = "SELECT a.*, b.*, c.* FROM `order` AS a 
+                JOIN foodbyorder AS b ON a.order_id = b.order_id 
+                JOIN food AS c ON b.food_id = c.food_id 
+                WHERE a.order_finished = 1 
+                ORDER BY a.order_date_finished";
+            $stmt = $this->db->query($query);
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            array_push($return, true);
+            array_push($return, $result);
+
+        } 
+        catch (PDOException $e) {
+
+            array_push($return, false);
+            array_push($return, $e);
+
+        }
+        finally {
+
+            return $return;
+
+        }
+
+    }
+
     // UPDATE
     public function updateOrder($order_id, $order_finished) {
 
@@ -118,13 +150,29 @@ class OrderModel {
             // final answer
             $return = array();
 
-            $query = "UPDATE order SET order_finished = ? WHERE order_id = ?";
-            $stmt = $this->db->prepare($query);
-            $stmt->execute([$order_finished, $order_id]);
-            $result = $stmt->rowCount();
+            // if order state = 1, set finished time
+            if ($order_finished == 1) {
+
+                $order_date_finished = (new DateTime())->format('Y-m-d H:i:s');
+
+                $query = "UPDATE `order` SET order_finished = ?, order_date_finished = ? WHERE order_id = ?";
+                $stmt = $this->db->prepare($query);
+                $stmt->execute([$order_finished, $order_date_finished, $order_id]);
+                
+            }
+
+            else {
+
+                $query = "UPDATE `order` SET order_finished = ? WHERE order_id = ?";
+                $stmt = $this->db->prepare($query);
+                $stmt->execute([$order_finished, $order_id]);
+
+            }
+
+            
 
             array_push($return, true);
-            array_push($return, $result);
+            array_push($return, $order_id);
 
         } 
         catch (PDOException $e) {
@@ -149,7 +197,7 @@ class OrderModel {
             // final answer
             $return = array();
             
-            $query = "DELETE FROM order WHERE order_id = ?";
+            $query = "DELETE FROM `order` WHERE order_id = ?";
             $stmt = $this->db->prepare($query);
             $stmt->execute([$order_id]);
             $db_result = $stmt->rowCount();
@@ -192,7 +240,7 @@ class OrderModel {
 
             array_push($return, false);
             array_push($return, $e);
-            
+
         }
         finally {
 
