@@ -28,18 +28,22 @@ function openHistoryPopup() {
     .then(function(orders) {
         var divContent = '';
         if (orders.length > 0) {
+            let new_order = 0;
             divContent = '<h2>Commandes terminées</h2>';
             $.each(orders, function(index, order) {
-                divContent += 'Commande no. ' + order.order_id;
-                divContent += order.order_deliv ? ' (À livrer)' : ' (Pour emporter)';
-                // var details = JSON.parse(order.details_commande);
-                // $.each(details, function(index, item) {
-                //     var qty = item[0];
-                //     var name = item[2];
-                //     var options = item[3];
-                //     divContent += '<br><span>' + qty + '</span><span>' + name + '</span>' + (options ? ' (' + options + ')' : '');
-                // });
-                // divContent += '</p>';
+                if (order.order_id != new_order) {
+                    new_order = order.order_id;
+                    divContent += '<p><u>Commande no. ' + order.order_id;
+                    divContent += order.order_deliv ? ' (À livrer)</u>' : ' (Pour emporter)</u>';
+                    order.user_id ? divContent += $('#order_popup_descr').append("<br><b>ID client:</b> " + order.user_id) : null;
+                    divContent += "<br><b>Total facturé:</b> $" + order.order_total / 100;
+                    divContent += "<br><b>Nom:</b> " + order.order_name;
+                    divContent += "<br><b>Adresse:</b> " + order.order_address;
+                    divContent += "<br><b>Téléphone:</b> " + order.order_phone;
+                    divContent += "<br><b>Notes sur la commande:</b> " + order.order_notes;
+                    divContent += "<br><b>Carte, 4 premiers chiffres:</b> " + order.order_cc_last4;
+                }
+                divContent += "<br><span>1<span>" + order.food_name + '' + (order.food_options ? ' (' + order.food_options + ')' : '');
             });
             $('#finished_orders').html(divContent);
         }
@@ -52,11 +56,12 @@ function openHistoryPopup() {
     });
 
     $('#history_put_back_but').off('click').on('click', function() {
-        var id = $('#id_order').val();
-        if (0 < id < 999) { 
+        var id = parseInt($('#id_order').val());
+        if (typeof id === 'number' && id > 0 && Math.floor(id) === id) { 
             putBackOrder(id);
-            openHistoryPopup();
+            // openHistoryPopup();
             getOpenOrders();
+            closeHistoryPopup();
         }
     });
     $('#history_popup_cancel').off('click').on('click', function() {
@@ -82,17 +87,20 @@ function closeHistoryPopup() {
 }
 
 function putBackOrder(order_id) {
+
+    var data = {
+        order_id: order_id,
+        order_finished: 0
+    }
     $.ajax({
         url: '/monsystemeresto/app/controllers/orderController.php',
-        type: 'POST',
-        data: {
-            order_id: order_id,
-            order_finished: 0
-        },
+        type: 'PATCH',
+        data: JSON.stringify(data),
         dataType: 'json',
+        async: false,
         success: function(result) {
             if (result[0]) {
-                console.log("La commande a été remise en cuisine.")
+                console.log("La commande no." + result[1] + " a été remise en cuisine.")
             } 
             else {
                 console.error("Problème à mettre à jour la commande : " + result[1]);

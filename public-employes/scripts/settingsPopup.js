@@ -1,7 +1,7 @@
 var refresh;
-var color_change;
-var interval_1;
-var interval_2;
+var color_change = 1;
+var interval_1 = 0;
+var interval_2 = 0;
 var the_location;
 
 function getSettings() {

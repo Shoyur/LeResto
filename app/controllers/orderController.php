@@ -105,11 +105,10 @@ switch ($_SERVER['REQUEST_METHOD']) {
     }
 
     case 'PATCH': {
+
         $requestBody = file_get_contents('php://input');
         $data = json_decode($requestBody, true);
-        // echo "ICI ->" . $_POST['order_id'];
-        // $order_id = $_POST['order_id'];
-        // $order_finished = $_POST['order_finished'];
+
         $order_id = $data['order_id'];
         $order_finished = $data['order_finished'];
 
@@ -120,22 +119,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
 
     case 'DELETE': {
 
-        // switch ($_POST['finished']) {
-
-        //     case'' : {
-        //         echo $orderController->deleteOrder();
-        //         break;
-        //     }
-
-        //     case '': {
-        //         echo $orderController->deleteOrder();
-        //         break;
-        //     }
-
-        //     default: {
-        //         echo array('result' => 'Wrong \'finished\' value.');
-        //     }
-            
-        // }
+        echo $orderController->archiveOrders(); 
+        break;
     }
 }

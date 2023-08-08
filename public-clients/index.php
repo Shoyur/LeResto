@@ -51,9 +51,7 @@
                 <i class="fa-solid fa-circle-user" id="user_popup_but"></i>
                 <i class="fa-solid fa-cart-shopping" id="cart_popup_but"><div class="cart_qty" id="cart_qty">0</div></i>  
             </div>
-            <div class="nav_categ_scroll_wrapper">
-                <div class="nav_categ_but_div" id="catbar_but"></div>
-            </div>
+            <div class="nav_categ_but_div" id="catbar_but"></div>
         </div>
     </nav>
 

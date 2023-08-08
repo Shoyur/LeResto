@@ -46,8 +46,8 @@ function showOpenOrders(orders) {
 
     if (how_many_orders > 0) {
 
-        var new_order = 0;
-        var order_card;
+        let new_order = 0;
+        let order_card;
         orders.forEach((order, index) => {
             if (new_order != order.order_id) {
                 if (new_order != 0) {

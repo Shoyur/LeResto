@@ -34,7 +34,8 @@
         </div>
         <div class="nav_but">
             <i class="fa-solid fa-clock-rotate-left" onclick="openHistoryPopup()"></i>
-            <i class="fa-solid fa-chart-line" onclick="openStatsPopup()"></i>
+            <i class="fa-solid fa-chart-line"></i>
+            <i class="fa-solid fa-file-pen"></i>
             <i class="fa-solid fa-gear" onclick="openSettingsPopup()"></i>
         </div>
     </nav>
