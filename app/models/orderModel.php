@@ -1,6 +1,5 @@
 <?php 
 
-
 require_once '../config/db.php';
 
 date_default_timezone_set('US/Eastern');
@@ -17,7 +16,6 @@ class OrderModel {
 
     }
 
-
     // CRUD
 
     // CREATE
@@ -26,7 +24,6 @@ class OrderModel {
 
             $order_date = (new DateTime())->format('Y-m-d H:i:s');
 
-            // final answer
             $return = array();
 
             // transaction to commit or rollback, in case there is an error, because we are making multiple queries
@@ -52,6 +49,7 @@ class OrderModel {
             $stmt2 = $this->db->prepare($query2);
             $stmt2->execute();
 
+            // everything went fine so commit the transaction
             $this->db->commit();
 
             array_push($return, true);
@@ -59,6 +57,7 @@ class OrderModel {
         } 
         catch (PDOException $e) {
 
+            // error, so revert the transaction
             $this->db->rollBack();
 
             array_push($return, false);
@@ -78,7 +77,6 @@ class OrderModel {
 
         try {
 
-            // final answer
             $return = array();
 
             $query = "SELECT a.*, b.*, c.* FROM `order` AS a 
@@ -111,7 +109,6 @@ class OrderModel {
 
         try {
 
-            // final answer
             $return = array();
 
             $query = "SELECT a.*, b.*, c.* FROM `order` AS a 
@@ -143,10 +140,8 @@ class OrderModel {
     // UPDATE
     public function updateOrder($order_id, $order_finished) {
 
-        
         try {
 
-            // final answer
             $return = array();
 
             // if order state = 1, set finished time
@@ -188,51 +183,18 @@ class OrderModel {
 
     }
 
-    // DELETE
-    public function deleteOrder($order_id) {
-
+    public function archiveOrders() {
         try {
 
-            // final answer
-            $return = array();
-            
-            $query = "DELETE FROM `order` WHERE order_id = ?";
-            $stmt = $this->db->prepare($query);
-            $stmt->execute([$order_id]);
-            $db_result = $stmt->rowCount();
-
-            array_push($return, true);
-            array_push($return, $db_result);
-
-        } 
-        catch (PDOException $e) {
-
-            array_push($return, false);
-            array_push($return, $e);
-
-        }
-        finally {
-
-            return $return;
-
-        }
-
-    }
-
-    public function deleteFinishedOrders() {
-
-        try {
-
-            // final answer
             $return = array();
 
-            $query = "DELETE FROM order WHERE order_finished = 1";
-            $stmt = $this->db->prepare($query);
+            $query = "UPDATE `order` SET order_finished = 2 WHERE order_finished = 1";
+            $stmt = $this->db->query($query);
             $stmt->execute();
-            $db_result = $stmt->rowCount();
+            $result = $stmt->rowCount();
 
             array_push($return, true);
-            array_push($return, $db_result);
+            array_push($return, $result);
 
         } 
         catch (PDOException $e) {
@@ -247,7 +209,6 @@ class OrderModel {
 
         }
     }
-
 
 }
 

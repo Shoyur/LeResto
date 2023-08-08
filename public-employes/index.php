@@ -64,7 +64,7 @@
                 <input type="text" id="id_order" placeholder="ID de commande" />
                 <button id="history_put_back_but">Confirmer</button>
             </div>
-            <button id="history_popup_clear">Archiver les commandes terminées</button>
+            <button id="history_popup_archive">Archiver les commandes terminées</button>
             <button id="history_popup_cancel">Cancel</button>
         </div>
     </div>

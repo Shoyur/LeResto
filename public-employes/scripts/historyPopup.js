@@ -23,11 +23,15 @@ function getFinishedOrders() {
 }
 
 function openHistoryPopup() {
+
     $('#finished_orders').empty();
-    getFinishedOrders()
-    .then(function(orders) {
+
+    getFinishedOrders().then(function(orders) {
         var divContent = '';
         if (orders.length > 0) {
+            document.getElementById("history_put_back_but").disabled = false;
+            document.getElementById("history_popup_archive").disabled = false;
+            document.getElementById("id_order").disabled = false;
             let new_order = 0;
             divContent = '<h2>Commandes terminées</h2>';
             $.each(orders, function(index, order) {
@@ -49,6 +53,9 @@ function openHistoryPopup() {
         }
         else {
             $('#finished_orders').text('Aucune commande terminée, ou tous archivées.');
+            document.getElementById("history_put_back_but").disabled = true;
+            document.getElementById("history_popup_archive").disabled = true;
+            document.getElementById("id_order").disabled = true;
         }
     })
     .catch(function(error) {
@@ -64,20 +71,29 @@ function openHistoryPopup() {
             closeHistoryPopup();
         }
     });
+
+    $('#history_popup_archive').off('click').on('click', function() {
+        archiveOrders();
+    });
+
     $('#history_popup_cancel').off('click').on('click', function() {
         closeHistoryPopup(); 
     });
+
     $('#history_popup').fadeIn();
+
     $(document).on('keydown', function(e) {
         if (e.keyCode === 27) {
             closeHistoryPopup();
         }
     });
+
     $('#history_popup').on('click', function(e) {
         if (!$(e.target).closest('.history_popup_content').length) {
             closeHistoryPopup();
         }
     });
+
 }
 
 function closeHistoryPopup() {
@@ -101,6 +117,30 @@ function putBackOrder(order_id) {
         success: function(result) {
             if (result[0]) {
                 console.log("La commande no." + result[1] + " a été remise en cuisine.")
+            } 
+            else {
+                console.error("Problème à mettre à jour la commande : " + result[1]);
+            }
+        },
+        error: function(xhr, status, error) {
+            console.log('Error:', error);
+        }
+    });
+}
+
+function archiveOrders() {
+    var data = {
+        archive: true
+    }
+    $.ajax({
+        url: '/monsystemeresto/app/controllers/orderController.php',
+        type: 'PATCH',
+        data: JSON.stringify(data),
+        dataType: 'json',
+        async: false,
+        success: function(result) {
+            if (result[0]) {
+                console.log("Ces commandes ont été archivées.")
             } 
             else {
                 console.error("Problème à mettre à jour la commande : " + result[1]);

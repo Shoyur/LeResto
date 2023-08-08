@@ -1,4 +1,5 @@
 let interval_refresh;
+let orders;
 
 $(document).ready(function() {
     // first time init
@@ -16,7 +17,8 @@ function getOpenOrders() {
         dataType: 'json',
         success: function(result) {
             if (result[0]) {
-                showOpenOrders(result[1]);
+                orders = result[1];
+                showOpenOrders();
             }
             else {
                 console.log('Error:', result[1]);
@@ -30,7 +32,7 @@ function getOpenOrders() {
 }
 
 
-function showOpenOrders(orders) {
+function showOpenOrders() {
 
     $('#orders_list').empty();
 

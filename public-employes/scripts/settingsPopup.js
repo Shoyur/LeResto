@@ -51,6 +51,7 @@ function saveSettings() {
         success: function(result) {
             changeTimerValue(refresh);
             closeSettingsPopup();
+            showOpenOrders();
         },
         error: function(xhr, status, error) {
             console.error('Error:', error);

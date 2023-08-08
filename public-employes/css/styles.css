@@ -71,10 +71,9 @@ select:hover {
 }
 
 button[disabled] {
-  cursor: not-allowed; /* Change cursor to indicate it's disabled */
-  opacity: 0.5; /* Reduce opacity to visually indicate it's disabled */
-  pointer-events: none; /* Disable pointer events on the element */
-  /* Add any other styles specific to the disabled state */
+  cursor: not-allowed;
+  opacity: 0.5;
+  pointer-events: none;
 }
 
 a {

@@ -1,10 +1,8 @@
 <?php 
 
-
 require_once '../models/orderModel.php';
 
 date_default_timezone_set('US/Eastern');
-
 
 class OrderController {
 
@@ -61,27 +59,15 @@ class OrderController {
 
     }
 
-    // DELETE
-    public function deleteOrder($order_id) {
+    public function archiveOrders() {
 
         $orderModel = new OrderModel();
-        $result = $orderModel->deleteOrder($order_id);
+        $result = $orderModel->archiveOrders();
 
         header('Content-Type: application/json');
         return json_encode($result);
 
     }
-
-    public function deleteFinishedOrders() {
-        
-        $orderModel = new OrderModel();
-        $result = $orderModel->deleteFinishedOrders();
-
-        header('Content-Type: application/json');
-        return json_encode($result);
-
-    }
-
 
 }
 
@@ -93,6 +79,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
     case 'GET': {
 
         echo $orderController->getOpenOrders();
+
         break;
 
     }
@@ -100,6 +87,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
     case 'POST': {
 
         echo $orderController->getFinishedOrders();
+
         break;
 
     }
@@ -109,17 +97,22 @@ switch ($_SERVER['REQUEST_METHOD']) {
         $requestBody = file_get_contents('php://input');
         $data = json_decode($requestBody, true);
 
-        $order_id = $data['order_id'];
-        $order_finished = $data['order_finished'];
+        if (isset($data['archive'])) {
 
-        echo $orderController->updateOrder($order_id, $order_finished); 
+            echo $orderController->archiveOrders(); 
+
+        }
+
+        else {
+
+            $order_id = $data['order_id'];
+            $order_finished = $data['order_finished'];
+            echo $orderController->updateOrder($order_id, $order_finished); 
+
+        }
+
         break;
         
     }
 
-    case 'DELETE': {
-
-        echo $orderController->archiveOrders(); 
-        break;
-    }
 }
