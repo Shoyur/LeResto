@@ -1,5 +1,7 @@
-var food_data;
+import { Food } from './Food.js';
+import { Categ } from './Categ.js';
 
+var food_data;
 
 $(document).ready(function() {
     
@@ -123,35 +125,6 @@ window.addEventListener("scroll", function() {
         updateButtonHoverState(topValuesArray.length);
     }
 });
-
-
-
-
-class Food {
-    constructor(food_id, categ_id, food_name, food_avail, food_price, food_image, food_descr, food_options, food_sold, food_stock) {
-        this.food_id = food_id;
-        this.categ_id = categ_id;
-        this.food_name = food_name;
-        this.food_avail = food_avail;
-        this.food_price = food_price;
-        this.food_image = food_image;
-        this.food_descr = food_descr;
-        this.food_options = food_options;
-        this.food_sold = food_sold;
-        this.food_stock = food_stock;
-    }
-}
-
-
-class Categ {
-    constructor(categ_id, categ_name, categ_sort, categ_image, categ_descr) {
-        this.categ_id = categ_id;
-        this.categ_name = categ_name;
-        this.categ_sort = categ_sort;
-        this.categ_image = categ_image;
-        this.categ_descr = categ_descr;
-      }
-}
 
 
 function createFoodCard(food) {

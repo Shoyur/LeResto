@@ -37,43 +37,98 @@ class FoodModel {
     }
 
     // READ
+    // public function getFoodWithCateg() {
+
+    //     try {
+
+    //         $return = array();
+
+    //         $query = "SELECT a.*, b.* FROM food AS a JOIN categ AS b ON a.categ_id = b.categ_id ORDER BY b.categ_sort";
+    //         $stmt = $this->db->prepare($query);
+    //         $stmt->execute();
+    //         $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    //         array_push($return, true);
+    //         array_push($return, $result);
+
+    //     } 
+    //     catch (PDOException $e) {
+
+    //         array_push($return, false);
+    //         array_push($return, $e);
+
+    //     } 
+    //     finally {
+
+    //         return $return;
+            
+    //     }
+
+    // }
+
     public function getFoodWithCateg() {
 
-        $query = "SELECT a.*, b.* FROM food AS a JOIN categ AS b ON a.categ_id = b.categ_id ORDER BY b.categ_sort";
         try {
+
+            $return = array();
+
+            $query = "SELECT 'category' AS type, categ_id AS id, categ_name AS name, categ_sort AS sort, NULL AS categ_id, NULL AS food_avail, NULL AS food_price, NULL AS food_image, NULL AS food_descr 
+                FROM categ 
+                UNION ALL 
+                SELECT 'food', food_id AS id, food_name AS name, null, food.categ_id, food_avail, food_price, food_image, food_descr 
+                FROM food 
+                LEFT JOIN categ ON food.categ_id = categ.categ_id
+                ORDER BY type, CASE WHEN type = 'category' THEN sort ELSE id END";
             $stmt = $this->db->prepare($query);
             $stmt->execute();
             $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            return $result;
+
+            array_push($return, true);
+            array_push($return, $result);
+
         } 
         catch (PDOException $e) {
-            // TO DO
-        }
+
+            array_push($return, false);
+            array_push($return, $e);
+
+        } 
         finally {
-            // TO DO
+
+            return $return;
+            
         }
 
     }
 
     public function getFoodTotal($foodIds) {
-        $response = array();
-    
-        // Prepare placeholders for the IN clause
-        $placeholders = implode(',', array_fill(0, count($foodIds), '?'));
-    
-        $query = "SELECT food_id, food_price FROM food WHERE food_id IN ($placeholders)";
         
         try {
+
+            $return = array();
+
+            // Prepare placeholders for the IN clause
+            $placeholders = implode(',', array_fill(0, count($foodIds), '?'));
+
+            $query = "SELECT food_id, food_price FROM food WHERE food_id IN ($placeholders)";
             $stmt = $this->db->prepare($query);
             $stmt->execute($foodIds); // Pass the array directly as parameters
             $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            $response['ok'] = true;
-            $response['result'] = $result;
-        } catch (PDOException $e) {
-            $response['ok'] = false;
-            $response['result'] = $e;
-        } finally {
-            return $response;
+
+            array_push($return, true);
+            array_push($return, $result);
+
+        } 
+        catch (PDOException $e) {
+
+            array_push($return, false);
+            array_push($return, $e);
+
+        } 
+        finally {
+
+            return $return;
+            
         }
     }
 

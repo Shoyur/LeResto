@@ -20,6 +20,7 @@ class FoodController {
         
         $foodModel = new FoodModel();
         $result = $foodModel->getFoodWithCateg();
+        
         header('Content-Type: application/json');
         return json_encode($result);
 

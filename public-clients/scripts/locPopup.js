@@ -1,5 +1,4 @@
-const location_popup_but = document.getElementById('location_popup_but');
-location_popup_but.addEventListener('click', () => {
+$('#loc_popup_close').addEventListener('click', () => {
     openLocationPopup();
 });
 

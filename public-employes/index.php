@@ -18,6 +18,9 @@
     <script defer src="scripts/orderPopup.js"></script>
     <script defer src="scripts/historyPopup.js"></script>
     <script defer src="scripts/statsPopup.js"></script>
+    <script defer type="module" src="scripts/Food.js"></script>
+    <script defer type="module" src="scripts/Categ.js"></script>
+    <script defer type="module" src="scripts/menuManagePopup.js"></script>
     
 
 </head>
@@ -33,18 +36,18 @@
             <span id="orders_count"></span>
         </div>
         <div class="nav_but">
-            <i class="fa-solid fa-clock-rotate-left" onclick="openHistoryPopup()"></i>
-            <i class="fa-solid fa-chart-line"></i>
-            <i class="fa-solid fa-file-pen"></i>
-            <i class="fa-solid fa-gear" onclick="openSettingsPopup()"></i>
+            <i class="fa-solid fa-clock-rotate-left"  id="history_popup_but"></i>
+            <i class="fa-solid fa-chart-line" id="stats_popup_but"></i>
+            <i class="fa-solid fa-file-pen" id="menu_manage_popup_but"></i>
+            <i class="fa-solid fa-gear" id="settings_popup_but"></i>
         </div>
     </nav>
 
-    <!-- ORDERS LIST -->
+    <!-- CURRENT ORDERS LIST -->
     <div id="orders_list"></div>
 
-    <!-- SPECIFIC ORDER (TO FINISH) POPUP -->
-    <div id="order_popup" class="order_popup">
+    <!-- SPECIFIC ORDER (TO FINISH) DETAILS POPUP -->
+    <div id="order_popup" class="popup">
         <div class="order_popup_content">
             <h2 id="order_popup_title"></h2>
             <div class="order_popup_aliments">
@@ -56,7 +59,7 @@
     </div>
 
     <!-- FINISHED ORDERS (HISTORY) POPUP -->
-    <div id="history_popup" class="history_popup">
+    <div id="history_popup" class="popup">
         <div class="history_popup_content">
             <div id="finished_orders" class="history_popup_textarea">...</div>
             <div class="put_back_order">
@@ -70,7 +73,7 @@
     </div>
 
     <!-- STATISTICS POPUP -->
-    <div id="stats_popup" class="stats_popup">
+    <div id="stats_popup" class="popup">
         <div class="stats_popup_content">
             <div class="stats_list">
                 <!--  -->
@@ -81,8 +84,20 @@
         </div>
     </div>
 
+    <!-- MENU MANAGEMENT POPUP -->
+    <div id="menu_manage_popup" class="popup">
+        <div class="menu_manage_popup_content">
+            <div class="menu_manage_list" id="menu_manage_list">
+                <div class="menu_manage_popup_load_anim" id="menu_manage_popup_load_anim">
+                    <i class="fas fa-spinner fa-spin"></i>
+                </div>
+            </div>
+            <button id="menu_manage_popup_close">Fermer</button>
+        </div>
+    </div>
+
     <!-- SETTINGS POPUP -->
-    <div id="settings_popup" class="settings_popup">
+    <div id="settings_popup" class="popup">
         <div class="settings_popup_content">
             <h3>Rafraîchir la page chaque <input type="number" id="refresh_interval" class="input_number"> sec.</h3>
             <h3 class="inline_block">Couleur de délai :</h3>
@@ -103,6 +118,9 @@
             <button id="settings_popup_cancel">Cancel</button>
         </div>
     </div>
+
+    <!-- SETTINGS POPUP -->
+    <div class="disabled_overlay" id="disabled_overlay"></div>
 
 
     

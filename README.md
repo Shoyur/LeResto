@@ -28,6 +28,7 @@ DEMO: https://www.youtube.com/watch?v=...TBA
 
 TODO list & ideas :
 
+- clean scripts, jquery vs vanilla
 - possibility to cancel an order by the restaurant
 - user login on customer side
 - user login on employees side

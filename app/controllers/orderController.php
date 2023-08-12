@@ -94,8 +94,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
 
     case 'PATCH': {
 
-        $requestBody = file_get_contents('php://input');
-        $data = json_decode($requestBody, true);
+        $data = json_decode(file_get_contents('php://input'), true);
 
         if (isset($data['archive'])) {
 

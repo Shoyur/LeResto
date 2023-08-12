@@ -1,3 +1,8 @@
+$('#history_popup_but').click(() => {
+    openHistoryPopup();
+});
+
+
 function getFinishedOrders() {
     return new Promise(function(resolve, reject) {
         $.ajax({

@@ -4,6 +4,10 @@ var interval_1 = 0;
 var interval_2 = 0;
 var the_location;
 
+$('#settings_popup_but').click(() => {
+    openSettingsPopup();
+});
+
 function getSettings() {
     $.ajax({
         url: '/monsystemeresto/app/controllers/settingsController.php',

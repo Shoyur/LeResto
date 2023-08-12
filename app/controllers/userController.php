@@ -56,11 +56,11 @@ $userController = new UserController();
 switch ($_SERVER['REQUEST_METHOD']) {
 
     case 'POST':
-        $user_lang  = $_POST['user_lang'];
-        $user_email  = $_POST['user_email'];
-        $user_pass  = $_POST['user_pass'];
-        $user_phone  = $_POST['user_phone'];
-        $user_address  = $_POST['user_address'];
+        $user_lang = $_POST['user_lang'];
+        $user_email = $_POST['user_email'];
+        $user_pass = $_POST['user_pass'];
+        $user_phone = $_POST['user_phone'];
+        $user_address = $_POST['user_address'];
         echo $userController->createUser($user_lang, $user_email, $user_pass, $user_phone, $user_address);
         break;
 
