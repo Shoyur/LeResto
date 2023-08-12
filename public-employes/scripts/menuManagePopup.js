@@ -63,7 +63,7 @@ function loadCards(food_data) {
             $('#menu_manage_list').append(food_card);
         }
         else {
-            // TO DO createVirginCategCard(a.id)
+            // TO DO createVirginCategCard(a.sort + 1)
             const categ = new Categ(null, null, null);
             const categ_card = createCategCard(categ);
             $('#menu_manage_list').append(categ_card);
