@@ -13,7 +13,7 @@
   --col_purple_3: #501070;
   --col_dark_purple: #302030;
   --col_dark: #150520;
-  --col_disable: #666;
+  --col_disable: rgba(120, 120, 120, 0.3);
 
   /* color vars to switch theme */
   --col_nav: var(--col_dark);
@@ -24,7 +24,7 @@
   --col_card: var(--col_purple_3);
 
   /* other global vars */
-  --padding_top: 110px;
+  --padding_top: 50px;
   --transition: background-color 0.7s ease, color 0.7s ease;
 
   /* ---------------------- */
@@ -46,6 +46,7 @@ body {
   padding-top: var(--padding_top);
   transition: var(--transition);
   text-decoration: none;
+  background-color: var(--col_list);
 }
 
 button, 
@@ -63,6 +64,7 @@ select {
   outline: none;
   border: none;
   font-size: 1rem;
+  box-sizing: border-box;
 }
 
 button:hover, 
@@ -121,54 +123,113 @@ i:hover {
 /* NAVBAR */
 
 .nav {
-  background-color: var(--col_1);
-  overflow: hidden;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  box-shadow: 0 4px 2px -2px rgba(0, 0, 0, 0.3);
   position: fixed;
   top: 0;
+  left: 0;
+  width: 100%;
+  transition: var(--transition);
+  background-color: var(--col_nav);
+  box-shadow: 0 4px 2px -2px rgba(0, 0, 0, 0.3);
+  height: 60px;
 }
 
-.nav_logo img {
-  height: 50px;
+.nav_container_div {
+  position: relative;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 60px;
+}
+
+.nav_logo_div {
+  position: absolute;
+  height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 20px;
+}
+
+.nav_logo_div img {
+  height: 40px;
   vertical-align: middle;
-  margin: 10px 20px;
+  margin: 10px 0px;
 }
 
-.nav_mid {
-  flex-grow: 1;
-  text-align: center;
-}
-
-.nav_but {
-  justify-content: flex-end;
+.nav_icon_but_div {
+  position: absolute;
+  top: 0;
+  right: 0;
   font-size: 30px;
-  padding-right: 30px;
-  padding-left: 30px;
+  height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 18px;
 }
 
-.nav_but i {
+.nav_icon_but_div i {
   padding-right: 12px;
   padding-left: 12px;
-  transition: background-color 0.5s ease, color 0.5s ease;
+  transition: var(--transition);
+  color: var(--col_but);
 }
 
-.nav_but i:hover {
-  color: var(--col_2);
+.nav_icon_but_div i:hover {
+  color: var(--col_hover);
   cursor: pointer;
+}
+
+@media (max-width: 480px) {
+
+  :root {
+    --padding_top: 50px;
+  }
+
+  .nav {
+    height: 60px;
+  }
+  
+  .nav_container_div {
+    height: 50px;
+  }
+
+  .nav_logo_div {
+    margin-left: 10px;
+  }
+
+  .nav_logo_div img {
+    height: 30px;
+  }
+
+  .nav_icon_but_div {
+    margin-right: 8px;
+    margin-left: 5px;
+  }
+
+  .nav_icon_but_div i {
+    padding-right: 8px;
+    padding-left: 8px;
+  }
+
+  .nav_categ_but_div {
+    margin-bottom: -5px;
+    padding-left: 0px;
+    margin-left: 0px;
+  }
+
 }
 
 /* ----------------------------------------------------------- */
 /* MAIN CARDS (ORDERS) */
 
 .order_card {
-  background-color: var(--col_1);
+  background-color: var(--col_card);
+  color: white;
   padding: 10px 30px;
   margin: 40px;
   cursor: pointer;
-  border: solid 5px var(--col_1);
+  border: solid 5px var(--col_card);
   padding-bottom: 40px;
   border-radius: 20px;
 }
@@ -182,8 +243,8 @@ i:hover {
 }
 
 .order_card:hover {
-  background-color: var(--col_BG);
-  border: solid 5px var(--col_B2);
+  background-color: var(--col_hover);
+  border: solid 5px var(--col_card);
 }
 
 .order_card h3 {
@@ -203,12 +264,13 @@ i:hover {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background-color: var(--col_1);;
+  background-color: var(--col_card);
   padding: 20px;
   width: 80%;
   max-width: 500px;
   text-align: center;
   border-radius: 20px;
+  color: var(--col_text);
 }
 
 .order_popup_aliments {
@@ -238,28 +300,18 @@ i:hover {
 /* ----------------------------------------------------------- */
 /* FINISHED ORDERS (HISTORY) POPUP */
 
-.history_popup {
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.7);
-  z-index: 999;
-}
-
 .history_popup_content {
   position: relative;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background-color: var(--col_1);;
+  background-color: var(--col_card);
   padding: 20px;
   width: 80%;
   max-width: 500px;
   text-align: center;
   border-radius: 20px;
+  color: var(--col_text);
 }
 
 .history_popup_textarea {
@@ -267,7 +319,7 @@ i:hover {
   height: 400px;
   overflow-y: scroll;
   resize: none;
-  background-color: white;
+  background-color: var(--col_but);
   border: none;
   border-radius: 5px;
   text-align: left;
@@ -297,34 +349,24 @@ i:hover {
 
 .put_back_order input {
   width: 75px;
-  padding: 5px;
+  /* padding: 5px; */
 }
 
 /* ----------------------------------------------------------- */
 /* STATISTICS POPUP */
 
-.stats_popup {
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.7);
-  z-index: 999;
-}
-
-.stats_popup_content {
+/* .stats_popup_content {
   position: relative;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background-color: var(--col_1);
+  background-color: var(--col_card);
   padding: 20px;
   width: 80%;
   max-width: 500px;
   text-align: center;
   border-radius: 20px;
+  color: var(--col_text);
 }
 
 .stats_list {
@@ -332,8 +374,35 @@ i:hover {
   height: 400px;
   overflow-y: scroll;
   resize: none;
-  background-color: white;
+  background-color: var(--col_but);
   border: none;
+  border-radius: 5px;
+  text-align: left;
+  display: inline-block;
+  margin: 0px 0px 30px 0px;
+} */
+
+/* TEST */
+
+.stats_popup_content {
+  position: relative;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: var(--col_nav);
+  padding: 20px;
+  width: 80%;
+  max-width: 500px;
+  text-align: center;
+  border-radius: 20px;
+  color: var(--col_text);
+}
+
+.stats_list {
+  width: 100%;
+  height: 80px;
+  background-color: var(--col_card);
+  /* border: none; */
   border-radius: 5px;
   text-align: left;
   display: inline-block;
@@ -391,21 +460,24 @@ i:hover {
   color: var(--col_text);
 }
 
-
-
 .menu_manage_list_cat_div {
-  width: calc(100%);
+  width: 100%;
   height: 40px;
   background-color: var(--col_card);
   border: none;
   border-radius: 5px;
-  text-align: left;
   display: flex;
   align-items: center;
   margin-bottom: 5px;
 }
 
+.menu_manage_list_v_cat_div {
+  width: 60%;
+  font-size: 30px;
+}
+
 .menu_manage_list_cat_div input {
+  width: 100%;
   margin-right: 0px;
 }
 
@@ -415,11 +487,6 @@ i:hover {
   align-items: center;
   justify-content: center;
   margin-right: 10px;
-}
-
-.input_div input {
-  width: 100%;
-  box-sizing: border-box;
 }
 
 .menu_manage_list_cat_div_but {
@@ -439,16 +506,10 @@ i:hover {
   margin-right: 8px;
 }
 
-.menu_manage_list_cat_del_disable,
-.menu_manage_list_cat_del_disable:hover  {
-  cursor: not-allowed;
-  color: var(--col_disable);
-}
-
 .menu_manage_list_food_div {
   width: calc(100% - 30px);
   height: 80px;
-  background-color: var(--col_card);
+  background-color: var(--col_list);
   border: none;
   border-radius: 5px;
   text-align: left;
@@ -456,6 +517,17 @@ i:hover {
   margin-left: 30px;
   margin-bottom: 5px;
   display: flex;
+}
+
+.menu_manage_list_v_food_div {
+  width: 60%;
+  height: 40px;
+  font-size: 30px;
+}
+
+.v_food_input_div {
+  width: 60%;
+  justify-content: left;
 }
 
 .menu_manage_list_food_div_img {
@@ -486,7 +558,6 @@ i:hover {
 
 .menu_manage_list_food_div_inputs input {
   width: 100%;
-  box-sizing: border-box;
   margin: 5px 0px;
 }
 
@@ -519,37 +590,31 @@ i:hover {
   height: 50%;
 }
 
-.no_delete,
-.no_delete:hover {
+.icon_disable,
+.icon_disable:hover {
   cursor: not-allowed;
-  color: rgba(128, 128, 128, 0.37);
+  opacity: 0.5;
+}
+
+.menu_manage_list_v_cat_div input {
+  margin-right: 10px;
 }
 
 /* ----------------------------------------------------------- */
 /* SETTINGS POPUP */
-
-.settings_popup {
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.7);
-  z-index: 999;
-}
 
 .settings_popup_content {
   position: relative;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background-color: var(--col_1);;
+  background-color: var(--col_card);
   padding: 20px;
   width: 80%;
   max-width: 500px;
   text-align: center;
   border-radius: 20px;
+  color: var(--col_text);
 }
 
 .input_number {
@@ -638,10 +703,11 @@ input:checked + .slider:before {
   height: 200px;
   overflow-y: scroll;
   resize: none;
-  background-color: white;
+  background-color: var(--col_but);
   border: none;
   border-radius: 5px;
   text-align: left;
   display: inline-block;
   margin: 20px 0px 30px 0px;
+  color: var(--col_text);
 }

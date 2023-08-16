@@ -19,53 +19,36 @@ class FoodModel {
     // CRUD
 
     // CREATE
-    public function createFood($categ_id, $food_name, $food_avail, $food_price, $food_image, $food_descr, $food_options, $food_sold, $food_stock) {
+    public function createFood($categ_id, $food_name) {
 
-        $query = "INSERT INTO food (categ_id, food_name, food_avail, food_price, food_image, food_descr, food_options, food_sold, food_stock) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        $query = "INSERT INTO food (categ_id, food_name) VALUES (?, ?)";
         try {
+
+            $return = array();
+
             $stmt = $this->db->prepare($query);
-            $stmt->execute([$categ_id, $food_name, $food_avail, $food_price, $food_image, $food_descr, $food_options, $food_sold, $food_stock]);
-            return $this->db->lastInsertId();
+            $stmt->execute([$categ_id, $food_name]);
+            $result = $this->db->lastInsertId();
+
+            array_push($return, true);
+            array_push($return, $result);
+
         } 
         catch (PDOException $e) {
-            // TO DO
-        }
+
+            array_push($return, false);
+            array_push($return, $e);
+
+        } 
         finally {
-            // TO DO
+
+            return $return;
+            
         }
 
     }
 
     // READ
-    // public function getFoodWithCateg() {
-
-    //     try {
-
-    //         $return = array();
-
-    //         $query = "SELECT a.*, b.* FROM food AS a JOIN categ AS b ON a.categ_id = b.categ_id ORDER BY b.categ_sort";
-    //         $stmt = $this->db->prepare($query);
-    //         $stmt->execute();
-    //         $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-    //         array_push($return, true);
-    //         array_push($return, $result);
-
-    //     } 
-    //     catch (PDOException $e) {
-
-    //         array_push($return, false);
-    //         array_push($return, $e);
-
-    //     } 
-    //     finally {
-
-    //         return $return;
-            
-    //     }
-
-    // }
-
     public function getFoodWithCateg() {
 
         try {
@@ -101,18 +84,19 @@ class FoodModel {
 
     }
 
-    public function getFoodTotal($foodIds) {
+    // for Stripe API
+    public function getFoodTotal($food_ids) {
         
         try {
 
             $return = array();
 
-            // Prepare placeholders for the IN clause
-            $placeholders = implode(',', array_fill(0, count($foodIds), '?'));
+            // string with separators for the foods string
+            $many_foods_string = implode(',', array_fill(0, count($food_ids), '?'));
 
-            $query = "SELECT food_id, food_price FROM food WHERE food_id IN ($placeholders)";
+            $query = "SELECT food_id, food_price FROM food WHERE food_id IN ($many_foods_string)";
             $stmt = $this->db->prepare($query);
-            $stmt->execute($foodIds); // Pass the array directly as parameters
+            $stmt->execute($food_ids); // Pass the array directly as parameters
             $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
             array_push($return, true);

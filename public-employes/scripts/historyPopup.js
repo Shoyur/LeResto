@@ -51,6 +51,13 @@ function openHistoryPopup() {
                     divContent += "<br><b>Téléphone:</b> " + order.order_phone;
                     divContent += "<br><b>Notes sur la commande:</b> " + order.order_notes;
                     divContent += "<br><b>Carte, 4 premiers chiffres:</b> " + order.order_cc_last4;
+                    divContent += "<br><b>Commande passée le:</b> " + order.order_date;
+                    divContent += "<br><b>Commande terminée le:</b> " + order.order_date_finished;
+                    const time_diff = new Date(order.order_date_finished) - new Date(order.order_date);
+                    const minutes = Math.floor((time_diff / (1000 * 60)));
+                    const seconds = Math.floor((time_diff % (1000 * 60)) / 1000);
+                    divContent += "<br><b>Temps de traitement:</b> " + `${minutes}m ${seconds}s`;
+                    divContent += "<br><b>Détails de la commande:</b> ";
                 }
                 divContent += "<br><span>1<span>" + order.food_name + '' + (order.food_options ? ' (' + order.food_options + ')' : '');
             });

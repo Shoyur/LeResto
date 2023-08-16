@@ -27,7 +27,6 @@
     <script defer src="scripts/payment.js"></script>
     <script defer src="scripts/cookies.js"></script>
 
-    <!-- <script defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDWzNZvErnEWtE8sH7rZBng1V78S_IxSf8&callback=initAutocomplete&libraries=places&v=weekly"></script> -->
     <script defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB41DRUbKWJHPxaFjMAwdrzWzbVKartNGg&callback=initAutocomplete&libraries=places"></script>
 
     

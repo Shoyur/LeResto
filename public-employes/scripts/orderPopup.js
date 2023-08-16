@@ -19,14 +19,11 @@ function openOrderPopup(order) {
         closeOrderPopup(); 
     });
     $('#order_popup').fadeIn();
-
-    // fermer le popup si on pèse Enter
     $(document).on('keydown', function(e) {
         if (e.keyCode === 27) {
             closeOrderPopup();
         }
     });
-    // fermer le popup si on clique ailleurs
     $('#order_popup').on('click', function(e) {
         if (!$(e.target).closest('.order_popup_content').length) {
             closeOrderPopup();

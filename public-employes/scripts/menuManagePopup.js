@@ -3,7 +3,8 @@ import { Categ } from './Categ.js';
 
 
 document.addEventListener("DOMContentLoaded", function() {
-    $('#menu_manage_popup_but').click(() => {
+    const menu_manage_popup_but = document.getElementById('menu_manage_popup_but');
+    menu_manage_popup_but.addEventListener('click', () => {
         openMenuManagePopup();
     });
 });
@@ -11,6 +12,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
 function openMenuManagePopup() {
 
+    const menu_manage_popup_but = document.getElementById('menu_manage_popup_but');
     $('#menu_manage_popup').fadeIn();
     $('#menu_manage_popup_close').off('click').on('click', function() {
         closeMenuManagePopup(); 
@@ -43,38 +45,65 @@ function loadCards(food_data) {
 
     if (!food_data.length) { return; }
 
-    $('#menu_manage_list').empty();
+    const menu_manage_list = document.getElementById('menu_manage_list');
+    menu_manage_list.replaceChildren();
 
-    a: for (const a of food_data) {
+    let last_categ = 0;
+    let food_data_array = [];
+
+    // create sorted (as the end result) array for the cards list
+    food_data.forEach((a, index) => {
         if (a.type == "category") {
-            const categ = new Categ(a.id, a.name, a.sort);
-            const categ_card = createCategCard(categ);
-            $('#menu_manage_list').append(categ_card);
-            for (const b of food_data) {
+            let sort_ids = [0, 0];
+            if (index > 0) { sort_ids[0] = last_categ; }
+            if (food_data[index + 1].type == "category") { sort_ids[1] = food_data[index + 1].id; }
+            food_data_array.push([new Categ(a.id, a.name, a.sort), sort_ids]);
+            food_data.forEach((b, index) => {
                 if (b.categ_id == a.id) {
-                    const food = new Food(b.id, b.categ_id, b.name, b.food_avail, b.food_price, b.food_image, b.food_descr);
-                    const food_card = createFoodCard(food);
-                    $('#menu_manage_list').append(food_card);
+                    food_data_array.push([new Food(b.id, b.categ_id, b.name, b.food_avail, b.food_price, b.food_image, b.food_descr)]);
                 }
+            });
+            last_categ = a.id;
+        }
+    });
+
+    // create cards
+    let last_categ_sort_num = 0;
+    food_data_array.forEach((c, index) => {
+        if (c[0] instanceof Categ) {
+            let categ_deletable = true;
+                // if not out of bound
+            if (index + 1 < food_data_array.length && 
+                // and next element is a Food
+                (food_data_array[index + 1][0] instanceof Food) && 
+                // but this next food is not part of this current category
+                food_data_array[index + 1][0].categ_id == c[0].categ_id) {
+                // then make this categ possible to delete
+                categ_deletable = false;
             }
-            // TO DO createVirginFoodCard(a.id)
-            const food = new Food(666, a.id, "No Food Available", 0, "0.00", 'na.jpg', "No food available in this category.");
-            const food_card = createFoodCard(food);
-            $('#menu_manage_list').append(food_card);
+            // add categ card to list
+            menu_manage_list.appendChild(createCategCard(c[0], c[1], categ_deletable));
+            last_categ_sort_num = c[0].categ_sort;
         }
         else {
-            // TO DO createVirginCategCard(a.sort + 1)
-            const categ = new Categ(null, null, null);
-            const categ_card = createCategCard(categ);
-            $('#menu_manage_list').append(categ_card);
-            break;
+            // add food card to list
+            menu_manage_list.appendChild(createFoodCard(c[0]));
+            if (!(index < (food_data_array.length - 1) && 
+                food_data_array[index + 1][0] instanceof Food && 
+                c[0].categ_id == food_data_array[index + 1][0].categ_id)) {
+                // console.log((index < (food_data_array.length - 2)) + " " + (food_data_array[index + 1] instanceof Food) + " " + (c.categ_id == food_data_array[index + 1].categ_id));
+                // if next card is not another food card (still in same category), add a virgin (create new) food card
+                menu_manage_list.appendChild(createVirginFoodCard(c[0].categ_id));
+            }
         }
-    }
+    });
+    // at the very end, add a virgin (create new) category card
+    menu_manage_list.appendChild(createVirginCategCard(last_categ_sort_num + 1));
 
 }
 
 
-function createCategCard(categ) {
+function createCategCard(categ, sort_ids, deletable) {
 
     const card = document.createElement('div');
     card.object = categ;
@@ -99,10 +128,11 @@ function createCategCard(categ) {
     i_save.classList.add('fa-floppy-disk');
     i_save.addEventListener('click', () => {
         const data = {
+            method: 'PATCH',
             new_name: categ_input.value,
             old_name: categ.categ_name
         }
-        HandleUpdateCateg(data);
+        HandleCategRequest(data);
     });
     menu_manage_list_cat_div_but_1.appendChild(i_save);
     menu_manage_list_cat_div_but.appendChild(menu_manage_list_cat_div_but_1);
@@ -111,6 +141,17 @@ function createCategCard(categ) {
     const i_up = document.createElement('i');
     i_up.classList.add('fa-solid');
     i_up.classList.add('fa-arrow-up');
+    if (sort_ids[0] == 0) { i_up.classList.add('icon_disable'); }
+    else {
+        i_up.addEventListener('click', () => {
+            const data = {
+                method: 'PATCH',
+                categ_id_1: sort_ids[0],
+                categ_id_2: categ.categ_id
+            }
+            HandleCategRequest(data);
+        });
+    }
     menu_manage_list_cat_div_but_2.appendChild(i_up);
     menu_manage_list_cat_div_but.appendChild(menu_manage_list_cat_div_but_2);
 
@@ -119,6 +160,17 @@ function createCategCard(categ) {
     const i_down = document.createElement('i');
     i_down.classList.add('fa-solid');
     i_down.classList.add('fa-arrow-down');
+    if (sort_ids[1] == 0) { i_down.classList.add('icon_disable'); }
+    else {
+        i_down.addEventListener('click', () => {
+            const data = {
+                method: 'PATCH',
+                categ_id_1: categ.categ_id,
+                categ_id_2: sort_ids[1]
+            }
+            HandleCategRequest(data);
+        });
+    }
     menu_manage_list_cat_div_but_3.appendChild(i_down);
     menu_manage_list_cat_div_but.appendChild(menu_manage_list_cat_div_but_3);
 
@@ -127,13 +179,58 @@ function createCategCard(categ) {
     const i_delete = document.createElement('i');
     i_delete.classList.add('fa-solid');
     i_delete.classList.add('fa-trash');
-    i_delete.classList.add('menu_manage_list_cat_del_disable');
+    if (deletable == false) { i_delete.classList.add('icon_disable'); }
+    else {
+        i_delete.addEventListener('click', () => {
+            const data = {
+                method: 'DELETE',
+                categ_id: categ.categ_id
+            }
+            HandleCategRequest(data);
+        });
+    }
     menu_manage_list_cat_div_but_4.appendChild(i_delete);
     menu_manage_list_cat_div_but.appendChild(menu_manage_list_cat_div_but_4);
 
     card.appendChild(menu_manage_list_cat_div_but);
 
     return card;
+
+}
+
+
+function createVirginCategCard(next_sort_id) {
+
+    const card = document.createElement('div');
+    card.classList.add('menu_manage_list_cat_div');
+    card.classList.add('menu_manage_list_v_cat_div');
+
+    const input_div = document.createElement('div');
+    input_div.classList.add('input_div');
+    const categ_input = document.createElement('input');
+    categ_input.type = 'text';
+    categ_input.placeholder = 'Nom de la catégorie';
+    input_div.appendChild(categ_input);
+
+    const i_add = document.createElement('i');
+    i_add.classList.add('fa-solid');
+    i_add.classList.add('fa-plus');
+    i_add.addEventListener('click', () => {
+        if (categ_input.value.length) {
+            const data = {
+                method: 'POST',
+                categ_name: categ_input.value,
+                categ_sort: next_sort_id
+            }
+            HandleCategRequest(data);
+        }
+    });
+    input_div.appendChild(i_add);
+
+    card.appendChild(input_div);
+
+    return card;    
+
 }
 
 
@@ -192,7 +289,6 @@ function createFoodCard(food) {
     i_save.classList.add('fa-solid');
     i_save.classList.add('fa-floppy-disk');
     i_save.addEventListener('click', () => {
-        handleSave(card);
         console.log("On tente de sauvegarder le nom et descr du produit no." + food.food_id);
     });
     menu_manage_list_food_div_save.appendChild(i_save);
@@ -235,6 +331,41 @@ function createFoodCard(food) {
 }
 
 
+function createVirginFoodCard(categ_id) {
+
+    const card = document.createElement('div');
+    card.classList.add('menu_manage_list_food_div');
+    card.classList.add('menu_manage_list_v_food_div');
+
+    const input_div = document.createElement('div');
+    input_div.classList.add('input_div');
+    input_div.classList.add('v_food_input_div');
+    const food_name_input = document.createElement('input');
+    food_name_input.type = 'text';
+    food_name_input.placeholder = 'Nom de l\'aliment';
+    input_div.appendChild(food_name_input);
+
+    const i_add = document.createElement('i');
+    i_add.classList.add('fa-solid');
+    i_add.classList.add('fa-plus');
+    i_add.addEventListener('click', () => {
+        if (food_name_input.value.length) {
+            const data = {
+                categ_id: categ_id,
+                food_name: food_name_input.value
+            }
+            HandleCreateFood(data);
+        }
+    });
+    input_div.appendChild(i_add);
+
+    card.appendChild(input_div);
+
+    return card;
+
+}
+
+
 function handleImgChange(event, food_id, card) {
     const selected_file = event.target.files[0];
     if (selected_file) {
@@ -273,7 +404,7 @@ async function getAll() {
             method: 'GET',
             headers: { 'Content-Type': 'application/json' }
         });
-        await new Promise(resolve => setTimeout(resolve, 1000)); // fake 2 seconds network lag
+        await new Promise(resolve => setTimeout(resolve, 2000)); // fake network lag
         const response_data = await response.json();
         if (!response_data[0]) {
             throw new Error(response_data[1]);
@@ -287,12 +418,12 @@ async function getAll() {
 }
 
 
-// animation + update + reload cards
-async function HandleUpdateCateg(data) {
+// animation + request + reload cards
+async function HandleCategRequest(data) {
 
     saveAnimAndFreeze(true);
     try {
-        const response = await updateCateg(data);
+        const response = await categRequest(data);
         if (response[0]) {
             await handleGetAll();
         }
@@ -307,16 +438,59 @@ async function HandleUpdateCateg(data) {
 }
 
 
-// html request for categ patch
-async function updateCateg(data) {
+// html request for categ
+async function categRequest(data) {
 
     try {
         const response = await fetch('/monsystemeresto/app/controllers/categController.php', {
-            method: 'PATCH',
+            method: data.method,
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data)
         });
-        await new Promise(resolve => setTimeout(resolve, 1000)); // fake 2 seconds network lag
+        await new Promise(resolve => setTimeout(resolve, 2000)); // fake network lag
+        const response_data = await response.json();
+        if (!response_data[0]) {
+            throw new Error(response_data[1]);
+        }
+        return response_data;
+    } 
+    catch (e) {
+        throw e;
+    }
+
+}
+
+
+// animation + insert + reload cards
+async function HandleCreateFood(data) {
+
+    saveAnimAndFreeze(true);
+    try {
+        const response = await createFood(data);
+        if (response[0]) {
+            await handleGetAll();
+        }
+    }
+    catch (e) {
+        console.error("Error: " + e);
+    }
+    finally {
+        saveAnimAndFreeze(false);
+    }
+
+}
+
+
+// html request for food insert
+async function createFood(data) {
+
+    try {
+        const response = await fetch('/monsystemeresto/app/controllers/foodController.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        });
+        await new Promise(resolve => setTimeout(resolve, 2000)); // fake network lag
         const response_data = await response.json();
         if (!response_data[0]) {
             throw new Error(response_data[1]);
@@ -333,25 +507,6 @@ async function updateCateg(data) {
 // menu management popup loading animation
 function saveAnimAndFreeze(state) {
 
-    const existing_div = document.getElementById('menu_manage_popup_load_anim');
-    if (state && !existing_div) {
-        if (!existing_div) {
-            const menu_manage_popup_load_anim = document.createElement('div');
-            menu_manage_popup_load_anim.classList.add('menu_manage_popup_load_anim');
-            menu_manage_popup_load_anim.id = 'menu_manage_popup_load_anim';
-            const i_menu_manage_popup_load_anim = document.createElement('i');
-            i_menu_manage_popup_load_anim.classList.add('fas');
-            i_menu_manage_popup_load_anim.classList.add('fa-spinner');
-            i_menu_manage_popup_load_anim.classList.add('fa-spin');
-            menu_manage_popup_load_anim.appendChild(i_menu_manage_popup_load_anim);
-            $('#menu_manage_list').append(menu_manage_popup_load_anim);
-        }
-        else {
-            document.getElementById('menu_manage_popup_load_anim').style.display = "flex";
-        }
-    }
-    else if (!state && existing_div) {
-        document.getElementById('menu_manage_popup_load_anim').style.display = "none";
-    }
-
+    document.getElementById('menu_manage_popup_load_anim').style.display = state ? "flex" : "none";
+    
 }

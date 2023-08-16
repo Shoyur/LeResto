@@ -5,7 +5,7 @@ $(document).ready(function() {
     // first time init
     getOpenOrders();
     // automatic refresh
-    interval_refresh = setInterval(getOpenOrders, refresh ? refresh * 1000 : 5000);
+    // interval_refresh = setInterval(getOpenOrders, refresh ? refresh * 1000 : 5000); // stopped for test
 
 });
 

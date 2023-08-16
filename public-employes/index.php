@@ -7,6 +7,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Le Resto - Prise des commandes</title>
 
+    <link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png">
+    <link rel="manifest" href="images/site.webmanifest">
+
     <link rel="stylesheet" type="text/css" href="css/styles.css">
     <link rel="stylesheet" type="text/css" href="util/fontawesome-free-6.4.0-web/css/all.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
@@ -25,21 +30,21 @@
 
 </head>
 
-<body>
+<body class="dark_theme">
 
     <!-- NAVBAR -->
     <nav class="nav">
-        <div class="nav_logo">
-            <img src="images/logo.jpg" alt="logo">
-        </div>
-        <div class="nav_mid">
-            <span id="orders_count"></span>
-        </div>
-        <div class="nav_but">
-            <i class="fa-solid fa-clock-rotate-left"  id="history_popup_but"></i>
-            <i class="fa-solid fa-chart-line" id="stats_popup_but"></i>
-            <i class="fa-solid fa-file-pen" id="menu_manage_popup_but"></i>
-            <i class="fa-solid fa-gear" id="settings_popup_but"></i>
+        <div class="nav_container_div">
+            <div class="nav_logo_div">
+                <img src="images/logo.png" alt="logo">
+            </div>
+            <div class="nav_icon_but_div">
+                <i class="fa-solid fa-clock-rotate-left"  id="history_popup_but"></i>
+                <i class="fa-solid fa-chart-line" id="stats_popup_but"></i>
+                <i class="fa-solid fa-file-pen" id="menu_manage_popup_but"></i>
+                <i class="fa-solid fa-circle-half-stroke" id="darklight_but"></i>
+                <i class="fa-solid fa-gear" id="settings_popup_but"></i>
+            </div>
         </div>
     </nav>
 
@@ -64,7 +69,7 @@
             <div id="finished_orders" class="history_popup_textarea">...</div>
             <div class="put_back_order">
                 <label for="id_order">Reprendre une commande:</label>
-                <input type="text" id="id_order" placeholder="ID de commande" />
+                <input type="text" id="id_order" placeholder="#" />
                 <button id="history_put_back_but">Confirmer</button>
             </div>
             <button id="history_popup_archive">Archiver les commandes terminées</button>
@@ -73,13 +78,17 @@
     </div>
 
     <!-- STATISTICS POPUP -->
+    <!-- <div id="stats_popup" class="popup">
+        <div class="stats_popup_content">
+            <div class="stats_list"></div>
+            <button id="stats_popup_cancel">Fermer</button>
+        </div>
+    </div> -->
+
+    <!-- TEST -->
     <div id="stats_popup" class="popup">
         <div class="stats_popup_content">
-            <div class="stats_list">
-                <!--  -->
-                TO DO
-                <!--  -->
-            </div>
+            <div class="mgr_food_main_div"></div>
             <button id="stats_popup_cancel">Fermer</button>
         </div>
     </div>
@@ -87,10 +96,9 @@
     <!-- MENU MANAGEMENT POPUP -->
     <div id="menu_manage_popup" class="popup">
         <div class="menu_manage_popup_content">
-            <div class="menu_manage_list" id="menu_manage_list">
-                <div class="menu_manage_popup_load_anim" id="menu_manage_popup_load_anim">
-                    <i class="fas fa-spinner fa-spin"></i>
-                </div>
+            <div class="menu_manage_list" id="menu_manage_list"></div>
+            <div class="menu_manage_popup_load_anim" id="menu_manage_popup_load_anim">
+                <i class="fas fa-spinner fa-spin"></i>
             </div>
             <button id="menu_manage_popup_close">Fermer</button>
         </div>

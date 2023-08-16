@@ -19,19 +19,31 @@ class CategModel {
     // CRUD
 
     // CREATE
-    public function createCateg($categ_name, $categ_sort, $categ_image, $categ_descr) {
+    public function createCateg($categ_name, $categ_sort) {
 
-        $query = "INSERT INTO categ (categ_name, categ_sort, categ_image, categ_descr) VALUES (?, ?, ?, ?)";
         try {
+
+            $return = array();
+
+            $query = "INSERT INTO categ (categ_name, categ_sort) VALUES (?, ?)";
             $stmt = $this->db->prepare($query);
-            $stmt->execute([$categ_name, $categ_sort, $categ_image, $categ_descr]);
-            return $this->db->lastInsertId();
+            $stmt->execute([$categ_name, $categ_sort]);
+            $result = $this->db->lastInsertId();
+
+            array_push($return, true);
+            array_push($return, $result);
+
         } 
         catch (PDOException $e) {
-            // TO DO
+            
+            array_push($return, false);
+            array_push($return, $e);
+
         }
         finally {
-            // TO DO
+            
+            return $return;
+
         }
 
     }
@@ -65,7 +77,7 @@ class CategModel {
 
     }
 
-    public function updateCategSort($place1, $place2) {
+    public function updateCategSort($categ_id_1, $categ_id_2) {
 
         try {
             
@@ -79,7 +91,7 @@ class CategModel {
             END
             WHERE categ_id IN (?, ?)";
             $stmt = $this->db->prepare($query);
-            $result = $stmt->execute([$place1, $place2, $place2, $place1, $place1, $place2]);
+            $result = $stmt->execute([$categ_id_1, $categ_id_2, $categ_id_2, $categ_id_1, $categ_id_1, $categ_id_2]);
 
             array_push($return, true);
             array_push($return, $result);
