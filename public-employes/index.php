@@ -88,7 +88,46 @@
     <!-- TEST -->
     <div id="stats_popup" class="popup">
         <div class="stats_popup_content">
-            <div class="mgr_food_main_div"></div>
+            <div class="mgr_food_main_div">
+                <div class="mgr_food_img_div">
+                    <img src="images/logo.png" alt="logo">
+                </div>
+                <div class="mgr_food_right_div">
+                    <div class="mgr_food_top_div">
+                        <div class="mgr_name_div">
+                            <input type="text" placeholder="Entrez un nom">
+                        </div>
+                        <div class="mgr_buts_div">
+                            <div class="mgr_save_div">
+                                <i class="fa-solid fa-floppy-disk"></i>
+                            </div>
+                            <div class="mgr_up_div">
+                                <i class="fa-solid fa-arrow-up"></i>
+                            </div>
+                            <div class="mgr_down_div">
+                                <i class="fa-solid fa-arrow-down"></i>
+                            </div>
+                            <div class="mgr_del_div">
+                                <i class="fa-solid fa-trash"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mgr_food_bottom_div">
+                        <div class="mgr_food_descr_div">
+                            <input type="text" placeholder="Entrez une description">
+                        </div>
+                        <div class="mgr_food_price_div">
+                            <input type="text" placeholder="$$$">
+                        </div>
+                        <div class="mgr_food_avail_div">
+                            <label class="switch">
+                                <input type="checkbox" id="avail_toggle_2">
+                                <span class="slider slider_avail"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <button id="stats_popup_cancel">Fermer</button>
         </div>
     </div>

@@ -390,12 +390,15 @@ i:hover {
   left: 50%;
   transform: translate(-50%, -50%);
   background-color: var(--col_nav);
+  /* background-color: green; */
   padding: 20px;
   width: 80%;
   max-width: 500px;
   text-align: center;
   border-radius: 20px;
   color: var(--col_text);
+
+  border: solid 1px white;
 }
 
 .stats_list {
@@ -599,6 +602,133 @@ i:hover {
 .menu_manage_list_v_cat_div input {
   margin-right: 10px;
 }
+
+/* mgr food 2.0 */
+
+.mgr_food_main_div {
+  display: flex;
+  width: calc(100% - 30px);
+  height: 80px;
+  background-color: var(--col_list);;
+  
+}
+
+.mgr_food_main_div * input{
+  margin-left: 0px;
+}
+
+.mgr_food_img_div {
+  flex: 0;
+  width: 70px;
+  height: 70px;
+  margin: 5px;
+  /* background-color: #F040F0; */
+}
+
+.mgr_food_img_div img {
+  width: 70px;
+  height: 70px;
+  object-fit: cover;
+  border-radius: 15px;
+}
+
+.mgr_food_right_div {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+
+.mgr_food_top_div {
+  flex: 1;
+  display: flex;
+  height: 40px;
+}
+
+.mgr_name_div {
+  flex: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mgr_name_div input {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.mgr_buts_div {
+  flex: 1;
+  display: flex;
+  /* width: 160px; */
+  justify-content: flex-end;
+}
+
+.mgr_save_div,
+.mgr_up_div,
+.mgr_down_div,
+.mgr_del_div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 35px;
+  margin-right: 5px;
+  font-size: 30px;
+}
+
+.mgr_food_bottom_div {
+  flex: 1;
+  display: flex;
+  height: 40px;
+  /* width: 150px; */
+  /* background-color: blue; */
+
+  /* justify-content: space-between; */
+}
+
+.mgr_food_descr_div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* width: 100%; */
+  box-sizing: border-box;
+  /* background-color: brown; */
+
+  /* flex: 0 0; */
+  flex: 1;
+
+}
+
+.mgr_food_price_div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* flex: 1; */
+  width: 115px;
+  box-sizing: border-box;
+  /* background-color: blueviolet; */
+
+  /* flex: 0 0; */
+}
+
+.mgr_food_avail_div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* flex: 1; */
+  width: 45px;
+  box-sizing: border-box;
+  /* background-color: goldenrod; */
+
+  /* flex: 0 0; */
+}
+
+.mgr_food_descr_div input,
+.mgr_food_price_div input,
+.mgr_food_avail_div input {
+  width: 100%;
+}
+
 
 /* ----------------------------------------------------------- */
 /* SETTINGS POPUP */
