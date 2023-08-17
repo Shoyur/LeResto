@@ -88,11 +88,12 @@ function loadCards(food_data) {
         else {
             // add food card to list
             menu_manage_list.appendChild(createFoodCard(c[0]));
+                // not - next element exist
             if (!(index < (food_data_array.length - 1) && 
+                // and is a Food
                 food_data_array[index + 1][0] instanceof Food && 
+                // and is the same category
                 c[0].categ_id == food_data_array[index + 1][0].categ_id)) {
-                // console.log((index < (food_data_array.length - 2)) + " " + (food_data_array[index + 1] instanceof Food) + " " + (c.categ_id == food_data_array[index + 1].categ_id));
-                // if next card is not another food card (still in same category), add a virgin (create new) food card
                 menu_manage_list.appendChild(createVirginFoodCard(c[0].categ_id));
             }
         }
@@ -237,15 +238,27 @@ function createFoodCard(food) {
     mgr_food_img_div.classList.add('mgr_food_img_div');
     const food_image = document.createElement('img');
     food_image.src = '../public-clients/aliments/images/' + food.food_image;
+    // hidden input to simulate a file selection when image clicked
     const img_file_input = document.createElement('input');
     img_file_input.type = 'file';
+    img_file_input.name = 'food_image_file';
     img_file_input.style.display = 'none';
-    img_file_input.addEventListener('change', (event) => 
-        handleImgChange(event, food.food_id, card)
-    );
+    img_file_input.addEventListener('change', (event) => {
+        const selected_file = event.target.files[0];
+        if (selected_file) {
+            const data = {
+                method: 'PATCH',
+                food_id: food.food_id,
+                food_image: selected_file
+            }
+            console.log("Selected file for product no." + food.food_id + ":");
+            console.log(selected_file);
+            HandleFoodRequest(data);
+        }
+    });
+    // provoke a change back to img_file_input
     food_image.addEventListener('click', () => {
         img_file_input.click();
-        console.log("Pour changer l'image du produit no." + food.food_id);
     });
     mgr_food_img_div.appendChild(food_image);
     card.appendChild(mgr_food_img_div);
@@ -390,17 +403,6 @@ function createVirginFoodCard(categ_id) {
     card.appendChild(input_div);
     return card;
 
-}
-
-
-// TO DO
-function handleImgChange(event, food_id, card) {
-    const selected_file = event.target.files[0];
-    if (selected_file) {
-        console.log("Selected file for product no." + food_id + ":", selected_file);
-        // Handle the selected file, you can upload it or process it here
-        // You can replace the console.log with your upload logic
-    }
 }
 
 
