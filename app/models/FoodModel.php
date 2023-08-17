@@ -96,7 +96,7 @@ class FoodModel {
 
             $query = "SELECT food_id, food_price FROM food WHERE food_id IN ($many_foods_string)";
             $stmt = $this->db->prepare($query);
-            $stmt->execute($food_ids); // Pass the array directly as parameters
+            $stmt->execute($food_ids);
             $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
             array_push($return, true);
@@ -114,21 +114,62 @@ class FoodModel {
             return $return;
             
         }
+
     }
 
     // UPDATE
-    public function updateFood($food_id, $categ_id, $food_name, $food_avail, $food_price, $food_image, $food_descr, $food_options, $food_sold, $food_stock) {
+    public function updateFood($food_id, $food_name, $food_avail, $food_price, $food_descr) {
 
-        $query = "UPDATE food SET categ_id = ?, food_name = ?, food_avail = ?, food_price = ?, food_image = ?, food_descr = ?, food_options = ?, food_sold = ?, food_stock = ? WHERE food_id = ?";
         try {
+
+            $return = array();
+
+            $query = "UPDATE food SET food_name = ?, food_avail = ?, food_price = ?, food_descr = ? WHERE food_id = ?";
             $stmt = $this->db->prepare($query);
-            $stmt->execute([$categ_id, $food_name, $food_avail, $food_price, $food_image, $food_descr, $food_options, $food_sold, $food_stock, $food_id]);
+            $result = $stmt->execute([$food_name, $food_avail, $food_price, $food_descr, $food_id]);
+
+            array_push($return, true);
+            array_push($return, $result);
+
         } 
         catch (PDOException $e) {
-            // TO DO
-        }
+
+            array_push($return, false);
+            array_push($return, $e);
+
+        } 
         finally {
-            // TO DO
+
+            return $return;
+            
+        }
+
+    }
+
+    public function updateFoodImage($food_id, $food_image) {
+
+        try {
+
+            $return = array();
+
+            $query = "UPDATE food SET food_image = ? WHERE food_id = ?";
+            $stmt = $this->db->prepare($query);
+            $result = $stmt->execute([$food_image, $food_id]);
+
+            array_push($return, true);
+            array_push($return, $result);
+
+        } 
+        catch (PDOException $e) {
+
+            array_push($return, false);
+            array_push($return, $e);
+
+        } 
+        finally {
+
+            return $return;
+            
         }
 
     }
@@ -136,16 +177,28 @@ class FoodModel {
     // DELETE
     public function deleteFood($food_id) {
 
-        $query = "DELETE FROM food WHERE food_id = ?";
         try {
+
+            $return = array();
+
+            $query = "DELETE FROM food WHERE food_id = ?";
             $stmt = $this->db->prepare($query);
-            $stmt->execute([$food_id]);
+            $result = $stmt->execute([$food_id]);
+
+            array_push($return, true);
+            array_push($return, $result);
+
         } 
         catch (PDOException $e) {
-            // TO DO
-        }
+
+            array_push($return, false);
+            array_push($return, $e);
+
+        } 
         finally {
-            // TO DO
+
+            return $return;
+            
         }
 
     }

@@ -269,6 +269,15 @@ function createFoodCard(food) {
     mgr_save_i.classList.add('fa-solid');
     mgr_save_i.classList.add('fa-floppy-disk');
     mgr_save_i.addEventListener('click', () => {
+        const data = {
+            method: 'PATCH',
+            food_id: food.food_id,
+            food_name: mgr_name_input.value,
+            food_descr: mgr_food_descr_input.value,
+            food_price: mgr_food_price_input.value,
+            food_avail: mgr_food_avail_toggle.checked
+        }
+        HandleFoodRequest(data);
         console.log("On tente de sauvegarder le nom/descr/prix du produit no." + food.food_id);
     });
     mgr_save_div.appendChild(mgr_save_i);
@@ -280,6 +289,7 @@ function createFoodCard(food) {
     mgr_up_i.classList.add('fa-arrow-up');
     mgr_up_i.classList.add('icon_disable');
     mgr_up_i.addEventListener('click', () => {
+        // TO DO (when food order will be possible)
         console.log("On tente de monter l'ordre du produit no." + food.food_id);
     });
     mgr_up_div.appendChild(mgr_up_i);
@@ -291,6 +301,7 @@ function createFoodCard(food) {
     mgr_down_i.classList.add('fa-arrow-down');
     mgr_down_i.classList.add('icon_disable');
     mgr_down_i.addEventListener('click', () => {
+        // TO DO (when food order will be possible)
         console.log("On tente de descendre l'ordre du produit no." + food.food_id);
     });
     mgr_down_div.appendChild(mgr_down_i);
@@ -301,6 +312,11 @@ function createFoodCard(food) {
     mgr_del_i.classList.add('fa-solid');
     mgr_del_i.classList.add('fa-trash');
     mgr_del_i.addEventListener('click', () => {
+        const data = {
+            method: 'DELETE',
+            food_id: food.food_id,
+        }
+        HandleFoodRequest(data);
         console.log("On tente de supprimer le produit no." + food.food_id);
     });
     mgr_del_div.appendChild(mgr_del_i);
@@ -333,9 +349,6 @@ function createFoodCard(food) {
     mgr_food_avail_toggle.type = 'checkbox';
     mgr_food_avail_toggle.id = 'avail_toggle_' + food.food_id;
     mgr_food_avail_toggle.checked = food.food_avail ? true : false;
-    mgr_food_avail_toggle.addEventListener('change', () => {
-        console.log("On tente d" + this.checked ? "\'activer" : "e désactiver" + " le produit no." + food.food_id);
-    });
     mgr_food_avail_label.appendChild(mgr_food_avail_toggle);
     const mgr_food_avail_span = document.createElement('span');
     mgr_food_avail_span.classList.add('slider');
@@ -352,8 +365,7 @@ function createFoodCard(food) {
 function createVirginFoodCard(categ_id) {
 
     const card = document.createElement('div');
-    card.classList.add('menu_manage_list_food_div');
-    card.classList.add('menu_manage_list_v_food_div');
+    card.classList.add('mgr_v_food_div');
     const input_div = document.createElement('div');
     input_div.classList.add('input_div');
     input_div.classList.add('v_food_input_div');

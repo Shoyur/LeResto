@@ -461,37 +461,16 @@ i:hover {
   margin-right: 10px;
 }
 
-.menu_manage_list_cat_div_but {
+.mgr_v_food_div {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 30px;
-  height: 40px;
-}
-
-.menu_manage_list_cat_div_but_1_4 {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 40px;
-  width: 35px;
-  margin-right: 8px;
-}
-
-.menu_manage_list_food_div {
-  width: calc(100% - 30px);
-  height: 80px;
   background-color: var(--col_list);
   border: none;
   border-radius: 5px;
   text-align: left;
-  display: inline-block;
   margin-left: 30px;
   margin-bottom: 5px;
-  display: flex;
-}
-
-.menu_manage_list_v_food_div {
   width: 60%;
   height: 40px;
   font-size: 30px;
@@ -529,10 +508,6 @@ i:hover {
   background-color: var(--col_list);
   margin-left: 30px;
   margin-bottom: 5px;
-}
-
-.mgr_food_main_div * input {
-  margin-left: 0px;
 }
 
 .mgr_food_img_div {
@@ -626,8 +601,12 @@ i:hover {
 .mgr_food_price_div input,
 .mgr_food_avail_div input {
   width: 100%;
+  margin-left: 0px;
 }
 
+.mgr_cat_main_div * input {
+  margin-left: 10px;
+}
 
 /* ----------------------------------------------------------- */
 /* SETTINGS POPUP */
