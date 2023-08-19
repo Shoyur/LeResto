@@ -1,4 +1,4 @@
-# MonSystemeResto
+# LeResto
 
 A restaurant online ordering platform
 
