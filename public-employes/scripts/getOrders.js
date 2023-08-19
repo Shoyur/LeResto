@@ -5,7 +5,7 @@ $(document).ready(function() {
     // first time init
     getOpenOrders();
     // automatic refresh
-    // interval_refresh = setInterval(getOpenOrders, refresh ? refresh * 1000 : 5000); // stopped for test
+    interval_refresh = setInterval(getOpenOrders, refresh ? refresh * 1000 : 5000);
 
 });
 
@@ -43,8 +43,6 @@ function showOpenOrders() {
         order_ids_count[order_id] = (order_ids_count[order_id] || 0) + 1;
     }
     how_many_orders = Object.keys(order_ids_count).length;
-
-    $('#orders_count').text(how_many_orders + ' commande(s) en cours');
 
     if (how_many_orders > 0) {
 

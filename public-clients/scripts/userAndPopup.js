@@ -31,3 +31,4 @@ function closeUserPopup() {
     $(document).off('keydown');
     $('#user_popup').off('click');
 }
+

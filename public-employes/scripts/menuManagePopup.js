@@ -237,23 +237,31 @@ function createFoodCard(food) {
     const mgr_food_img_div = document.createElement('div');
     mgr_food_img_div.classList.add('mgr_food_img_div');
     const food_image = document.createElement('img');
+    food_image.loading = 'lazy';
     food_image.src = '../public-clients/aliments/images/' + food.food_image;
     // hidden input to simulate a file selection when image clicked
     const img_file_input = document.createElement('input');
     img_file_input.type = 'file';
-    img_file_input.name = 'food_image_file';
+    img_file_input.accept= 'image/*';
+    img_file_input.name = food.food_id;
     img_file_input.style.display = 'none';
     img_file_input.addEventListener('change', (event) => {
         const selected_file = event.target.files[0];
         if (selected_file) {
-            const data = {
-                method: 'PATCH',
-                food_id: food.food_id,
-                food_image: selected_file
+            // console.log("selected_file=");
+            // console.log(selected_file);
+            const form_data = new FormData();
+            form_data.append('food_image_file', selected_file);
+            form_data.append('food_id', food.food_id);
+            const fetch_options = {
+                // method: 'PATCH',
+                method: 'POST',
+                // headers: {
+                //     "Content-Type": "multipart/form-data",
+                //   },
+                body: form_data
             }
-            console.log("Selected file for product no." + food.food_id + ":");
-            console.log(selected_file);
-            HandleFoodRequest(data);
+            HandleFoodRequest(fetch_options);
         }
     });
     // provoke a change back to img_file_input
@@ -283,15 +291,18 @@ function createFoodCard(food) {
     mgr_save_i.classList.add('fa-floppy-disk');
     mgr_save_i.addEventListener('click', () => {
         const data = {
-            method: 'PATCH',
             food_id: food.food_id,
             food_name: mgr_name_input.value,
             food_descr: mgr_food_descr_input.value,
             food_price: mgr_food_price_input.value,
             food_avail: mgr_food_avail_toggle.checked
         }
-        HandleFoodRequest(data);
-        console.log("On tente de sauvegarder le nom/descr/prix du produit no." + food.food_id);
+        const fetch_options = {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        }
+        HandleFoodRequest(fetch_options);
     });
     mgr_save_div.appendChild(mgr_save_i);
     mgr_buts_div.appendChild(mgr_save_div);
@@ -300,10 +311,9 @@ function createFoodCard(food) {
     const mgr_up_i = document.createElement('i');
     mgr_up_i.classList.add('fa-solid');
     mgr_up_i.classList.add('fa-arrow-up');
-    mgr_up_i.classList.add('icon_disable');
+    mgr_up_i.classList.add('icon_disable'); // TO DO
     mgr_up_i.addEventListener('click', () => {
         // TO DO (when food order will be possible)
-        console.log("On tente de monter l'ordre du produit no." + food.food_id);
     });
     mgr_up_div.appendChild(mgr_up_i);
     mgr_buts_div.appendChild(mgr_up_div);
@@ -312,10 +322,9 @@ function createFoodCard(food) {
     const mgr_down_i = document.createElement('i');
     mgr_down_i.classList.add('fa-solid');
     mgr_down_i.classList.add('fa-arrow-down');
-    mgr_down_i.classList.add('icon_disable');
+    mgr_down_i.classList.add('icon_disable'); // TO DO
     mgr_down_i.addEventListener('click', () => {
         // TO DO (when food order will be possible)
-        console.log("On tente de descendre l'ordre du produit no." + food.food_id);
     });
     mgr_down_div.appendChild(mgr_down_i);
     mgr_buts_div.appendChild(mgr_down_div);
@@ -326,11 +335,14 @@ function createFoodCard(food) {
     mgr_del_i.classList.add('fa-trash');
     mgr_del_i.addEventListener('click', () => {
         const data = {
-            method: 'DELETE',
-            food_id: food.food_id,
+            food_id: food.food_id
         }
-        HandleFoodRequest(data);
-        console.log("On tente de supprimer le produit no." + food.food_id);
+        const fetch_options = {
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        }
+        HandleFoodRequest(fetch_options);
     });
     mgr_del_div.appendChild(mgr_del_i);
     mgr_buts_div.appendChild(mgr_del_div);
@@ -390,14 +402,17 @@ function createVirginFoodCard(categ_id) {
     i_add.classList.add('fa-solid');
     i_add.classList.add('fa-plus');
     i_add.addEventListener('click', () => {
-        if (food_name_input.value.length) {
-            const data = {
-                method: 'POST',
-                categ_id: categ_id,
-                food_name: food_name_input.value
-            }
-            HandleFoodRequest(data);
+        if (!food_name_input.value.length) { return; }
+        const data = {
+            categ_id: categ_id,
+            food_name: food_name_input.value
         }
+        const fetch_options = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        }
+        HandleFoodRequest(fetch_options);
     });
     input_div.appendChild(i_add);
     card.appendChild(input_div);
@@ -409,26 +424,7 @@ function createVirginFoodCard(categ_id) {
 // animation + get + reload cards
 async function handleGetAll() {
 
-    saveAnimAndFreeze(true);
-    try {
-        const response = await getAll();
-        if (response[0]) {
-            loadCards(response[1]);
-        }
-    }
-    catch (e) {
-        console.error("Error: " + e);
-    }
-    finally {
-        saveAnimAndFreeze(false);
-    }
-
-}
-
-
-// html request for categs-foods get
-async function getAll() {
-
+    mgrLoadAnim(true);
     try {
         const response = await fetch('/monsystemeresto/app/controllers/foodController.php', {
             method: 'GET',
@@ -439,10 +435,15 @@ async function getAll() {
         if (!response_data[0]) {
             throw new Error(response_data[1]);
         }
-        return response_data;
-    } 
+        else {
+            loadCards(response_data[1]);
+        }
+    }
     catch (e) {
-        throw e;
+        console.error("Error: " + e);
+    }
+    finally {
+        mgrLoadAnim(false);
     }
 
 }
@@ -451,26 +452,7 @@ async function getAll() {
 // animation + request + reload cards
 async function HandleCategRequest(data) {
 
-    saveAnimAndFreeze(true);
-    try {
-        const response = await categRequest(data);
-        if (response[0]) {
-            await handleGetAll();
-        }
-    }
-    catch (e) {
-        console.error("Error: " + e);
-    }
-    finally {
-        saveAnimAndFreeze(false);
-    }
-
-}
-
-
-// html request for categ
-async function categRequest(data) {
-
+    mgrLoadAnim(true);
     try {
         const response = await fetch('/monsystemeresto/app/controllers/categController.php', {
             method: data.method,
@@ -482,22 +464,7 @@ async function categRequest(data) {
         if (!response_data[0]) {
             throw new Error(response_data[1]);
         }
-        return response_data;
-    } 
-    catch (e) {
-        throw e;
-    }
-
-}
-
-
-// animation + insert + reload cards
-async function HandleFoodRequest(data) {
-
-    saveAnimAndFreeze(true);
-    try {
-        const response = await foodRequest(data);
-        if (response[0]) {
+        else {
             await handleGetAll();
         }
     }
@@ -505,37 +472,39 @@ async function HandleFoodRequest(data) {
         console.error("Error: " + e);
     }
     finally {
-        saveAnimAndFreeze(false);
+        mgrLoadAnim(false);
     }
 
 }
 
 
-// html request for food insert
-async function foodRequest(data) {
+// animation + request + reload cards
+async function HandleFoodRequest(fetch_options) {
 
+    mgrLoadAnim(true);
     try {
-        const response = await fetch('/monsystemeresto/app/controllers/foodController.php', {
-            method: data.method,
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data)
-        });
+        const response = await fetch('/monsystemeresto/app/controllers/foodController.php', fetch_options);
         await new Promise(resolve => setTimeout(resolve, 2000)); // fake network lag
         const response_data = await response.json();
         if (!response_data[0]) {
             throw new Error(response_data[1]);
         }
-        return response_data;
-    } 
+        else {
+            await handleGetAll();
+        }
+    }
     catch (e) {
-        throw e;
+        console.error("Error: " + e);
+    }
+    finally {
+        mgrLoadAnim(false);
     }
 
 }
 
 
 // menu management popup loading animation
-function saveAnimAndFreeze(state) {
+function mgrLoadAnim(state) {
 
     document.getElementById('menu_manage_popup_load_anim').style.display = state ? "flex" : "none";
     

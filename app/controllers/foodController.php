@@ -67,15 +67,40 @@ class FoodController {
 
 $foodController = new FoodController();
 
-$data = json_decode(file_get_contents('php://input'), true);
-
 switch ($_SERVER['REQUEST_METHOD']) {
 
+    
+
     case 'POST':
-        
-        $categ_id = $data['categ_id'];
-        $food_name = $data['food_name'];
-        echo $foodController->createFood($categ_id, $food_name);
+
+        // echo "POST =";
+        // var_dump($_POST);
+        // echo "FILES =";
+        // var_dump($_FILES);
+        // break;
+
+        if (isset($_POST['categ_id'])) {
+
+            $categ_id = $_POST['categ_id'];
+            $food_name = $_POST['food_name'];
+            echo $foodController->createFood($categ_id, $food_name);
+
+        }
+
+        elseif (isset($_POST['food_id'])) {
+
+            $process_image = processAndUploadImage();
+            if (!$process_image[0]) {
+                return $process_image;
+            }
+            else {
+                $food_id = $_POST['food_id'];
+                $food_image = $process_image[1];
+                echo $foodController->updateFoodImage($food_id, $food_image); 
+            }
+
+        }
+
         break;
 
     case 'GET':
@@ -85,6 +110,8 @@ switch ($_SERVER['REQUEST_METHOD']) {
 
     case 'PATCH':
 
+        $data = json_decode(file_get_contents('php://input'), true);
+
         if (isset($data['food_name'])) {
             $food_id = $data['food_id'];
             $food_name = $data['food_name'];
@@ -92,20 +119,6 @@ switch ($_SERVER['REQUEST_METHOD']) {
             $food_price = $data['food_price'];
             $food_descr = $data['food_descr'];
             echo $foodController->updateFood($food_id, $food_name, $food_avail, $food_price, $food_descr); 
-        }
-        elseif (isset($data['food_image'])) {
-
-            $food_id = $data['food_id'];
-            $food_image = $data['food_image'];
-
-            $process_image = processAndUploadImage($data);
-
-            if (!$process_image[0]) {
-                echo $process_image;
-            }
-            else {
-                echo $foodController->updateFoodImage($food_id, $food_image); 
-            }
         }
         break;
         
@@ -117,32 +130,68 @@ switch ($_SERVER['REQUEST_METHOD']) {
 
 }
 
-function processAndUploadImage($data) {
-
-    $image_dir = '../public-clients/aliments/images/';
-    $allowed_ext = array('jpg', 'jpeg', 'png', 'gif');
+function processAndUploadImage() {
 
     try {
 
         $return = array();
 
-        if (!$data) { throw new Exception('No JSON data present.'); }
-        if (!$data['food_image']) { throw new Exception('No food_image data present.'); }
-
-        $uploaded_file = $data['food_image'];
-
-        $max_file_size = 2 * 1024 * 1024; // 2MB in bytes
-        if ($uploaded_file['size'] > $max_file_size) {
-            throw new Exception('File size exceeds the limit.');
+        // check if image is present
+        if (!isset($_FILES['food_image_file']['error']) || is_array($_FILES['food_image_file']['error'])) {
+            throw new Exception('Invalid parameters.');
+        }
+        switch ($_FILES['food_image_file']['error']) {
+            case UPLOAD_ERR_OK:
+                break;
+            case UPLOAD_ERR_NO_FILE:
+                throw new Exception('No file sent.');
+            case UPLOAD_ERR_INI_SIZE:
+            case UPLOAD_ERR_FORM_SIZE:
+                throw new Exception('Exceeded filesize limit.');
+            default:
+                throw new Exception('Unknown error.');
         }
 
-        
+        // check image size
+        $max_file_size = 2 * 1024 * 1024;
+        if ($_FILES['food_image_file']['size'] > $max_file_size) {
+            throw new Exception('Image size must be max 2MB.');
+        }
 
-        $result = "";
-        // ...
+        // check image file type
+        $finfo = new finfo(FILEINFO_MIME_TYPE);
+        $file_path = $_FILES['food_image_file']['tmp_name'];
+        $uploaded_mime_type = $finfo->file($file_path);
+        $allowed_mime_types = array(
+            'jpg' => 'image/jpeg',
+            'png' => 'image/png',
+            'gif' => 'image/gif'
+        );
+        if (!in_array($uploaded_mime_type, $allowed_mime_types)) {
+            throw new Exception('Invalid file format.');
+        }
+
+        // change file name
+        $original_filename = pathinfo($_FILES['food_image_file']['name'], PATHINFO_FILENAME);
+        $extension = pathinfo($_FILES['food_image_file']['name'], PATHINFO_EXTENSION);
+        $hash = sha1_file($file_path);
+        $timestamp = time();
+        $new_filename = $original_filename . '_' . $timestamp . '_' . $hash . '.' . $extension;
+
+        $destination_folder = '../../public-clients/aliments/images/';
+
+        // confirm that folder exists
+        if (!is_dir($destination_folder)) {
+            throw new Exception('Destination folder does not exist.');
+        }
+        
+        // try to save the file
+        if (!move_uploaded_file($file_path, $destination_folder . $new_filename)) {
+            throw new Exception('Could not not move uploaded file to server.');
+        }
 
         array_push($return, true);
-        array_push($return, $result);
+        array_push($return, $new_filename);
 
     } 
     catch (Exception $e) {
@@ -155,90 +204,6 @@ function processAndUploadImage($data) {
 
         return $return;
         
-    }
-
-    
-    // if (!isset($food_image['error']) || is_array($food_image['error'])) {
-    //     return $result;
-    // }
-    if (!isset($food_image['error']) || !is_int($food_image['error'])) {
-        return $result;
-    }
-    
-    if ($food_image['error'] === UPLOAD_ERR_OK) {
-        $tmpName = $food_image['tmp_name'];
-        
-        $fileExtension = strtolower(pathinfo($food_image['name'], PATHINFO_EXTENSION));
-        if (!in_array($fileExtension, $allowed_ext)) {
-            return $result;
-        }
-        
-        $newFilename = uniqid('food_') . '.' . $fileExtension;
-        $destination = $image_dir . $newFilename;
-        
-        if (move_uploaded_file($tmpName, $destination)) {
-            $result['success'] = true;
-            $result['filename'] = $newFilename;
-        }
-    }
-    
-    return $result;
-}
-
-function processAndUploadImage2() {
-
-    try {
-        if (!isset($_FILES['food_image_file']['error']) || is_array($_FILES['food_image_file']['error'])) {
-            throw new RuntimeException('Invalid parameters.');
-            // throw new Error();
-        }
-        switch ($_FILES['food_image_file']['error']) {
-            case UPLOAD_ERR_OK:
-                break;
-            case UPLOAD_ERR_NO_FILE:
-                throw new RuntimeException('No file sent.');
-            case UPLOAD_ERR_INI_SIZE:
-            case UPLOAD_ERR_FORM_SIZE:
-                throw new RuntimeException('Exceeded filesize limit.');
-            default:
-                throw new RuntimeException('Unknown error.');
-        }
-        if ($_FILES['food_image_file']['size'] > 1000000) {
-            throw new RuntimeException('Exceeded filesize limit.');
-        }
-    
-        // DO NOT TRUST $_FILES['food_image_file']['mime'] VALUE !!
-        // Check MIME Type by yourself.
-        $finfo = new finfo(FILEINFO_MIME_TYPE);
-        if (false === $ext = array_search(
-            $finfo->file($_FILES['food_image_file']['tmp_name']),
-            array(
-                'jpg' => 'image/jpeg',
-                'png' => 'image/png',
-                'gif' => 'image/gif',
-            ),
-            true
-        )) {
-            throw new RuntimeException('Invalid file format.');
-        }
-
-        if (!move_uploaded_file(
-            $_FILES['food_image_file']['tmp_name'],
-            sprintf('./uploads/%s.%s',
-                sha1_file($_FILES['food_image_file']['tmp_name']),
-                $ext
-            )
-        )) {
-            throw new RuntimeException('Failed to move uploaded file.');
-        }
-    
-        echo 'File is uploaded successfully.';
-    
-    } 
-    catch (RuntimeException $e) {
-    
-        echo $e->getMessage();
-    
     }
 
 }

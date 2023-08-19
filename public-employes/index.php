@@ -1,3 +1,9 @@
+<?php
+
+header("Cache-Control: max-age=3600");
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -78,56 +84,9 @@
     </div>
 
     <!-- STATISTICS POPUP -->
-    <!-- <div id="stats_popup" class="popup">
-        <div class="stats_popup_content">
-            <div class="stats_list"></div>
-            <button id="stats_popup_cancel">Fermer</button>
-        </div>
-    </div> -->
-
-    <!-- TEST -->
     <div id="stats_popup" class="popup">
         <div class="stats_popup_content">
-            <div class="mgr_food_main_div">
-                <div class="mgr_food_img_div">
-                    <img src="images/logo.png" alt="logo">
-                </div>
-                <div class="mgr_food_right_div">
-                    <div class="mgr_food_top_div">
-                        <div class="mgr_name_div">
-                            <input type="text" placeholder="Entrez un nom">
-                        </div>
-                        <div class="mgr_buts_div">
-                            <div class="mgr_save_div">
-                                <i class="fa-solid fa-floppy-disk"></i>
-                            </div>
-                            <div class="mgr_up_div">
-                                <i class="fa-solid fa-arrow-up"></i>
-                            </div>
-                            <div class="mgr_down_div">
-                                <i class="fa-solid fa-arrow-down"></i>
-                            </div>
-                            <div class="mgr_del_div">
-                                <i class="fa-solid fa-trash"></i>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="mgr_food_bottom_div">
-                        <div class="mgr_food_descr_div">
-                            <input type="text" placeholder="Entrez une description">
-                        </div>
-                        <div class="mgr_food_price_div">
-                            <input type="text" placeholder="$$$">
-                        </div>
-                        <div class="mgr_food_avail_div">
-                            <label class="switch">
-                                <input type="checkbox" id="avail_toggle_2">
-                                <span class="slider slider_avail"></span>
-                            </label>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <div class="stats_list"></div>
             <button id="stats_popup_cancel">Fermer</button>
         </div>
     </div>
@@ -147,17 +106,14 @@
     <div id="settings_popup" class="popup">
         <div class="settings_popup_content">
             <h3>Rafraîchir la page chaque <input type="number" id="refresh_interval" class="input_number"> sec.</h3>
-            <h3 class="inline_block">Couleur de délai :</h3>
+            <h3 class="inline_block">Couleurs d'attente:</h3>
             <label class="switch">
             <input type="checkbox" id="changeColorToggle">
             <span class="slider"></span>
             </label>
             <br>
-            <div class="color-box blue-box"></div>
             <input type="number" id="blueInterval" class="input_number"> secondes
-            <div class="color-box yellow-box"></div>
             <input type="number" id="yellowInterval" class="input_number"> secondes
-            <div class="color-box red-box"></div>
             <br>
             <label for="paragraphText"><h3 class="loc_text_title">Texte emplacement : </h3></label>
             <textarea id="loc_text" class="loc_text"></textarea>

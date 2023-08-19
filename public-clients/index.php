@@ -1,4 +1,10 @@
-<?php require_once '../app/stripe/config.php' ?>
+<?php
+
+header("Cache-Control: max-age=3600");
+
+// require_once '../app/stripe/config.php'
+
+?>
 
 <!DOCTYPE html>
 <html lang="en">
