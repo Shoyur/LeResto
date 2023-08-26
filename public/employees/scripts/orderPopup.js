@@ -13,7 +13,7 @@ function openOrderPopup(order) {
     $('#order_popup_descr').append("<p><b>Carte, 4 premiers chiffres:</b> " + order.order_cc_last4);
 
     $('#order_popup_finish').off('click').on('click', function() {
-        finishOrder(order.order_id);
+        HandleArchiveOrdersRequest(order.order_id);
     });
     $('#order_popup_cancel').off('click').on('click', function() {
         closeOrderPopup(); 
@@ -31,40 +31,39 @@ function openOrderPopup(order) {
     });
 }
 
+
 function closeOrderPopup() {
     $('#order_popup').fadeOut();
     $(document).off('keydown');
     $('#order_popup').off('click');
 }
 
-function finishOrder(order_id) {
 
-    var data = {
-        order_id: order_id,
-        order_finished: 1
-    }
-    $.ajax({
-        url: '/monsystemeresto/app/controllers/orderController.php',
-        type: 'PATCH',
-        data: JSON.stringify(data),
-        dataType: 'json',
-        async: false,
-        success: function(result) {
-            if (result[0]) {
-                console.log("La commande no." + result[1] + " a été marquée comme terminée.")
-            } 
-            else {
-                console.error("Problème à mettre à jour la commande : " + result[1]);
-                showErrorNotif(result[1]);
-            }
-        },
-        error: function(xhr, status, error) {
-            console.log('Error:', error);
-            showErrorNotif(error);
+async function HandleArchiveOrdersRequest(order_id) {
+    try {
+        const fetch_options = {
+            order_id: order_id,
+            order_finished: 1
         }
-    });
-
-    closeOrderPopup();
-    getOpenOrders();
+        const response = await fetch('/leresto/server/controllers/orderController.php', {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(fetch_options)
+        });
+        // await new Promise(resolve => setTimeout(resolve, 2000)); // fake network lag
+        const response_data = await response.json();
+        if (!response_data[0]) {
+            throw new Error(response_data[1]);
+        }
+        else {
+            console.log("La commande no." + response_data[1] + " a été marquée comme terminée.")
+            closeOrderPopup();
+            handleOpenOrdersRequest();
+        }
+    }
+    catch (e) {
+        console.error("Error: " + e);
+        showErrorNotif(e);
+    }
 
 }

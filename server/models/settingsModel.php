@@ -21,39 +21,61 @@ class SettingsModel {
     // READ
     public function getSettings($id_user) {
 
-        $requete = "SELECT * FROM settings WHERE id_user = ? LIMIT 1";
         try {
-            $stmt = $this->db->prepare($requete);
+            
+            $return = array();
+
+            $query = "SELECT * FROM settings WHERE id_user = ? LIMIT 1";
+            $stmt = $this->db->prepare($query);
             $stmt->execute([$id_user]);
-            return $stmt->fetch(PDO::FETCH_ASSOC);
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            array_push($return, true);
+            array_push($return, $result);
+
         } 
         catch (PDOException $e) {
-            // TO DO
+
+            array_push($return, false);
+            array_push($return, $e);
+
         }
         finally {
-            // TO DO
+
+            return $return;
+
         }
 
     }
-
 
     // UPDATE
     public function saveSettings($id_user, $refresh, $color_change, $interval_1, $interval_2, $the_location) {
 
-        $requete = "UPDATE settings SET refresh = ?, color_change = ?, interval_1 = ?, interval_2 = ?, the_location = ? WHERE id_user = ?";
         try {
-            $stmt = $this->db->prepare($requete);
-            $stmt->execute([$refresh, $color_change, $interval_1, $interval_2, $the_location, $id_user]);
+
+            $return = array();
+
+            $query = "UPDATE settings SET refresh = ?, color_change = ?, interval_1 = ?, interval_2 = ?, the_location = ? WHERE id_user = ?";
+            $stmt = $this->db->prepare($query);
+            $result = $stmt->execute([$refresh, $color_change, $interval_1, $interval_2, $the_location, $id_user]);
+            
+            array_push($return, true);
+            array_push($return, $result);
+
         } 
         catch (PDOException $e) {
-            // TO DO
+
+            array_push($return, false);
+            array_push($return, $e);
+
         }
         finally {
-            // TO DO
+
+            return $return;
+
         }
 
     }
-
 
 }
 

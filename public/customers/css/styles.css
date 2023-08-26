@@ -5,7 +5,8 @@
 
   /* possible colors */
   --col_white: #FFF9FF;
-  --col_pale_pink_1: #FFD9FF;
+  /* --col_pale_pink_1: #FFD9FF; */
+  --col_pale_pink_1: white;
   --col_pale_pink_2: #F5A0F5;
   --col_bright_pink: #F040F0;
   --col_purple_1: #A030FF;
@@ -785,4 +786,22 @@ label {
 
 .no-scroll {
   overflow: hidden;
+}
+
+/* ----------------------------------------------------------- */
+/* ERROR NOTIFICATION POPUP */
+
+.error_notif {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  height: fit-content;
+  width: 300px;
+  background-color: var(--col_card);
+  color: var(--col_text);
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+  display: none;
+  z-index: 1001;
 }

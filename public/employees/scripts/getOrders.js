@@ -2,37 +2,41 @@ let interval_refresh;
 let orders;
 
 $(document).ready(function() {
+
     // first time init
-    getOpenOrders();
+    handleOpenOrdersRequest();
     // automatic refresh
 
     // temp test
-    // interval_refresh = setInterval(getOpenOrders, refresh ? refresh * 1000 : 5000);
+    interval_refresh = setInterval(function() {
+        handleOpenOrdersRequest();
+    }, refresh ? refresh * 1000 : 5000);
 
 });
 
-function getOpenOrders() {
-    $.ajax({
-        url: '/monsystemeresto/app/controllers/orderController.php',
-        async: false,
-        type: 'GET',
-        dataType: 'json',
-        success: function(result) {
-            if (result[0]) {
-                orders = result[1];
-                showOpenOrders();
-            }
-            else {
-                console.error('Error:', result[1]);
-                showErrorNotif(result[1]);
-            }
-            
-        },
-        error: function(xhr, status, error) {
-            console.error('Error:', error);
-            showErrorNotif(error);
+
+async function handleOpenOrdersRequest() {
+
+    try {
+        const response = await fetch('/leresto/server/controllers/orderController.php', {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' }
+        });
+        // await new Promise(resolve => setTimeout(resolve, 2000)); // fake network lag
+        const response_data = await response.json();
+        if (!response_data[0]) {
+            throw new Error(response_data[1]);
         }
-    });
+        else {
+            orders = response_data[1];
+            showOpenOrders();
+        }
+    }
+    catch (e) {
+        console.error("Error: " + e);
+        showErrorNotif(e);
+    }
+
 }
 
 

@@ -1,5 +1,6 @@
-import { Food } from './Food.js';
-import { Categ } from './Categ.js';
+import { Food } from '../../common/scripts/Food.js';
+import { Categ } from '../../common/scripts/Categ.js';
+
 
 
 document.addEventListener("DOMContentLoaded", function() {
@@ -134,7 +135,7 @@ function createCategCard(categ, sort_ids, deletable) {
             new_name: cat_name_input.value,
             old_name: categ.categ_name
         }
-        HandleCategRequest(data);
+        handleCategRequest(data);
     });
     mgr_save_div.appendChild(mgr_save_i);
     mgr_buts_div.appendChild(mgr_save_div);
@@ -151,7 +152,7 @@ function createCategCard(categ, sort_ids, deletable) {
                 categ_id_1: sort_ids[0],
                 categ_id_2: categ.categ_id
             }
-            HandleCategRequest(data);
+            handleCategRequest(data);
         });
     }
     mgr_up_div.appendChild(mgr_up_i);
@@ -169,7 +170,7 @@ function createCategCard(categ, sort_ids, deletable) {
                 categ_id_1: categ.categ_id,
                 categ_id_2: sort_ids[1]
             }
-            HandleCategRequest(data);
+            handleCategRequest(data);
         });
     }
     mgr_down_div.appendChild(mgr_down_i);
@@ -186,7 +187,7 @@ function createCategCard(categ, sort_ids, deletable) {
                 method: 'DELETE',
                 categ_id: categ.categ_id
             }
-            HandleCategRequest(data);
+            handleCategRequest(data);
         });
     }
     mgr_del_div.appendChild(mgr_del_i);
@@ -219,7 +220,7 @@ function createVirginCategCard(next_sort_id) {
                 categ_name: categ_input.value,
                 categ_sort: next_sort_id
             }
-            HandleCategRequest(data);
+            handleCategRequest(data);
         }
     });
     input_div.appendChild(i_add);
@@ -237,8 +238,9 @@ function createFoodCard(food) {
     const mgr_food_img_div = document.createElement('div');
     mgr_food_img_div.classList.add('mgr_food_img_div');
     const food_image = document.createElement('img');
-    food_image.loading = 'lazy';
-    food_image.src = '../public-clients/aliments/images/' + food.food_image;
+    // slow network case test
+    // food_image.loading = 'lazy';
+    food_image.src = '../../server/food/' + food.food_image;
     // hidden input to simulate a file selection when image clicked
     const img_file_input = document.createElement('input');
     img_file_input.type = 'file';
@@ -261,7 +263,7 @@ function createFoodCard(food) {
                 //   },
                 body: form_data
             }
-            HandleFoodRequest(fetch_options);
+            handleFoodRequest(fetch_options);
         }
     });
     // provoke a change back to img_file_input
@@ -302,7 +304,7 @@ function createFoodCard(food) {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data)
         }
-        HandleFoodRequest(fetch_options);
+        handleFoodRequest(fetch_options);
     });
     mgr_save_div.appendChild(mgr_save_i);
     mgr_buts_div.appendChild(mgr_save_div);
@@ -342,7 +344,7 @@ function createFoodCard(food) {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data)
         }
-        HandleFoodRequest(fetch_options);
+        handleFoodRequest(fetch_options);
     });
     mgr_del_div.appendChild(mgr_del_i);
     mgr_buts_div.appendChild(mgr_del_div);
@@ -412,7 +414,7 @@ function createVirginFoodCard(categ_id) {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data)
         }
-        HandleFoodRequest(fetch_options);
+        handleFoodRequest(fetch_options);
     });
     input_div.appendChild(i_add);
     card.appendChild(input_div);
@@ -426,7 +428,7 @@ async function handleGetAll() {
 
     mgrLoadAnim(true);
     try {
-        const response = await fetch('/monsystemeresto/app/controllers/foodController.php', {
+        const response = await fetch('/leresto/server/controllers/foodController.php', {
             method: 'GET',
             headers: { 'Content-Type': 'application/json' }
         });
@@ -451,11 +453,11 @@ async function handleGetAll() {
 
 
 // animation + request + reload cards
-async function HandleCategRequest(data) {
+async function handleCategRequest(data) {
 
     mgrLoadAnim(true);
     try {
-        const response = await fetch('/monsystemeresto/app/controllers/categController.php', {
+        const response = await fetch('/leresto/server/controllers/categController.php', {
             method: data.method,
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data)
@@ -481,11 +483,11 @@ async function HandleCategRequest(data) {
 
 
 // animation + request + reload cards
-async function HandleFoodRequest(fetch_options) {
+async function handleFoodRequest(fetch_options) {
 
     mgrLoadAnim(true);
     try {
-        const response = await fetch('/monsystemeresto/app/controllers/foodController.php', fetch_options);
+        const response = await fetch('/leresto/server/controllers/foodController.php', fetch_options);
         await new Promise(resolve => setTimeout(resolve, 2000)); // fake network lag
         const response_data = await response.json();
         if (!response_data[0]) {

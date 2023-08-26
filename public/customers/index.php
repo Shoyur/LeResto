@@ -15,25 +15,33 @@ header("Cache-Control: max-age=3600");
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Le Resto - Passer une commande</title>
 
+    <link rel="apple-touch-icon" sizes="180x180" href="../common/images/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../common/images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../common/images/favicon-16x16.png">
+    <link rel="manifest" href="../common/images/site.webmanifest">
+
     <link rel="stylesheet" type="text/css" href="css/styles.css">
-    <link rel="stylesheet" type="text/css" href="util/fontawesome-free-6.4.0-web/css/all.min.css">
+    <link rel="stylesheet" type="text/css" href="../common/util/fontawesome-free-6.4.0-web/css/all.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
 
-    <script defer src="util/jquery/jquery-3.7.0.min.js"></script>
+    <script src="../common/util/jquery/jquery-3.7.0.min.js"></script>
 
     <script defer type="text/javascript" src="https://js.stripe.com/v2/"></script>
 
-    <script defer src="scripts/loadFoods.js"></script>
+    <script defer src="../common/scripts/errorNotification.js"></script>
+    <script defer type="module" src="../common/scripts/Food.js"></script>
+    <script defer type="module" src="../common/scripts/Categ.js"></script>
+    <script defer type="module" src="scripts/loadFoods.js"></script>
     <script defer src="scripts/foodPopup.js"></script>
     <script defer src="scripts/cartAndPopup.js"></script>
     <script defer src="scripts/locPopup.js"></script>
-    <script defer src="scripts/langChange.js"></script>
-    <script defer src="scripts/darkLight.js"></script>
-    <script defer src="scripts/userAndPopup.js"></script>
+    <script defer src="../common/scripts/langChange.js"></script>
+    <script defer src="../common/scripts/darkLight.js"></script>
+    <script defer src="../common/scripts/userAndPopup.js"></script>
     <script defer src="scripts/payment.js"></script>
-    <script defer src="scripts/cookies.js"></script>
+    <script defer src="../common/scripts/cookies.js"></script>
 
-    <script defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB41DRUbKWJHPxaFjMAwdrzWzbVKartNGg&callback=initAutocomplete&libraries=places"></script>
+    <script defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDWzNZvErnEWtE8sH7rZBng1V78S_IxSf8&callback=initAutocomplete&libraries=places"></script>
 
     
     <!-- <script>Stripe.setPublishableKey("pk_test_51NYwc3ITtGQD7Q56MWtMXAzc8cCfdWfZPuf4hLWAmfwNy1QhwExdae3Cj2COucvxJJhWizXwlxwVUNKQ4mzIMwSn00OwKbAdaA")</script> -->
@@ -47,7 +55,7 @@ header("Cache-Control: max-age=3600");
     <nav class="nav">
         <div class="nav_container_div">
             <div class="nav_logo_div">
-                <img src="images/logo.png" alt="logo">
+                <img src="../common/../common/images/logo.png" alt="logo">
             </div>
             <div class="nav_icon_but_div">
                 <i class="fa-solid fa-location-dot" id="location_popup_but"></i>
@@ -74,19 +82,7 @@ header("Cache-Control: max-age=3600");
     <!-- LOCATION POPUP -->
     <div id="loc_popup" class="popup">
         <div class="loc_popup_content">
-            <div class="loc_popup_text" id="loc_popup_text">
-                <h2>Nos coordonnées</h2>
-                ADRESSE<br>
-                123, rue Chemin Resto<br>
-                Sainte-Ville, Québec<br><br>
-                TÉLÉPHONE<br>
-                <a href="tel:514-123-4567"><b>514-123-4567</b></a><br><br>
-                COURRIEL<br>
-                <a href="mailto:no@e.mail"><b>no@e.mail</b></a><br><br>
-                HEURES D'OUVERTURE<br>
-                Tous les jours de 10h00 à 23h00<br><br><br>
-
-            </div>
+            <div class="loc_popup_text" id="loc_popup_text"></div>
             <button id="loc_popup_close">Fermer</button>
         </div>
     </div>
@@ -118,7 +114,7 @@ header("Cache-Control: max-age=3600");
             <!-- page 2 -->
             <div class="cart_popup_payment_content" id="cart_popup_payment_content">
                 <div class="payment_logo">
-                    <img src="images/logo.png" alt="logo">
+                    <img src="../common/images/logo.png" alt="logo">
                 </div>
                 <!--  -->
                 <input class="order_name" id="order_name" maxlength="200" placeholder="Entrez votre nom">
@@ -144,7 +140,7 @@ header("Cache-Control: max-age=3600");
             <!-- page 3 -->
             <div class="cart_popup_confirmation_content" id="cart_popup_confirmation_content">
                 <div class="payment_logo">
-                    <img src="images/logo.png" alt="logo">
+                    <img src="../common/images/logo.png" alt="logo">
                 </div>
                 <div class="cart_confirmation_text" id="cart_confirmation_text"></div>
                 <div class="cart_end_buttons">
@@ -159,6 +155,9 @@ header("Cache-Control: max-age=3600");
             <div class="lds_roller" id="lds_roller_2"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
         </div>
     </div>
+
+    <!-- ERROR NOTIFICATION POPUP -->
+    <div class="error_notif" id="error_notif"></div>
 
 </body>
 

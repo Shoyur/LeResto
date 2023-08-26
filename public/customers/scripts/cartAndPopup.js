@@ -164,7 +164,7 @@ function createCartItem(item, index) {
     cart_list_item.classList.add('cart_list_item');
 
     const image = document.createElement('img');
-    image.src = '/monsystemeresto/public-clients/aliments/images/' + item.food_image;
+    image.src = '../../server/food/' + item.food_image;
     image.alt = 'img alt : ' + item.food_name;
     cart_list_item.appendChild(image);
 
@@ -296,8 +296,8 @@ function ccCVCFormat(input) {
 
 // on browser window close, save the cart
 window.addEventListener('beforeunload', function (event) {
-    // localStorage.setItem('Le_Resto_cart_data', JSON.stringify(cart_data));
-    setCookie('Le_Resto_cart_data', JSON.stringify(cart_data), 12);
+    localStorage.setItem('Le_Resto_cart_data', JSON.stringify(cart_data));
+    // setCookie('Le_Resto_cart_data', JSON.stringify(cart_data), 12);
 });
 
 
@@ -333,8 +333,8 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     // check for local saved cart
-    // const saved_cart_data = localStorage.getItem('Le_Resto_cart_data');
-    const saved_cart_data = getCookie('Le_Resto_cart_data');
+    const saved_cart_data = localStorage.getItem('Le_Resto_cart_data');
+    // const saved_cart_data = getCookie('Le_Resto_cart_data');
     if (saved_cart_data) {
         cart_data = JSON.parse(saved_cart_data);
         updateCartIconQty();

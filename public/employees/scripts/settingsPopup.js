@@ -8,41 +8,49 @@ $('#settings_popup_but').click(() => {
     openSettingsPopup();
 });
 
-function getSettings() {
-    $.ajax({
-        url: '/monsystemeresto/app/controllers/settingsController.php',
-        type: 'POST',
-        data: {
+
+async function handleGetSettings() {
+
+    try {
+        const fetch_options = {
             action: 'getSettings',
             id_user: 1, // TO DO
-        },
-        dataType: 'json',
-        success: function(result) {
-            refresh = result.refresh;
-            color_change = result.color_change;
-            interval_1 = result.interval_1;
-            interval_2 = result.interval_2;
-            the_location = result.the_location;
-        },
-        error: function(xhr, status, error) {
-            console.error('Error:', error);
-            showErrorNotif(error);
         }
-    });
+        const response = await fetch('/leresto/server/controllers/settingsController.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(fetch_options)
+        });
+        // await new Promise(resolve => setTimeout(resolve, 2000)); // fake network lag
+        const response_data = await response.json();
+        if (!response_data[0]) {
+            throw new Error(response_data[1]);
+        }
+        else {
+            refresh = response_data[1].refresh;
+            color_change = response_data[1].color_change;
+            interval_1 = response_data[1].interval_1;
+            interval_2 = response_data[1].interval_2;
+            the_location = response_data[1].the_location
+        }
+    }
+    catch (e) {
+        console.error("Error: " + e);
+        showErrorNotif(e);
+    }
+
 }
 
 
-function saveSettings() {
-    refresh = document.getElementById("refresh_interval").value;
-    color_change = document.getElementById("changeColorToggle").checked ? 1 : 0;
-    interval_1 = document.getElementById("blueInterval").value;
-    interval_2 = document.getElementById("yellowInterval").value
-    the_location = document.getElementById("loc_text").value;
+async function handleSaveSettings() {
 
-    $.ajax({
-        url: '/monsystemeresto/app/controllers/settingsController.php',
-        type: 'POST',
-        data: {
+    try {
+        const refresh = document.getElementById("refresh_interval").value;
+        const color_change = document.getElementById("changeColorToggle").checked ? 1 : 0;
+        const interval_1 = document.getElementById("blueInterval").value;
+        const interval_2 = document.getElementById("yellowInterval").value;
+        const the_location = document.getElementById("loc_text").value;
+        const fetch_options = {
             action: 'saveSettings',
             id_user: 1, // TO DO
             refresh: refresh,
@@ -50,20 +58,30 @@ function saveSettings() {
             interval_1: interval_1,
             interval_2: interval_2,
             the_location: the_location,
-        },
-        dataType: 'json',
-        async: false,
-        success: function(result) {
+        }
+        const response = await fetch('/leresto/server/controllers/settingsController.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(fetch_options)
+        });
+        // await new Promise(resolve => setTimeout(resolve, 2000)); // fake network lag
+        const response_data = await response.json();
+        if (!response_data[0]) {
+            throw new Error(response_data[1]);
+        }
+        else {
             changeTimerValue(refresh);
             closeSettingsPopup();
             showOpenOrders();
-        },
-        error: function(xhr, status, error) {
-            console.error('Error:', error);
-            showErrorNotif(error);
         }
-    });
+    }
+    catch (e) {
+        console.error("Error: " + e);
+        showErrorNotif(e);
+    }
+
 }
+
 
 function changeTimerValue(refresh) {
     clearInterval(interval_refresh);
@@ -78,10 +96,9 @@ function openSettingsPopup() {
     $('#blueInterval').val(interval_1);
     $('#yellowInterval').val(interval_2);
     $('#loc_text').val(the_location);
-    console.log("the_location = " + the_location);
 
     $('#settings_popup_save').off('click').on('click', function() {
-        saveSettings();
+        handleSaveSettings();
         closeSettingsPopup(); 
     });
     $('#settings_popup_cancel').off('click').on('click', function() {
@@ -110,4 +127,4 @@ function closeSettingsPopup() {
 
 
 // First time init
-getSettings();
+handleGetSettings();

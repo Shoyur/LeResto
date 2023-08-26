@@ -38,10 +38,17 @@ class OrderModel {
 
             $multi_values = [];
 
+            // var_dump($cart_data);
+
             foreach ($cart_data as $food) {
                 $food_id = $food[0];
-                $foodbyorder_options = $food[1];
+                // $foodbyorder_options = $food[1]; // not receiving index 1
+                $foodbyorder_options = "";
                 $multi_values[] = "($order_id, $food_id, '$foodbyorder_options')";
+
+                $query3 = "UPDATE food SET food_sold = food_sold + 1 WHERE food_id = ?";
+                $stmt2 = $this->db->prepare($query3);
+                $stmt2->execute([$food_id]);
             }
 
             $query2 .= implode(", ", $multi_values);

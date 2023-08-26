@@ -19,7 +19,7 @@ header("Cache-Control: max-age=3600");
     <link rel="manifest" href="../common/images/site.webmanifest">
 
     <link rel="stylesheet" type="text/css" href="css/styles.css">
-    <link rel="stylesheet" type="text/css" href="util/fontawesome-free-6.4.0-web/css/all.min.css">
+    <link rel="stylesheet" type="text/css" href="../common/util/fontawesome-free-6.4.0-web/css/all.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
 
     <script src="../common/util/jquery/jquery-3.7.0.min.js"></script>
@@ -29,6 +29,7 @@ header("Cache-Control: max-age=3600");
     <script defer src="scripts/orderPopup.js"></script>
     <script defer src="scripts/historyPopup.js"></script>
     <script defer src="scripts/statsPopup.js"></script>
+    <script defer src="../common/scripts/darkLight.js"></script>
     <script defer src="../common/scripts/errorNotification.js"></script>
     <script defer type="module" src="../common/scripts/Food.js"></script>
     <script defer type="module" src="../common/scripts/Categ.js"></script>
@@ -43,7 +44,7 @@ header("Cache-Control: max-age=3600");
     <nav class="nav">
         <div class="nav_container_div">
             <div class="nav_logo_div">
-                <img src="images/logo.png" alt="logo">
+                <img src="../common/images/logo.png" alt="logo">
             </div>
             <div class="nav_icon_but_div">
                 <i class="fa-solid fa-clock-rotate-left"  id="history_popup_but"></i>
@@ -87,7 +88,10 @@ header("Cache-Control: max-age=3600");
     <!-- STATISTICS POPUP -->
     <div id="stats_popup" class="popup">
         <div class="stats_popup_content">
-            <div class="stats_list"></div>
+            <div class="stats_list" id="stats_list"></div>
+            <div class="stats_popup_load_anim" id="stats_popup_load_anim">
+                <i class="fas fa-spinner fa-spin"></i>
+            </div>
             <button id="stats_popup_cancel">Fermer</button>
         </div>
     </div>

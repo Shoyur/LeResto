@@ -1,70 +1,60 @@
-import { Food } from './Food.js';
-import { Categ } from './Categ.js';
+import { Food } from '../../common/scripts/Food.js';
+import { Categ } from '../../common/scripts/Categ.js';
 
-var food_data;
 
 $(document).ready(function() {
     
-    // first time init
-    getFoodWithCateg()
-    .then(function(result) {
-        food_data = result;
-        showCategAndFoods();
-    })
-    .catch(function(error) {
-        console.error('Error:', error);
-    });
+    handleGetAll()
 
 });
 
 
-function getFoodWithCateg() {
+async function handleGetAll() {
 
-    return new Promise(function(resolve, reject) {
-        $.ajax({
-            url: '/monsystemeresto/app/controllers/FoodController.php',
-            type: 'GET',
-            dataType: 'json',
-            success: function(result) {
-                food_data = result;
-                resolve(result);
-            },
-            error: function(xhr, status, error) {
-                console.log('Error :', error);
-                reject(error);
-            }
+    try {
+        const response = await fetch('/leresto/server/controllers/foodController.php', {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' }
         });
-    });
+        await new Promise(resolve => setTimeout(resolve, 2000)); // fake network lag
+        const response_data = await response.json();
+        if (!response_data[0]) {
+            throw new Error(response_data[1]);
+        }
+        else {
+            showCategsAndFoods(response_data[1]);
+        }
+    }
+    catch (e) {
+        console.error("Error: " + e);
+        showErrorNotif(e);
+    }
+
 }
 
 
-function showCategAndFoods() {
+function showCategsAndFoods(food_data) {
 
     const catbar_but = document.getElementById("catbar_but");
     const food_grids_list = document.getElementById('food_grids_list');
 
-    // Return if no food data
-    if (!food_data.length) { return; }
+    let foods_grid;
 
-    var unique_categ = null;
-    var first_but_init = 0;
-    var foods_grid;
-    
-    food_data.forEach(function(jf) {
-        const food = new Food(jf.food_id, jf.categ_id, jf.food_name, jf.food_avail, jf.food_price, jf.food_image, jf.food_descr, jf.food_options, jf.food_sold, jf.food_stock);
+    // create sorted (as the end result) array for the cards list
+    food_data.forEach((a, index) => {
 
-        if (unique_categ != food.categ_id) {
-            unique_categ = food.categ_id;
-            const categ = new Categ(jf.categ_id, jf.categ_name, jf.categ_sort, jf.categ_image, jf.categ_descr);
+        if (a.type == "category") {
 
+            const categ = new Categ(a.id, a.name, a.sort);
+
+            // cat bar button
             const button = document.createElement("button");
             button.type = "button";
-            button.textContent = jf.categ_name;
+            button.textContent = a.name;
             button.classList.add("categ_but");
-            first_but_init ? null: button.classList.add("nav_cat_but_hover") ;
-            first_but_init++;
+            index == 0 ? button.classList.add("nav_cat_but_hover") : null;
             button.setAttribute('data-categ', JSON.stringify(categ));
-            button.setAttribute('data-categ_id', categ.categ_id);
+            button.setAttribute('data-categ_id', a.id);
             button.addEventListener('click', function(event) {
                 event.preventDefault();
                 const category_top = categ_section.offsetTop - parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--padding_top'));
@@ -72,22 +62,28 @@ function showCategAndFoods() {
             });
             catbar_but.appendChild(button);
 
+            // grid cat title
             const categ_section = document.createElement('section');
             categ_section.classList.add('categ_section');
-            categ_section.setAttribute('id', categ.categ_id);
+            categ_section.setAttribute('id', a.id);
             const categ_title = document.createElement('h2');
-            categ_title.textContent = categ.categ_name;
+            categ_title.textContent = a.name;
             categ_section.appendChild(categ_title);
             food_grids_list.appendChild(categ_section);
 
             foods_grid = document.createElement('div');
             foods_grid.classList.add('foods_grid');
             categ_section.appendChild(foods_grid);
+
+            // food cards
+            food_data.forEach((b, index) => {
+                if (b.categ_id == a.id) {
+                    const food = new Food(b.id, b.categ_id, b.name, b.food_avail, b.food_price, b.food_image, b.food_descr);
+                    const food_card = createFoodCard(food);
+                    foods_grid.appendChild(food_card);
+                }
+            });
         }
-
-        const food_card = createFoodCard(food);
-        foods_grid.appendChild(food_card);
-
     });
 
 }
@@ -141,7 +137,7 @@ function createFoodCard(food) {
 
     // image
     const image = document.createElement('img');
-    image.src = '/monsystemeresto/public-clients/aliments/images/' + food.food_image;
+    image.src = '../../server/food/' + food.food_image;
     image.alt = 'img alt : ' + food.food_name;
     card.appendChild(image);
 
@@ -212,11 +208,9 @@ function createFoodCard(food) {
 
     card.appendChild(qty_settings);
 
-    if (food.food_descr) {
-        card.addEventListener('click', () => {
-            openFoodDescrPopup(food.food_descr);
-        });    
-    }
+    card.addEventListener('click', () => {
+        openFoodDescrPopup((food.food_descr == null || food.food_descr == "") ? "Aucune description." : food.food_descr);
+    });    
 
     return card;
 

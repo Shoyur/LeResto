@@ -8,34 +8,6 @@ date_default_timezone_set('US/Eastern');
 
 class SettingsController {
 
-    public function requete() {
-
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-                    
-            switch($_POST['action']) {
-
-                case "getSettings":
-                    $id_user = $_POST['id_user'];
-                    echo $this->getSettings($id_user);
-                    break;
-
-                case "saveSettings":
-                    $id_user = $_POST['id_user'];
-                    $refresh = $_POST['refresh'];
-                    $color_change = $_POST['color_change'];
-                    $interval_1 = $_POST['interval_1'];
-                    $interval_2 = $_POST['interval_2'];
-                    $the_location = $_POST['the_location'];
-                    echo $this->saveSettings($id_user, $refresh, $color_change, $interval_1, $interval_2, $the_location);
-                    break;
-
-            }
-        
-        }
-
-    }
-
-
     // CRUD
 
     // READ
@@ -63,4 +35,30 @@ class SettingsController {
 }
 
 $settingsController = new SettingsController();
-$settingsController->requete();
+
+switch ($_SERVER['REQUEST_METHOD']) {
+                    
+    case 'POST': {
+
+        $data = json_decode(file_get_contents('php://input'), true);
+
+        if ($data['action'] == "getSettings") {
+            $id_user = $data['id_user'];
+            echo $settingsController->getSettings($id_user);
+        }
+
+        elseif ($data['action'] == "saveSettings") {
+            $id_user = $data['id_user'];
+            $refresh = $data['refresh'];
+            $color_change = $data['color_change'];
+            $interval_1 = $data['interval_1'];
+            $interval_2 = $data['interval_2'];
+            $the_location = $data['the_location'];
+            echo $settingsController->saveSettings($id_user, $refresh, $color_change, $interval_1, $interval_2, $the_location);
+        }
+        
+        break;
+
+    }
+
+}

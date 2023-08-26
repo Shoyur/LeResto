@@ -21,11 +21,11 @@ class FoodModel {
     // CREATE
     public function createFood($categ_id, $food_name) {
 
-        $query = "INSERT INTO food (categ_id, food_name) VALUES (?, ?)";
         try {
 
             $return = array();
 
+            $query = "INSERT INTO food (categ_id, food_name) VALUES (?, ?)";
             $stmt = $this->db->prepare($query);
             $stmt->execute([$categ_id, $food_name]);
             $result = $this->db->lastInsertId();

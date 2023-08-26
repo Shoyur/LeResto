@@ -15,8 +15,19 @@ function stripeResponseHandler(status, response) {
     else {
 
         $(".payment_errors").text("");
-        var order_details = {
-            stripeToken: response['id'],
+        console.log("Tout response =");
+        console.log(response);
+        handlePostOrder(response.id);
+    }
+
+}
+
+
+async function handlePostOrder(stripeId) {
+
+    try {
+        const order_details = {
+            stripeToken: stripeId,
             order_name: document.querySelector("#order_name").value,
             order_address: document.querySelector("#order_address").value,
             order_phone: document.querySelector("#order_phone").value,
@@ -25,46 +36,39 @@ function stripeResponseHandler(status, response) {
             order_cc_last4: document.querySelector("#cc_number").value.substring(0, 4),
             cart_data: sanitizeCartDataForOrder(cart_data),
         };
-
-        $.ajax({
-            url: '/monsystemeresto/app/stripe/submitOrder.php',
-            type: 'POST',
-            data: order_details,
-            dataType: 'json',
-            success: function(result) {
-
-                if (result.ok == true) {
-                    $("#cart_confirmation_text").html(result.text);
-                    paymentWaitingStop();
-
-                    document.getElementById("cart_popup_payment_content").style.display = "none";
-                    document.getElementById("cart_popup_confirmation_content").style.display = "block";
-
-                    cart_data = [];
-                    updateCartIconQty();
-
-                    document.getElementById("cart_pay_but").disabled = false;
-
-                    document.querySelector("#order_name").value = "";
-                    document.querySelector("#order_address").value = "";
-                    document.querySelector("#order_phone").value = "";
-                    document.querySelector("#order_notes").value = "";
-
-                    
-                }
-
-                else {
-                    document.getElementById("cart_pay_but").disabled = false;
-                    $(".payment_errors").html(result.text);
-                    paymentWaitingStop();                 
-                }
-                
-            },
-            error: function(xhr, status, error) {
-                console.log('Error:', error);
-                paymentWaitingStop();
-            }
+        const response = await fetch('/leresto/server/stripe/submitOrder.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(order_details)
         });
+        await new Promise(resolve => setTimeout(resolve, 2000)); // fake network lag
+        const response_data = await response.json();
+        if (!response_data[0]) {
+            throw new Error(response_data[1]);
+        }
+        else {
+            $("#cart_confirmation_text").html(response_data[1]);
+
+            document.getElementById("cart_popup_payment_content").style.display = "none";
+            document.getElementById("cart_popup_confirmation_content").style.display = "block";
+
+            cart_data = [];
+            updateCartIconQty();
+
+            document.querySelector("#order_name").value = "";
+            document.querySelector("#order_address").value = "";
+            document.querySelector("#order_phone").value = "";
+            document.querySelector("#order_notes").value = "";
+        }
+    }
+    catch (e) {
+        console.error("Error: " + e);
+        showErrorNotif(e);
+        $(".payment_errors").html(response_data[1]);
+    }
+    finally {
+        paymentWaitingStop();
+        document.getElementById("cart_pay_but").disabled = false;
     }
 
 }
@@ -166,15 +170,43 @@ function initAutocomplete() {
   });
 }
 
+// function fillInAddress() {
+//   const place = autocomplete.getPlace();
+//   if (place && place.formatted_address) {
+//     addressField.value = 
+//     place.address_components[0].long_name + ", " + 
+//     place.address_components[1].long_name + ", " + 
+//     place.address_components[2].long_name + ", " + 
+//     place.address_components[place.address_components[7].types[0] == "postal_code" ? 8 : 7].long_name;
+//   }
+// }
+
 function fillInAddress() {
-  const place = autocomplete.getPlace();
-  if (place && place.formatted_address) {
-    addressField.value = 
-    place.address_components[0].long_name + ", " + 
-    place.address_components[1].long_name + ", " + 
-    place.address_components[2].long_name + ", " + 
-    place.address_components[place.address_components[7].types[0] == "postal_code" ? 8 : 7].long_name;
+    const place = autocomplete.getPlace();
+    if (place && place.formatted_address) {
+      let addressArray = [];
+  
+      // Add street number and name
+      if (place.address_components.find(component => component.types.includes("street_number"))) {
+        addressArray.push(place.address_components.find(component => component.types.includes("street_number")).long_name);
+      }
+      if (place.address_components.find(component => component.types.includes("route"))) {
+        addressArray.push(place.address_components.find(component => component.types.includes("route")).long_name);
+      }
+  
+      // Add city
+      if (place.address_components.find(component => component.types.includes("locality"))) {
+        addressArray.push(place.address_components.find(component => component.types.includes("locality")).long_name);
+      }
+  
+      // Add postal code
+      if (place.address_components.find(component => component.types.includes("postal_code"))) {
+        addressArray.push(place.address_components.find(component => component.types.includes("postal_code")).long_name);
+      }
+  
+      // Set the formatted address
+      addressField.value = addressArray.join(", ");
+    }
   }
-}
 
 window.initAutocomplete = initAutocomplete;
