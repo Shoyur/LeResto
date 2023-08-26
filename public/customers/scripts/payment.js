@@ -17,6 +17,8 @@ function stripeResponseHandler(status, response) {
         $(".payment_errors").text("");
         console.log("Tout response =");
         console.log(response);
+        console.log("Seulement response.id =");
+        console.log(response.id);
         handlePostOrder(response.id);
     }
 
@@ -26,6 +28,8 @@ function stripeResponseHandler(status, response) {
 async function handlePostOrder(stripeId) {
 
     try {
+        console.log("Dans handlePostOrder(), stripeId =");
+        console.log(stripeId);
         const order_details = {
             stripeToken: stripeId,
             order_name: document.querySelector("#order_name").value,
@@ -47,7 +51,7 @@ async function handlePostOrder(stripeId) {
             throw new Error(response_data[1]);
         }
         else {
-            $("#cart_confirmation_text").html(response_data[1]);
+            $("#cart_confirmation_text").html(`Commande #${response_data[1]} passée avec succès.`);
 
             document.getElementById("cart_popup_payment_content").style.display = "none";
             document.getElementById("cart_popup_confirmation_content").style.display = "block";
@@ -62,9 +66,9 @@ async function handlePostOrder(stripeId) {
         }
     }
     catch (e) {
-        console.error("Error: " + e);
+        console.error(e);
         showErrorNotif(e);
-        $(".payment_errors").html(response_data[1]);
+        $(".payment_errors").html(e);
     }
     finally {
         paymentWaitingStop();

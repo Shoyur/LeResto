@@ -4,20 +4,23 @@ try {
 
     $return = array();
 
-    if (!empty($_POST['stripeToken'])) {
+    $json = file_get_contents('php://input');
+    $data = json_decode($json, true);
+
+    if (!empty($data['stripeToken'])) {
 
         require_once('config.php');
         require_once('init.php');
 
-        $token = $_POST['stripeToken'];
+        $token = $data['stripeToken'];
         $user_id = 55; // add SESSION for user info/data
-        $order_name = $_POST['order_name'];
-        $order_address = $_POST['order_address'];
-        $order_phone = $_POST['order_phone'];
-        $order_cc_last4 = $_POST['order_cc_last4'];
-        $order_deliv = $_POST['order_deliv'];
-        $order_notes = $_POST['order_notes'];
-        $cart_data = $_POST['cart_data'];
+        $order_name = $data['order_name'];
+        $order_address = $data['order_address'];
+        $order_phone = $data['order_phone'];
+        $order_cc_last4 = $data['order_cc_last4'];
+        $order_deliv = $data['order_deliv'];
+        $order_notes = $data['order_notes'];
+        $cart_data = $data['cart_data'];
 
 
         $food_ids = array_column($cart_data, 0);
