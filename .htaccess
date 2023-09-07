@@ -1,0 +1,16 @@
+Options +Indexes
+RemoveHandler .html
+RemoveType .html
+AddType text/html .html
+Satisfy any
+Order Deny,Allow
+Allow from 212.227.112.228
+Deny from all
+AuthType Basic
+AuthName "Access to /logs"
+AuthUserFile /kunden/homepages/26/d974927841/htpasswd
+Require user u113433742
+php_flag display_errors on
+php_flag log_errors on
+php_value error_reporting E_ALL | E_STRICT
+php_value error_log /homepages/26/d974927841/htdocs/php-errors.log
