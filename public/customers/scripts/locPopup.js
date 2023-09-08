@@ -30,14 +30,11 @@ function closeLocationPopup() {
 async function handleGetSettings() {
 
     try {
-        const fetch_options = {
-            action: 'getSettings',
-            id_user: 1, // TO DO
-        }
-        const response = await fetch('../../../server/controllers/settingsController.php', {
-            method: 'POST',
+
+        const user_id = 1; // TO DO
+        const response = await fetch('../../../server/controllers/settingsController.php?user_id=' + user_id, {
+            method: 'GET',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(fetch_options)
         });
         // await new Promise(resolve => setTimeout(resolve, 2000)); // fake network lag
         const response_data = await response.json();

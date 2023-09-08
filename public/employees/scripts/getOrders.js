@@ -7,9 +7,9 @@ $(document).ready(function() {
     handleGetOpenOrdersRequest();
 
     // automatic refresh
-    // interval_refresh = setInterval(function() {
-    //     handleGetOpenOrdersRequest();
-    // }, refresh ? refresh * 1000 : 5000);
+    interval_refresh = setInterval(function() {
+        handleGetOpenOrdersRequest();
+    }, refresh ? refresh * 1000 : 5000);
 
 });
 

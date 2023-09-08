@@ -13,11 +13,10 @@ async function handleGetSettings() {
 
     try {
 
-        const user_id = 1 // TO DO
-        const response = await fetch('../../../server/controllers/settingsController.php?status=' + user_id, {
+        const user_id = 1; // TO DO
+        const response = await fetch('../../../server/controllers/settingsController.php?user_id=' + user_id, {
             method: 'GET',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(fetch_options)
         });
         // await new Promise(resolve => setTimeout(resolve, 2000)); // fake network lag
         const response_data = await response.json();
@@ -43,13 +42,14 @@ async function handleGetSettings() {
 async function handleSaveSettings() {
 
     try {
-        const refresh = document.getElementById("refresh_interval").value;
-        const color_change = document.getElementById("changeColorToggle").checked ? 1 : 0;
-        const interval_1 = document.getElementById("blueInterval").value;
-        const interval_2 = document.getElementById("yellowInterval").value;
-        const the_location = document.getElementById("loc_text").value;
+        refresh = document.getElementById("refresh_interval").value;
+        changeTimerValue(refresh);
+        color_change = document.getElementById("changeColorToggle").checked ? 1 : 0;
+        interval_1 = document.getElementById("blueInterval").value;
+        interval_2 = document.getElementById("yellowInterval").value;
+        the_location = document.getElementById("loc_text").value;
         const fetch_options = {
-            id_user: 1, // TO DO
+            user_id: 1, // TO DO
             refresh: refresh,
             color_change: color_change,
             interval_1: interval_1,
@@ -67,7 +67,6 @@ async function handleSaveSettings() {
             throw new Error(response_data[1]);
         }
         else {
-            changeTimerValue(refresh);
             closeSettingsPopup();
             showOpenOrders();
         }
@@ -82,7 +81,7 @@ async function handleSaveSettings() {
 
 function changeTimerValue(refresh) {
     clearInterval(interval_refresh);
-    interval_refresh = setInterval(getOpenOrders, refresh * 1000);
+    interval_refresh = setInterval(handleGetOpenOrdersRequest, refresh * 1000);
 }
 
 
