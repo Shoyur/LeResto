@@ -17,7 +17,7 @@ $(document).ready(function() {
 async function handleGetOpenOrdersRequest() {
 
     try {
-        const response = await fetch('../../../server/controllers/orderController.php?status=current', {
+        const response = await fetch('/leresto/server/controllers/orderController.php?status=current', {
             method: 'GET',
             headers: { 'Content-Type': 'application/json' }
         });

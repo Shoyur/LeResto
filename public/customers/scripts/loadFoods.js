@@ -12,7 +12,7 @@ $(document).ready(function() {
 async function handleGetAll() {
 
     try {
-        const response = await fetch('../../../server/controllers/foodController.php', {
+        const response = await fetch('/leresto/server/controllers/foodController.php', {
             method: 'GET',
             headers: { 'Content-Type': 'application/json' }
         });

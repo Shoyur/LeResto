@@ -45,7 +45,7 @@ async function HandleArchiveOrdersRequest(order_id) {
             order_id: order_id,
             order_finished: 1
         }
-        const response = await fetch('../../../server/controllers/orderController.php', {
+        const response = await fetch('/leresto/server/controllers/orderController.php', {
             method: 'PATCH',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(fetch_options)

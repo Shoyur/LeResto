@@ -62,7 +62,7 @@ async function handleGetStats() {
 
     statsLoadAnim(true);
     try {
-        const response = await fetch('../../../server/controllers/statsController.php', {
+        const response = await fetch('/leresto/server/controllers/statsController.php', {
             method: 'GET',
         });
         await new Promise(resolve => setTimeout(resolve, 2000)); // fake network lag

@@ -14,7 +14,7 @@ async function handleGetSettings() {
     try {
 
         const user_id = 1; // TO DO
-        const response = await fetch('../../../server/controllers/settingsController.php?user_id=' + user_id, {
+        const response = await fetch('/leresto/server/controllers/settingsController.php?user_id=' + user_id, {
             method: 'GET',
             headers: { 'Content-Type': 'application/json' },
         });
@@ -56,7 +56,7 @@ async function handleSaveSettings() {
             interval_2: interval_2,
             the_location: the_location,
         }
-        const response = await fetch('../../../server/controllers/settingsController.php', {
+        const response = await fetch('/leresto/server/controllers/settingsController.php', {
             method: 'PATCH',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(fetch_options)

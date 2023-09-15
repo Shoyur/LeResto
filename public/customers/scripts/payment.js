@@ -34,7 +34,7 @@ async function handlePostOrder(stripeId) {
             order_cc_last4: document.querySelector("#cc_number").value.substring(0, 4),
             cart_data: sanitizeCartDataForOrder(cart_data),
         };
-        const response = await fetch('../../../server/stripe/submitOrder.php', {
+        const response = await fetch('/leresto/server/stripe/submitOrder.php', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(order_details)

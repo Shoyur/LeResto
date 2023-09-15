@@ -428,7 +428,7 @@ async function handleGetAll() {
 
     mgrLoadAnim(true);
     try {
-        const response = await fetch('../../../server/controllers/foodController.php', {
+        const response = await fetch('/leresto/server/controllers/foodController.php', {
             method: 'GET',
             headers: { 'Content-Type': 'application/json' }
         });
@@ -457,7 +457,7 @@ async function handleCategRequest(data) {
 
     mgrLoadAnim(true);
     try {
-        const response = await fetch('../../../server/controllers/categController.php', {
+        const response = await fetch('/leresto/server/controllers/categController.php', {
             method: data.method,
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data)
@@ -487,7 +487,7 @@ async function handleFoodRequest(fetch_options) {
 
     mgrLoadAnim(true);
     try {
-        const response = await fetch('../../../server/controllers/foodController.php', fetch_options);
+        const response = await fetch('/leresto/server/controllers/foodController.php', fetch_options);
         await new Promise(resolve => setTimeout(resolve, 2000)); // fake network lag
         const response_data = await response.json();
         if (!response_data[0]) {

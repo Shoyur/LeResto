@@ -8,8 +8,6 @@ async function openHistoryPopup() {
     $('#finished_orders').empty();
 
     const orders = await handleGetFinishedOrdersRequest();
-    console.warn("Voici les orders :")
-    console.warn(orders);
     var divContent = '';
     if (orders.length > 0) {
         document.getElementById("history_put_back_but").disabled = false;
@@ -92,7 +90,7 @@ function closeHistoryPopup() {
 async function handleGetFinishedOrdersRequest() {
 
     try {
-        const response = await fetch('../../../server/controllers/orderController.php?status=finished', {
+        const response = await fetch('/leresto/server/controllers/orderController.php?status=finished', {
             method: 'GET',
             headers: { 'Content-Type': 'application/json' }
         });
@@ -122,7 +120,7 @@ async function handlePutBackOrderRequest(order_id) {
             order_id: order_id,
             order_finished: 0
         }
-        const response = await fetch('../../../server/controllers/orderController.php', {
+        const response = await fetch('/leresto/server/controllers/orderController.php', {
             method: 'PATCH',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(fetch_options)
@@ -149,7 +147,7 @@ async function handleArchiveOrdersRequest() {
         const fetch_options = {
             archive: true
         }
-        const response = await fetch('../../../server/controllers/orderController.php', {
+        const response = await fetch('/leresto/server/controllers/orderController.php', {
             method: 'PATCH',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(fetch_options)
